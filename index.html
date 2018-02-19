@@ -15,13 +15,12 @@
                 <h1><a href="/">Shihao Xu </a></h1>
                 <nav><ul>
                     <li><a href="/category/computer-vision.html">Computer Vision</a></li>
-                    <li><a href="/category/review.html">Review</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/my-super-post.html">Computer Vision</a></h1>
+                    <h1 class="entry-title"><a href="/computer-vision-for-human-computer-interaction.html">Computer Vision for Human Computer Interaction</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2018-02-19T01:27:00+01:00">
                 Published: Mon 19 February 2018
@@ -36,40 +35,141 @@
         </address>
 <p>In <a href="/category/computer-vision.html">Computer Vision</a>.</p>
 <p>tags: <a href="/tag/computer-vision.html">Computer Vision</a> <a href="/tag/machine-learning.html">Machine Learning</a> </p>
-</footer><!-- /.post-info --><div class="section" id="computer-vision-2017-18-ws">
-<h2>Computer Vision 2017/18 WS</h2>
-<p><a class="reference external" href="https://cvhci.anthropomatik.kit.edu/600_1617.php">Computer Vision</a></p>
+</footer><!-- /.post-info --><div class="section" id="computer-vision-for-human-computer-interaction-2017-18-ws">
+<h2>Computer Vision for Human Computer Interaction 2017/18 WS</h2>
+<div class="section" id="organisatorisches">
+<h3>Organisatorisches</h3>
+<ul class="simple">
+<li><a class="reference external" href="https://cvhci.anthropomatik.kit.edu/visionhci">Vorlesungswebseite: Computer Vision</a></li>
+<li>Ziel der Vorlesung:
+Sie sind in der Lage,<ol class="arabic">
+<li>Fragestellungen bzgl. der Erfassung von Personen in Bildern und Bildfolgen eigenstaendig zu bearbeiten.</li>
+<li>verschiedene grundlegende und aktuelle Verfahren zur Personenerfassung zu erklaeren und zu beurteilen. Und Sie koennen deren Vor- und Nachteile benennen.</li>
+</ol>
+</li>
+<li>Muendlich pruefbar mit 4 SWS / 6 ECTS<ol class="arabic">
+<li>Vertiefungsgebiet 11 ''Robotik und Automation''</li>
+<li>Vertiefungsgebiet 12 ''Anthropomatik und Kognitive Systeme''</li>
+</ol>
+</li>
+</ul>
+<dl class="docutils">
+<dt>Programmieraufgaben:</dt>
+<dd><p class="first">Drei Programmierprojekte, die in Teams (max. 4 Personen) zu bearbeiten.
+Organisation: Manuel Martinez, <a class="reference external" href="mailto:manuel.martinez&#64;kit.edu">mailto:manuel.martinez&#64;kit.edu</a></p>
+<ol class="last arabic simple">
+<li>Hautfarbe detektieren</li>
+<li>Personen detektieren</li>
+<li>Gesichtserkennung</li>
+</ol>
+</dd>
+</dl>
+<p>Gesamtnote: 90% muendliche Pruefung + 10% Projekte</p>
+</div>
+<div class="section" id="mensch-computer-interaktion">
+<h3>Mensch-Computer Interaktion</h3>
+<p>Ein-/Ausgabe</p>
+<ol class="arabic simple">
+<li>Schalter, Lochkarten</li>
+<li>Tastatur, Bildschirm</li>
+<li>Maus, Graphische Benutzeroberflaeche</li>
+<li>Touchdisplays</li>
+<li>Gesten</li>
+<li>Sprache</li>
+<li>Koerperbewegungen</li>
+<li>Gaze</li>
+</ol>
+</div>
+<div class="section" id="multimodale-interaktion">
+<h3>Multimodale Interaktion</h3>
+<p>Nutzung von
+1. Sprache,
+2. Gestik,
+3. Blickrichtung
+zur Interaktion. (Welches objekt referenziert der Nutzer?)</p>
+<p>Mimik
+1. Emotionen / Schmerz / Belastung, Stress
+2. Kognitive, psychische Stoerungen</p>
+<p>Entwicklung eines neuen Salienzmodells</p>
+</div>
+<div class="section" id="bildverarbeitung-typischer-ablauf">
+<h3>Bildverarbeitung - Typischer Ablauf</h3>
+<p>Traditional Computer Vision needs hand-crafted feature.</p>
+<p>aus Pixel bestehenden Bild (Input data) -&gt; Merkmals extraktion (Feature representation) -&gt; Klassifikation (Learning algorithm) -&gt; Ergebnis</p>
+<ul class="simple">
+<li>Beispiele fuer ''Merkmale''
+- Farbe, Kanten, Segmentierung, Stereobildverarbeitung, Optischer Fluss, lokale Deskriptoren (SIFT), Space-Time-Interest-Points
+- Histogramme, Gauss-Misch-Verteilungen, Bag of Words, Fisher Vektoren</li>
+<li>Klassifikation -&gt; Maschinelle Lernverfahren
+- SVM, ANN, KNN, HMM, Adaboost, Decision Trees, Deep Learning
+- ueberwacht/unueberwacht, diskriminativ/generativ</li>
+</ul>
+</div>
+<div class="section" id="deep-learning-learning-feature-hierarchy">
+<h3>Deep Learning: Learning feature hierarchy</h3>
+<p>Deep learning learns feature hierarchy from end-to-end (from image pixel to classifier output) and train all layers jointly. (Convolutional neural networks)</p>
+<p>Input pixel -&gt; low-level feature -&gt; mid-level feature -&gt; high-level feature -&gt; trainable classifier -&gt;</p>
+</div>
+<div class="section" id="lecture-tracking">
+<h3>Lecture: Tracking</h3>
+<p>Motivation:</p>
+<ul class="simple">
+<li>Use more than one image to analyse the scene</li>
+<li>Use a-priori knowledge to improve analysis (system dynamics, imaging / measurement process)</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="54%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Tracking</th>
+<th class="head">Detection</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><ul class="first last simple">
+<li>determine a target's <strong>state</strong> (location, rotation, deformation,
+pose, ...) <strong>over a sequence of observations</strong> derived from images</li>
+<li>priveds object positions in each frame</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>find an object in a <strong>single image</strong></li>
+<li>no assumption about dynamics, temporal consistency made</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Target types</p>
+<ul class="simple">
+<li>Tracking single objects</li>
+<li>Multiple objects</li>
+<li>Articulated body</li>
+</ul>
+<p>Sensor Setup</p>
+<ul class="simple">
+<li>Single Camera</li>
+<li>Multiple Cameras
+- wide baseline
+- narrow bseline (stereo)</li>
+<li>Active Cameras
+- pan, tilt, zoom
+- moving cameras (robot)</li>
+<li>Cameras + Microphones</li>
+</ul>
+<p>Some observations used for tracking: templates, color, foreground-background segmentation, edges, dense disparity, optical flow, detectors (body, body parts)...</p>
+<p>Tracking as State Estimation:</p>
+<ul class="simple">
+<li>Predict state of the system (position, pose, ...), whose state cannot directly be measured. Only certain observations (measurements) can be made (with noise/error).</li>
+<li>What is the most likely state <span class="formula"><i>x</i></span> of the system at a given time, given a sequence of observations <span class="formula"><i>Z</i><sub><i>t</i></sub></span>?
+- a <span class="formula"><tt>argmax</tt><i>p</i>(<i>x</i><sub><i>t</i></sub>|<i>Z</i><sub><i>t</i></sub>)</span></li>
+</ul>
+</div>
 </div>
                 </article>
             </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/my-first-review.html" rel="bookmark"
-                           title="Permalink to My First Review">My First Review</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2010-12-03T10:20:00+01:00">
-                Published: Fri 03 December 2010
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/shihao-xu.html">Shihao Xu</a>
-        </address>
-<p>In <a href="/category/review.html">Review</a>.</p>
-
-</footer><!-- /.post-info -->                <p>Following is a review of my favorite mechanical keyboard.</p>
-                <a class="readmore" href="/my-first-review.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
