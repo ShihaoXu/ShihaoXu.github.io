@@ -42,8 +42,10 @@
 <p>tags: <a href="/tag/computer-vision.html">Computer Vision</a> <a href="/tag/machine-learning.html">Machine Learning</a> </p>
 </footer><!-- /.post-info -->      <div class="section" id="computer-vision-for-human-computer-interaction-2017-18-ws">
 <h2>Computer Vision for Human Computer Interaction 2017/18 WS</h2>
+<div class="section" id="vl01-intro-lecture">
+<h3>VL01: Intro-Lecture</h3>
 <div class="section" id="organisatorisches">
-<h3>Organisatorisches</h3>
+<h4>Organisatorisches</h4>
 <ul class="simple">
 <li><a class="reference external" href="https://cvhci.anthropomatik.kit.edu/visionhci">Vorlesungswebseite: Computer Vision</a></li>
 <li>Ziel der Vorlesung:
@@ -72,7 +74,7 @@ Organisation: Manuel Martinez, <a class="reference external" href="mailto:manuel
 <p>Gesamtnote: 90% muendliche Pruefung + 10% Projekte</p>
 </div>
 <div class="section" id="mensch-computer-interaktion">
-<h3>Mensch-Computer Interaktion</h3>
+<h4>Mensch-Computer Interaktion</h4>
 <p>Ein-/Ausgabe</p>
 <ol class="arabic simple">
 <li>Schalter, Lochkarten</li>
@@ -86,7 +88,7 @@ Organisation: Manuel Martinez, <a class="reference external" href="mailto:manuel
 </ol>
 </div>
 <div class="section" id="multimodale-interaktion">
-<h3>Multimodale Interaktion</h3>
+<h4>Multimodale Interaktion</h4>
 <p>Nutzung von
 1. Sprache,
 2. Gestik,
@@ -98,7 +100,7 @@ zur Interaktion. (Welches objekt referenziert der Nutzer?)</p>
 <p>Entwicklung eines neuen Salienzmodells</p>
 </div>
 <div class="section" id="bildverarbeitung-typischer-ablauf">
-<h3>Bildverarbeitung - Typischer Ablauf</h3>
+<h4>Bildverarbeitung - Typischer Ablauf</h4>
 <p>Traditional Computer Vision needs hand-crafted feature.</p>
 <p>aus Pixel bestehenden Bild (Input data) -&gt; Merkmals extraktion (Feature representation) -&gt; Klassifikation (Learning algorithm) -&gt; Ergebnis</p>
 <ul class="simple">
@@ -111,9 +113,354 @@ zur Interaktion. (Welches objekt referenziert der Nutzer?)</p>
 </ul>
 </div>
 <div class="section" id="deep-learning-learning-feature-hierarchy">
-<h3>Deep Learning: Learning feature hierarchy</h3>
+<h4>Deep Learning: Learning feature hierarchy</h4>
 <p>Deep learning learns feature hierarchy from end-to-end (from image pixel to classifier output) and train all layers jointly. (Convolutional neural networks)</p>
 <p>Input pixel -&gt; low-level feature -&gt; mid-level feature -&gt; high-level feature -&gt; trainable classifier -&gt;</p>
+</div>
+</div>
+<div class="section" id="vl05-face-recognition-i">
+<h3>VL05: Face Recognition I</h3>
+<p>Why Choose face recognition over other biometrics?</p>
+<ul class="simple">
+<li>it requires no physical interaction with the user</li>
+<li>it is accurate and allows for high enrollment and verification rates</li>
+<li>it doesn't require an expert to interpret the result</li>
+<li>it can use your existing hardware (cameras etc)</li>
+<li>it is the only biometric that allow to perform passive identification in a one to many scenario</li>
+</ul>
+</div>
+<div class="section" id="vl14-person-detection-i-global-approaches">
+<h3>VL14: Person Detection I - Global Approaches</h3>
+<dl class="docutils">
+<dt>People detection</dt>
+<dd>People detection can be used to implement person tracking. It works when faces not visible, and still works when resolution is too low for faces. Difficulties are: clothing, (occlusions by) accessories, articulation (different poses), clutter: overlap each other (crowds). People detection is tightly coupled with general object detection techniques.</dd>
+</dl>
+<div class="section" id="category-i-still-image-vs-video">
+<h4>Category I - still image vs. video</h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Still image based person detection</th>
+<th class="head">video based person detection</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><ul class="first last simple">
+<li>Mostly based on gray-value information from image</li>
+<li>Other possible cues: color, infra-red, radar, stereo</li>
+<li>(-) Often more difficult (only a single frame)</li>
+<li>(-) Performs poorer than video based techniques</li>
+<li>(+) Applicable in wider variety of applications</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>Background modeling</li>
+<li>Temporal information (speed, position in earlier frame</li>
+<li>Optical flow</li>
+<li>Can be (re-)initialized by still image approach</li>
+<li>(-) hard to apply in unconstrained scenarios
+(e.g. moving cameras or changing bckgrounds</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="category-ii-global-vs-parts">
+<h4>Category II - global vs. parts</h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">global approaches</th>
+<th class="head">part-based approaches</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><ul class="first last simple">
+<li>holistic model, e.g. one feature for whole person</li>
+<li>(+) typically simple model</li>
+<li>(+) work well for low resolutions</li>
+<li>(-) problems with occlusions</li>
+<li>(-) problems with articulations</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>Background modeling model body sub-parts separately</li>
+<li>(+) deal better with moving body parts (poses)</li>
+<li>(+) able to handel occlusions, overlaps</li>
+<li>(+) sharing of training data</li>
+<li>(-) require more complex reasoning</li>
+<li>(-) problem with lowresolutions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="catetory-iii-discriminative-vs-generative">
+<h4>Catetory III - discriminative vs. generative</h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">generative model</th>
+<th class="head">part-based approaches</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><ul class="first last simple">
+<li>models how data (i.e. person images) is generated</li>
+<li>(+) possibly interpretable,
+i.e. know why reject/accept</li>
+<li>(+) models the object class/can draw samples</li>
+<li>(-) model variability unimportant to classification</li>
+<li>(-) often hard to build good model with
+few parameters</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>can only discriminate for given data, if it is a
+person or not</li>
+<li>(+) appealing when infeasible to model data itself</li>
+<li>(+) currently often excel in practice</li>
+<li>(-) often can't provide uncertainty in predictions</li>
+<li>(-) non-interpretable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="typical-components-of-global-approaches">
+<h4>Typical components of global approaches</h4>
+<p>Detection via classification, i.e. a binary classifier</p>
+<blockquote>
+<ul class="simple">
+<li>Gradient based, e.g. HOG + SVM</li>
+<li>Edge based, e.g. todo: Chamfer Silhouette Matching + Decision Stump (threshold)</li>
+<li>todo: Wavelet based, e.g. Wavelet Features + SVM</li>
+</ul>
+</blockquote>
+<dl class="docutils">
+<dt>How to turn a classifier into a detector</dt>
+<dd>sliding window: scan window at different <strong>positions and scales</strong></dd>
+<dt>Gradient Histogram (GradHist)</dt>
+<dd><p class="first">extremly popular and successful in the vision community. It avoid hard decisions (compared to edge based features)</p>
+<p>Some examples:</p>
+<ul class="last simple">
+<li>HOG: Histogram of Oriented Gradients</li>
+<li>SIFT: Scale-Invariant Feature Transform</li>
+<li>GLOH: Gradient Location and Orientation Histogram</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="gradhist-step-1-computing-gradients">
+<h4>GradHist step 1: computing gradients</h4>
+<ul class="simple">
+<li>one sided &amp; two sided <span class="math">\(f'(x)=\lim_{h\rightarrow 0}\frac{f(x+h)-f(x)}{h}\)</span>, <span class="math">\(f'(x)=\lim_{h\rightarrow 0}\frac{f(x+h)-f(x-h)}{2h}\)</span></li>
+<li>Image: discrete, 2-dimensional signal</li>
+<li>filter masks in x-direction, one and two sided: <tt class="docutils literal"><span class="pre">[-1,</span> 1]</tt> and <tt class="docutils literal"><span class="pre">[-1,</span> 0, 1]</tt></li>
+<li>gradient magnitude: <span class="math">\(s=\sqrt{s_x^2 + s_y^2}\)</span></li>
+<li>gradient orientation: <span class="math">\(\theta=\operatorname*{arctan}\frac{s_y}{s_x}\)</span></li>
+</ul>
+</div>
+<div class="section" id="gradhist-step-2-gradient-histograms">
+<h4>GradHist step 2: gradient histograms</h4>
+<ul class="simple">
+<li>Gradient histograms measure the orientation and strength of gradients within an image region</li>
+<li>bins can be filled by absolute number of pixels or weighted according to gradient magnitudes</li>
+</ul>
+</div>
+<div class="section" id="the-hog-people-detector-dalal-cvpr05">
+<h4>The HOG People Detector <a class="citation-reference" href="#dalal-cvpr05" id="id1">[Dalal-cvpr05]</a></h4>
+<ul class="simple">
+<li>Gradient-based feature descriptor developed for people detection</li>
+<li>Global descriptor for the complete body</li>
+<li>high-dimensional (typically ~4000 dimensions)</li>
+<li>very promising results on challenging data sets</li>
+<li>phases:<ol class="arabic">
+<li><dl class="first docutils">
+<dt>Learning Phase</dt>
+<dd>normalised train image data set (set of cropped images containing pedestrians in normal environments) -&gt;
+encode images into feature spaces (global descriptor -- ~4000 dimensional vector -- for each input image/person) -&gt;
+learn binary classifier (train a linear SVM) -&gt;
+object/non-object decision</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Detection Phase</dt>
+<dd>scan image at all scales and locations (sliding window over each scale) -&gt;
+run classifier to obtain object/non-object decisions (simple SVM prediction) -&gt;
+fuse multiple detections in 3-D position &amp; scale space (clustering) -&gt;
+object detections with bounding boxes</dd>
+</dl>
+</li>
+</ol>
+</li>
+</ul>
+<div class="section" id="overview-hog-descriptor">
+<h5>Overview HOG Descriptor</h5>
+<ol class="arabic simple">
+<li>compute gradients on an image region of 64x128 pixels</li>
+<li>compute gradient orientation histograms on <strong>cells</strong> of 8x8 pixels (in total 8x16 cells). typical histogram size: 9 bins.</li>
+<li>normalize histograms within overlapping <strong>blocks</strong> of 2x2 cells (in total 7x15 blocks) block descriptor size: 4x9 = 36</li>
+<li>concatenate <strong>block descriptors</strong> 7 x 15 x 4 x 9 = 3780 dimensional feature vector</li>
+</ol>
+</div>
+<div class="section" id="classifying-a-hypothesis-roc">
+<h5>Classifying a hypothesis: ROC</h5>
+<dl class="docutils">
+<dt>TPR (true positive rate)</dt>
+<dd>TP/Pos = TP/(TP+FN)</dd>
+<dt>FPR (false positive rate)</dt>
+<dd>FP/Neg = FP/(FP+TN)</dd>
+<dt>Precision (percentage of correct classified positive examples w.r.t. all examples, which are claimed to be positives by the classifier)</dt>
+<dd>TP/(TP+FP)</dd>
+<dt>Recall (= TPR, percentage of correct classified positive examples w.r.t. all positive examples)</dt>
+<dd>TP/(TP+FN)</dd>
+<dt>1 - Precision (= False Discovery Rate)</dt>
+<dd>FP/(FP+TP)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="silhouette-matching-gavrila-iccv99">
+<h4>Silhouette Matching <a class="citation-reference" href="#gavrila-iccv99" id="id2">[Gavrila-ICCV99]</a></h4>
+<div class="section" id="main-idea">
+<h5>Main Idea</h5>
+<ul class="simple">
+<li>Goal: Align known object shapes with image</li>
+<li>Requirements for an alignment algorithm<ul>
+<li>high detection rate</li>
+<li>few false positives</li>
+<li>robustness</li>
+<li>computationally inexpensive</li>
+</ul>
+</li>
+<li>input edge image &lt;--&gt; silhouette database</li>
+</ul>
+<p>todo?: Computational Complexity = O(#positions * #templates * #contourpixels * sizeof(searchregion))</p>
+</div>
+</div>
+<div class="section" id="distance-transform-dt">
+<h4>Distance Transform (DT)</h4>
+<ul class="simple">
+<li>used to compared/align two (typically binary) shapes<ol class="arabic">
+<li>compute the distance from each pixel to the nearest edge pixel in the image of shape 1(todo: distance??)</li>
+<li>Overlay second shape over distance transform</li>
+<li>accumulate distances along shape 2</li>
+<li>find best matching position by an exhaustive search</li>
+</ol>
+</li>
+</ul>
+<div class="section" id="chamfer-matching">
+<h5>Chamfer Matching</h5>
+<ul class="simple">
+<li>Compute distance transform (DT)</li>
+<li>For each possible object location<ul>
+<li>position known object shape over DT</li>
+<li>accumulate distances along the contour</li>
+<li>keep instances where the accumulated distance is below some threshold</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="distance-measure">
+<h5>Distance measure</h5>
+<div class="math">
+\begin{equation*}
+dist = \frac{1}{N}\sum_{i\in F}dt(i),
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+F:features, N=|f|
+\end{equation*}
+</div>
+</div>
+<div class="section" id="efficient-implementation">
+<h5>Efficient Implementation</h5>
+<p>Similar detailed efficient implementation: <a class="reference external" href="https://goo.gl/uMGW7i">Mathmatical Morphology and Distance Transform</a></p>
+</div>
+</div>
+<div class="section" id="advantages-and-disadvantages">
+<h4>Advantages and disadvantages</h4>
+<ul class="simple">
+<li>Fast<ul>
+<li>Distance transform has to be computed only once</li>
+<li>comparison for each shape location is cheap</li>
+</ul>
+</li>
+<li>Good performance on uncluttered images (with few background structures)</li>
+<li>addition advantage of silhouette matching: not just bounding box, but segmentation!</li>
+<li>bad performance for cluttered images</li>
+<li>needs a huge number of people silhouettes in order to cover all poses, computation effort increases with the number of silhouettes</li>
+</ul>
+</div>
+<div class="section" id="template-hierarchy">
+<h4>Template Hierarchy</h4>
+<ul class="simple">
+<li>Goal: Recude the number of silhouettes to consider</li>
+<li>Approach: Organize silhouettes in a template hierarchy, the shapes are clustered by similarity (by the shape clustering process)</li>
+<li>template hierarchy is similar to (todo?) cascades</li>
+</ul>
+</div>
+<div class="section" id="coarse-to-fine-search">
+<h4>Coarse-To-Fine Search</h4>
+<p>Goal: Reduce search effort by discarding unlikely regions with minimal computational effort</p>
+<p>Idea</p>
+<ul class="simple">
+<li>subsample the image and search first at a coarse scale</li>
+<li>only consider regions with a low distance when searching for a match on finer scales</li>
+<li>reasonable threshold nedded</li>
+<li>also similar to cascades</li>
+</ul>
+</div>
+<div class="section" id="adding-edge-orientation">
+<h4>Adding edge orientation</h4>
+<p>Idea: Consider edge orientation for each pixel</p>
+<ul>
+<li><p class="first">Chamfer distance given two shapes S, C:</p>
+<div class="math">
+\begin{equation*}
+d_{chamfer}(S,C) = \frac{1}{n}\sum_{s_i \in S}\min_{c_j \in C} ||s_i - c_j||
+\end{equation*}
+</div>
+</li>
+<li><p class="first">The orientation similarity between two points:</p>
+<div class="math">
+\begin{equation*}
+p(s_i, c_j) = K * [\tan (\alpha_{s_i} - \beta_{c_j})]^2
+\end{equation*}
+</div>
+</li>
+<li><p class="first">The combined distance measure:</p>
+<div class="math">
+\begin{equation*}
+d_{chamfer}(S, C) = \frac{1}{n}\sum_{s_i \in S} \rho (\frac{1}{k}||s_i - c(s_i)|| + p(s_i, c(s_i)))
+\end{equation*}
+</div>
+</li>
+</ul>
+<p>where <span class="math">\(c(s_i)\)</span> is the closest contour point to point <span class="math">\(s_i\)</span></p>
+</div>
+</div>
+<div class="section" id="vl15-people-detection-ii-part-based-approaches">
+<h3>VL15: People Detection II - Part-Based Approaches</h3>
+<dl class="docutils">
+<dt>HOG</dt>
+<dd>Global model, 4000 dim. feature vector, SVM classifier, sliding window, image pyramid</dd>
+<dt>Chamfer Matching</dt>
+<dd>silhouettes (global model), distance transform</dd>
+</dl>
 </div>
 <div class="section" id="lecture-tracking">
 <h3>Lecture: Tracking</h3>
@@ -156,24 +503,209 @@ pose, ...) <strong>over a sequence of observations</strong> derived from images<
 <p>Sensor Setup</p>
 <ul class="simple">
 <li>Single Camera</li>
-<li>Multiple Cameras
-- wide baseline
-- narrow bseline (stereo)</li>
-<li>Active Cameras
-- pan, tilt, zoom
-- moving cameras (robot)</li>
+<li>Multiple Cameras<ul>
+<li>wide baseline</li>
+<li>narrow bseline (stereo)</li>
+</ul>
+</li>
+<li>Active Cameras<ul>
+<li>pan, tilt, zoom</li>
+<li>moving cameras (robot)</li>
+</ul>
+</li>
 <li>Cameras + Microphones</li>
 </ul>
 <p>Some observations used for tracking: templates, color, foreground-background segmentation, edges, dense disparity, optical flow, detectors (body, body parts)...</p>
 <p>Tracking as State Estimation:</p>
 <ul class="simple">
 <li>Predict state of the system (position, pose, ...), whose state cannot directly be measured. Only certain observations (measurements) can be made (with noise/error).</li>
-<li>What is the most likely state <span class="formula"><i>x</i></span> of the system at a given time, given a sequence of observations <span class="formula"><i>Z</i><sub><i>t</i></sub></span>?
-- a <span class="formula"><tt>argmax</tt><i>p</i>(<i>x</i><sub><i>t</i></sub>|<i>Z</i><sub><i>t</i></sub>)</span></li>
+<li>What is the most likely state $x$ of the system at a given time, given a sequence of observations <span class="math">\(Z_t\)</span>?<ul>
+<li><span class="math">\(\operatorname*{arg\,max}\limits_{x_t} p(x_t | Z_t)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>Bayes Filter:</p>
+<ul>
+<li><p class="first">Assume state x to be Markov process</p>
+<div class="math">
+\begin{equation*}
+p(x_t | x_{t-1},x_{t-2},...,x_0)=p(x_t | x_{t-1})
+\end{equation*}
+</div>
+</li>
+<li><p class="first">State <span class="math">\(x\)</span> generate observations <span class="math">\(z\)</span></p>
+<div class="math">
+\begin{equation*}
+p(z_t | x_t, x_{t-1},...,x_0)=p(z_t | x_t)
+\end{equation*}
+</div>
+</li>
+<li><p class="first">Want to estimate most likely state <span class="math">\(x_t\)</span> given sequence <span class="math">\(Z_t\)</span>: <span class="math">\(\operatorname*{arg\,max} p(x_t|Z_t)\)</span></p>
+</li>
+<li><p class="first">Can be estimated recursively</p>
+</li>
+<li><p class="first">Predict step:</p>
+<div class="math">
+\begin{equation*}
+p(x_t | Z_{t-1})= \int_{x_{t-1}}p(x_t|x_{t-1})p(x_{t-1}|Z_{t-1})dx_{t-1}
+\end{equation*}
+</div>
+</li>
+<li><p class="first">Update step:</p>
+<div class="math">
+\begin{equation*}
+p(x_t|Z_t)=\alpha p(z_t|x_t)p(x_t|Z_{t-1})
+\end{equation*}
+</div>
+</li>
+<li><p class="first">Needed</p>
+<ul class="simple">
+<li>Process model: <span class="math">\(p(x_t|x_{t-1})\)</span></li>
+<li>Measurement model: <span class="math">\(p(z_t | x_t)\)</span></li>
+</ul>
+</li>
+</ul>
+<div class="section" id="karlman-filter">
+<h4>Karlman Filter</h4>
+<ul class="simple">
+<li>The Kalman Filter is an instance of a Bayes Filter</li>
+<li>Assumptions:<ul>
+<li>Linear state propagation and measurement model</li>
+<li>Gaussian process and measurement noise</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
+<div class="section" id="vl18-kinect-body-pose">
+<h3>VL18: Kinect Body-Pose</h3>
+<p>Kinect:</p>
+<ul class="simple">
+<li>Fusion of two groundbreaking new technologies:<ul>
+<li>A cheap and fast RGB-D sensor</li>
+<li>A reliable Skeleton Tracking</li>
+</ul>
+</li>
+<li>Features<ul>
+<li>Type: 3D</li>
+<li>Distance: 4m</li>
+<li>Frequency: 30Hz</li>
+<li>Resolution: 320 x 240</li>
+<li>Price: 150 Euro</li>
+</ul>
+</li>
+</ul>
+<p>RGB-D: Time-of-Flight (TOF) Cameras</p>
+<blockquote>
+<ul class="simple">
+<li>Digital ToF cameras contain an array of high speed digital counters</li>
+<li>Example ZCam:<ul>
+<li>320 x 240 ~ 30GHz counters</li>
+<li>60 FPS Depth</li>
+<li>Claimed precision: 1-2cm</li>
+<li>Claimed range: 2.5m</li>
+<li>Was meant to cost less than $70</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://goo.gl/jVHHbh">ToF Cameras</a></li>
+<li>Primesence (体感操控 公司名，研发了Kinect，被微软收购）</li>
+<li>RGB-D hardward design:<ul>
+<li>Depth: IR + Depth Image CMOS</li>
+<li>RGB: RGB Sensor</li>
+<li>Projector</li>
+</ul>
+</li>
+<li>RGB-D: Kinect specs:<ul>
+<li>1st device: Primesense Board<ul>
+<li>1280 x 1024 CMOS color bayer sensor 30fps&#64;vga</li>
+<li>1280 x 1024 CMOS IR sensor 30fps&#64;vga</li>
+<li>PS1080 which delivers Depth at 30fps&#64;vga</li>
+</ul>
+</li>
+<li>2nd &amp; 3rd devices: microphones, noise cancellation, tile &amp; accelerometer.</li>
+<li>Power and security devices</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>Kinect: Structured light</p>
+<ul class="simple">
+<li>Kinect uses Structured Light to simulate a stereo camera system</li>
+</ul>
+<p>RGB-D: Block Matching</p>
+<ul class="simple">
+<li>IR pattern is projected by an temperature stabilized IR laser</li>
+<li>IR sensor has a mtching, very narrow bandpass filter</li>
+</ul>
+<table class="docutils citation" frame="void" id="dalal-cvpr05" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Dalal-cvpr05]</a></td><td>Dalal, N.; Triggs, B.; Histograms of oriented gradients for human detection; CVPR 2005</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="gavrila-iccv99" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Gavrila-ICCV99]</a></td><td>Gavrila, D.M.; Philomin, V.; Real-time object detection for &quot;smart&quot; vehicles; ICCV 1999</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
 
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
     </div><!-- /.entry-content -->
 
   </article>
