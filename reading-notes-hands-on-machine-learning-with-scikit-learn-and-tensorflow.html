@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="徐世豪" />
+    <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
+
+    <title>Reading notes of Hands-On Machine Learning with Scikit-Learn and TensorFlow - 汪酱的blog</title>
+
+   
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous" />
+      <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+            crossorigin="anonymous">
+
+
+      <link rel="stylesheet" href="/theme/css/pygment.css" />
+      <link rel="stylesheet" href="/theme/css/voidybootstrap.css" />
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" integrity="sha384-FFgGfda92tXC8nCNOxrCQ3R8x1TNkMFqDZVQdDaaJiiVbjkPBXIJBx0o7ETjy8Bh" crossorigin="anonymous"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+   
+    <nav class="navbar navbar-default">
+      <div class="container">
+	   <div class="navbar-header">
+		<button type="button" class="navbar-toggle" 
+				data-toggle="collapse" data-target="#main-navbar-collapse">
+		  <span class="sr-only">Toggle navigation</span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/" rel="home">
+          <i class="fa fa-home fa-fw fa-lg"> </i> </a>
+       </div>
+
+      <div class="collapse navbar-collapse" id="main-navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="">
+              <a href="/archives.html">Archives</a>
+            </li>
+          <li class="divider"></li>
+        </ul> <!-- /nav -->
+      </div> <!-- /navbar-collapse -->
+	  </div> <!-- /container -->
+    </nav> <!-- /navbar -->
+
+	<div class="jumbotron" id="overview">
+	  <div class="container">
+		<h1><a href="/">汪酱的blog</a></h1>
+		<p class="lead">I'm just thinking a lot about the site subtitle</p>
+	  </div>
+	</div>
+
+    <div class="container" id="main-container">
+      <div class="row">
+        <div class="col-md-9" id="content">
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
+<abbr class="article-header-date">
+  Wed 21 February 2018
+</abbr> <h1>
+  <a href="/reading-notes-hands-on-machine-learning-with-scikit-learn-and-tensorflow.html" rel="bookmark"
+     title="Permalink to Reading notes of Hands-On Machine Learning with Scikit-Learn and TensorFlow">
+    Reading notes of <cite>Hands-On Machine Learning with Scikit-Learn and TensorFlow</cite>
+  </a>
+</h1><div class="article-header-info">
+  <p>
+      Posted by <a href="/author/shihao-xu.html">Shihao Xu</a>
+    in 
+    <a href="/category/machine-learning.html">
+      Machine Learning</a>
+    &nbsp;&nbsp;
+  </p>
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<div class="section" id="chapter-1-the-machine-learning-landscape">
+<h2>Chapter 1 - The Machine Learning Landscape</h2>
+<p>Very common and useful ML products:</p>
+<ul class="simple">
+<li><strong>OCR</strong> (Optical Character Recognition)</li>
+<li>Spam filter</li>
+</ul>
+<p><strong>What is ML?</strong></p>
+<ul class="simple">
+<li>The science (and art) of programming computers so they can <strong>learn from data</strong>.</li>
+<li>[Arthur Samuel, 1959] The field of study that gives computers the ability to learn without being explicity programmed.</li>
+<li>[Tom Mitchell, 1997] A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.</li>
+</ul>
+<p><strong>training instance (samples), training set</strong></p>
+<p><strong>Nomenclature</strong></p>
+<ul class="simple">
+<li>In statistics hypothesis testing,<ul>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Null_hypothesis">null hypothesis</a>: a general statement or default position that there is no relationship between two measured phenomena, or no association among groups.</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Type_I_and_type_II_errors">type I error</a>: the rejection of a true null hypothesis (&quot;false positive&quot; finding, or falsely infer the existence of something that is not there)</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Type_I_and_type_II_errors">type II error</a>: retaining a false null hypothesis ()&quot;false negative&quot; finding, or falsely infer the absence of something that is)</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Precision_and_recall">true positives, true negatives, false positives, and false negatives</a><ul>
+<li>compare the results of the classifier under test with trusted external judgments.</li>
+<li>The terms <em>positive</em> and <em>negative</em> refer to the classifier's prediction (sometimes known as the <strong>expectation</strong>)</li>
+<li>the terms <em>true</em> and <em>false</em> refer to whether that prediction corresponds to the external judgment (sometimes known as the <strong>observation</strong>).</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Precision_and_recall">Performance Measurement</a> [In the context of Pattern Recognition, information retrieval, binary classification]<ul>
+<li><strong>Precision</strong> (means &quot;how useful the results are&quot;, measure of exactness, or <em>quality</em>)</li>
+<li><strong>Accuracy</strong> (also known as <strong>Sensitivity</strong>, means &quot;how complete the results are&quot;, measure of completeness, or <em>quantity</em>)</li>
+</ul>
+</li>
+</ul>
+<p><strong>ML is great for?</strong></p>
+<ul class="simple">
+<li>Problems for which existing solutions require a lot of hand-tuning or long lists of rules: one ML algorithm can often simplify code and perform better</li>
+<li>Complex problems for which there is no good solution at all using a traditional approach: the best ML techniques can find a solution.
+(For problems that either are too complex for traditional approaches or have no known algorithm)</li>
+<li>Fluctuating environments: a ML system can adapt to new data</li>
+<li>Getting insights about complex problems and large amounts of data<ul>
+<li>ML can help humans hearn. Some ML algorithms can be inspected to see what they have learned. Sometimes this will reveal unsuspected correlations or new trends, and thereby lead to a better
+understanding of the problem.</li>
+<li>Applying ML techniques to dig into large amounts of data can help discover patterns that were not immediately apparent. This is called <strong>data mining</strong>.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="types-of-machine-learning-systems">
+<h3>Types of Machine Learning Systems</h3>
+<ul class="simple">
+<li>Trained with human supervision?<ul>
+<li><strong>Supervised Learning</strong>: training data includes the desired solutions - <strong>labels</strong>.</li>
+<li><strong>Unsupervised Learning</strong>: the system tries to learn without a teacher</li>
+<li><strong>Semisupervised Learning</strong>: deals with partially labeled training data, usually lots of unlabeld data and little bit of labeled data. Example: <strong>photo hosting service</strong> <a class="citation-reference" href="#phs1" id="id1">[phs1]</a> .</li>
+<li><strong>Reinforcement Learning (RL)</strong>: In the context of RL, the learning system is called an <strong>agent</strong>. It can observe the environment, select and perform actions, and get <em>rewards</em> in return (or <em>penalties</em> in the form of
+negative rewards). It must then learn by itself what is <strong>the best strategy, called a policy</strong>, to get the most reward over time.</li>
+</ul>
+</li>
+<li>Can learn incrementally from a stream of incoming data?<ul>
+<li>online learning</li>
+<li>batch learning</li>
+</ul>
+</li>
+<li>How to use the new training samples?<ul>
+<li>instance-based learning</li>
+<li>model-based learning</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="supervised-learning">
+<h4>Supervised Learning</h4>
+<p>Two typical supervised learning tasks:</p>
+<ul class="simple">
+<li>The algorithm/task class - <strong>classcification</strong>: learns to predict <em>the target class</em> of a new instance based on the <em>features</em></li>
+<li>The algorithm/task class - <strong>regression</strong>: learns to predict <em>the target numeric value</em> of a new instance based on <em>features</em> (or <em>predictors</em>). The name <em>regression</em> originates from <em>regression to the mean</em></li>
+<li>Some regression algorithms can be used for classification and vice versa. For example, logistic regression are off used for classfication, but also can output a value representing
+the probability of belonging to a given class.</li>
+<li>In ML, an <strong>attribute</strong> is a data type, while a <strong>feature</strong> has several meanings depending on the context, but generally means <em>an attribute plus its value</em>. Many use these words interchangeably.</li>
+</ul>
+<p>Some most important supervised learning algorithms:</p>
+<ul class="simple">
+<li><strong>k-Nearest Neighbors</strong></li>
+<li><strong>Linear Regression</strong></li>
+<li><strong>Logistic Regression</strong></li>
+<li><strong>Support Vector Machines (SVMs)</strong></li>
+<li><strong>Decision Trees and Random Forests</strong></li>
+<li><strong>Neural Networks</strong>. Some NN architectures can be unsupervised (autoencoders, restricted Boltzmann machines), and semisupervised (Deep Belief Networks, unsupervised pretraining).</li>
+</ul>
+</div>
+<div class="section" id="unsupervised-learning">
+<h4>Unsupervised Learning</h4>
+<ul>
+<li><p class="first"><strong>Clustering</strong>: Group the samples based on rules/measures.</p>
+<ul class="simple">
+<li><em>k-Means</em></li>
+<li><em>Hierarchical Cluster Analysis (HCA)</em>: can also subdivide each group into smaller groups</li>
+<li><em>Expectation Maximization</em></li>
+</ul>
+</li>
+<li><p class="first"><strong>Visualization and dimensionality reduction</strong>: You feed them a lot of complex and unlabeled data, they output a 2D or 3D representation of your data, preserving as much structure as they can,
+so you can understand how to data is organized and perhaps identify unsuspected patterns.</p>
+<p>A related task is <em>dimensionality reduction</em>, in which the goal is to simplify the data without losing too much information. One way to do this is to merge several correlated features into one. This is called <strong>feature extraction</strong>.
+Apply Dimensionality Reduction before you feed it to another ML algorithm so that the system run faster and the data will take up less disk and memory space and in some cases may also perform better.</p>
+<p>Another important unsupervised task is <em>anomaly detection</em>. For example: automatically removing outliers from a dataset before feeding it to another learning algorithm. <em>The system is trained with normal instances only</em>.</p>
+<p>Finally, another common unsupervised task is <em>association rule learning</em>: dig into large amounts of data and discover interesting relations between attributes.</p>
+<ul class="simple">
+<li><em>Principal Component Analysis (PCA)</em></li>
+<li><em>Kernel PCA</em></li>
+<li><em>Locally-Linear Embedding (LLE)</em></li>
+<li><em>t-distributed Stochastic Neighbor Embedding (t-SNE)</em></li>
+</ul>
+</li>
+<li><p class="first"><strong>Association rule learning</strong>: <em>Apriori</em>, <em>Eclat</em></p>
+</li>
+</ul>
+</div>
+<div class="section" id="reinforcement-learning">
+<h4>Reinforcement Learning</h4>
+<p>A <em>policy</em> defines what action the agent should choose when it is <em>in a given situation</em>.</p>
+<ol class="arabic simple">
+<li>Observe (the environment or situation)</li>
+<li>Select action using policy</li>
+<li>Action</li>
+<li>Get reward or penalty</li>
+<li>Update policy (learning step)</li>
+<li>Iterate until an optimal policy is found</li>
+</ol>
+</div>
+<div class="section" id="batch-and-online-learning">
+<h4>Batch and Online Learning</h4>
+<table class="docutils citation" frame="void" id="phs1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[phs1]</a></td><td><strong>Photo Hosting Service</strong>: Hosts semi-supervised learning algorithms that are combinations of unsupervised and supervised algorithms. For example, DBNs are based on unsupervised components called <em>RBM</em>s stacked on top of one another.
+RBMs are trained sequentially in an unsupervised manner, and then the whole system is fine-tuned using supervised learning techniques.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-3-classification">
+<h2>Chapter 3 - Classification</h2>
+<div class="section" id="mnist-dataset">
+<h3>MNIST Dataset</h3>
+<p>MNIST</p>
+<ul class="simple">
+<li>The &quot;Hello World&quot; of Machine Learning</li>
+<li>70000 small images of handwritten digits</li>
+<li>Each image is labeled with the digit it represents</li>
+<li>Dataset Structure:<ul>
+<li>70000 images of handwritten digits</li>
+<li>each image has 28x28 pixels</li>
+<li>each pixel is of type <tt class="docutils literal">uint8</tt> and represents the intensity, ranging from 0 (white) to 255 (black)</li>
+</ul>
+</li>
+<li><em>How to peek at one digit from the dataset</em>:
+Grab an instance's feature vector, reshape it to a 28x28 array, and display it using Matplotlib's <tt class="docutils literal">imshow()</tt> function.</li>
+</ul>
+<p>Scikit-Learn provides many helper functions to download popular datasets.</p>
+<ul class="simple">
+<li>Datasets loaded by Scikit-Learn generally have a similar <strong>dictionary structure</strong> including:<ul>
+<li><tt class="docutils literal">DESCR</tt> key: describes the dataset</li>
+<li><tt class="docutils literal">data</tt> key: an array with one row per instance and one column per feature</li>
+<li><tt class="docutils literal">target</tt> key: an array with the labels</li>
+</ul>
+</li>
+</ul>
+<p>Prepare the Dataset</p>
+<ul class="simple">
+<li>Create a test set and set it aside before inspecting the data closely.</li>
+<li>Shuffle the dataset, which guarantee that all cross-validation folds will be similar.</li>
+<li>Split the dataset into training and test set.</li>
+</ul>
+</div>
+<div class="section" id="training-a-binary-classifier">
+<h3>Training a Binary Classifier</h3>
+<p>Here, we only try to identify one digit 5: &quot;the 5-detector&quot;. It's an example of a <strong>binary classifier</strong>, capable of distinguishing between just two classes.</p>
+<p>Pick a classifier and train it. We use a Stochastic Gradient Descent (SGD) classifier. SGD deals with training instances independently, one at a time,
+so,</p>
+<ul class="simple">
+<li>SGD is capable of handling very large datasets efficiently</li>
+<li>SGD is well suited for <strong>online learning</strong></li>
+</ul>
+</div>
+<div class="section" id="performance-measures">
+<h3>Performance Measures</h3>
+<p>Evaluating a classifier is often significantly trickier than evaluating a regressor.</p>
+<div class="section" id="measuring-accuracy-using-cross-validation">
+<h4>Measuring Accuracy Using Cross-Validation</h4>
+<p><em>A good way to evaluate a model is to use cross-validation.</em></p>
+<p>TODO: Implementing Cross-Validation</p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-4-training-models">
+<h2>Chapter 4 - Training Models</h2>
+<div class="section" id="gradient-descent">
+<h3>Gradient Descent</h3>
+<p><strong>What is Gradient Descent?</strong></p>
+<ul class="simple">
+<li>It is a very generic optimization algorithm.</li>
+<li>General idea: tweak parameters iteratively in order to minimize a cost function.</li>
+<li>How it works?<ul>
+<li>It measures the local gradient of the error function with regards to the parameter vector <span class="math">\(\theta\)</span>, it goes then in the direction of descending gradient.</li>
+<li>Concretely:<ol class="arabic">
+<li><strong>random initialization</strong> (fill <span class="math">\(\theta\)</span> randomly)</li>
+<li>Improve it gradually. Each step attempts to decrease the cost function (e.g. MSE), until the algorithm <strong>converges</strong> to a minimum.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Details of Gradient Descent</strong></p>
+<ul>
+<li><p class="first">hyperparameter: <strong>learning rate</strong> <span class="math">\(\eta\)</span></p>
+<ul class="simple">
+<li>too small: takes too long to converge.</li>
+<li>too high: possibly diverge, and/or fail to find a good solution.</li>
+</ul>
+</li>
+<li><p class="first">Not all cost functions looks like nice regular bowls. Two main challenges with Gradient Descent:</p>
+<ol class="arabic simple">
+<li><strong>Local minimum</strong> vs. <strong>global minimum</strong></li>
+<li><strong>plateau</strong>: takes a very long time to train. And if you stop too early, you will never reach the global (or even a local) minimum.</li>
+</ol>
+</li>
+<li><p class="first">The MSE cost function for Linear Regression model happens to be a <strong>convex function</strong>, which implies that there are no local minima, just one global
+minimum. It is also a continuous function with a slope that never changes abruptly (<strong>Lipschitz continuous</strong>)</p>
+<ul class="simple">
+<li>Consequence: Gradient Descent is guaranteed to approach arbitrarily close the global minimum (if you wait long enough and the learning rate is not too high).</li>
+<li>In this case (convex function + lipschitz continuous) the cost function has a shape of a bowl. If the features are of very different scales, the bowl can be elongated (results in long training time).<ul>
+<li>Solution: Before using Gradient Descent, ensure all features have a similar scale (e.g. Scikit-Learn's <tt class="docutils literal">StandardScaler</tt>).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first"><em>Training a model</em> is equivalent to <em>searching for a comnibation of model parameters that minimizes a cost function</em> (over the training set).</p>
+<p>It is a search in the model's <strong>parameter space</strong>. The more parameters a model has, the more dimensions this space has, the harder the search is.</p>
+</li>
+</ul>
+<div class="section" id="batch-gradient-descent-batch-gd">
+<h4>Batch Gradient Descent (Batch GD)</h4>
+<p>Batch GD is an approach of gradient descent.</p>
+<p>Batch GD computes the gradient of the cost function with regards to each <strong>model parameter</strong> <span class="math">\(\theta_j\)</span> - the <strong>partial derivative</strong>.</p>
+<ul>
+<li><p class="first">You can compute the partial derivative of the cost function w.r.t. parameter <span class="math">\(\theta_j\)</span>, noted <span class="math">\(\frac{\partial}{\partial \theta_j}\mathrm{MSE}(\theta)\)</span>
+<span class="math">\(\frac{\partial}{\partial \theta_j}\mathrm{MSE}(\theta) = \frac{2}{m}\sum^m_{i=1}(\theta^T\cdot \vec{x}^{(i)}-y^{(i)})x_j^{(i)}\)</span></p>
+</li>
+<li><p class="first">Or you can choose the gradient vector, <span class="math">\(\nabla_\theta \mathrm{MSE}(\theta)\)</span>, which contains all the partial derivatives of the cost function (one for each model parameter).</p>
+<div class="math">
+\begin{equation*}
+\nabla_\theta \mathrm{MSE}(\theta) = \begin{pmatrix} \frac{\partial}{\partial \theta_0}\mathrm{MSE}(\theta) \\
+                                                     \frac{\partial}{\partial \theta_1}\mathrm{MSE}(\theta) \\
+                                                     \vdots \\
+                                                     \frac{\partial}{\partial \theta_n}\mathrm{MSE}(\theta)\end{pmatrix}
+= \frac{2}{m}\mathbf{X}^T \cdot (\mathbf{X} \cdot \theta - \vec{y})
+\end{equation*}
+</div>
+<ul class="simple">
+<li>This formular involves calculations over the full training set <span class="math">\(\mathbf{X}\)</span>, at each gradient step.<ul>
+<li>This is why the algorithm is called <strong>batch gradient descent</strong>. And why it is slow on very large training set.</li>
+<li>Gradient descent <strong>scales well with the number of features</strong>. Training a Linear Regression on hundreds of thousands of features is much faster using Gradient Descent than using the Normal Equation.</li>
+</ul>
+</li>
+<li><span class="math">\(\nabla_\theta \mathrm{MSE}(\theta)\)</span> points uphill. Subtract <span class="math">\(\nabla_\theta \mathrm{MSE}(\theta)\)</span>, multiplied by the learning rate <span class="math">\(\eta\)</span>, from <span class="math">\(\theta\)</span>: <span class="math">\(\theta^{\mathrm{next\ step}} = \theta - \eta \nabla_\theta \mathrm{MSE}(\theta)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>Find a good learning rate: use <strong>grid search</strong> (while limiting the number of iterations so that grid search can eliminate models that take too long to converge).</p>
+<ul class="simple">
+<li><em>How to set the number of iterations?</em>
+Set a very large number of iterations but interrupt the algorithm when the gradient vector becomes tiny - that is, when its norm becomes smaller than
+a tiny number <span class="math">\(\epsilon\)</span> (the <strong>tolerance</strong>). It happens when gradient descent has (almost) reached the minimum.</li>
+</ul>
+<p>The <strong>Convergence Rate</strong></p>
+<ul class="simple">
+<li>Context:<ol class="arabic">
+<li>convex cost function</li>
+<li>slope doesn't change abruptly</li>
+</ol>
+</li>
+<li>Batch GD with a fixed learning rate has a <strong>convergence rate</strong> of <span class="math">\(O(\frac{1}{\mathrm{iteration}})\)</span>. It means if you divide the tolerance <span class="math">\(\epsilon\)</span> by 10 (to have a more precise solution), then the algorithm will have to run about 10 times more iterations.</li>
+</ul>
+</div>
+<div class="section" id="stochastic-gradient-descent-stochastic-gd">
+<h4>Stochastic Gradient Descent (Stochastic GD)</h4>
+<p>Problem of Batch GD: it uses the whole training set to compute the gradients at every step, which results in slow training process.</p>
+<p>Stochastic GD picks a random instance in the training set at every step and computes the gradients based on that single instance.</p>
+<ul class="simple">
+<li>Stochastic GD can be implemented as an <strong>out-of-core</strong> algorithm.</li>
+<li>Due to its stochastic nature, this algorithm is much less regular than Batch GD: the cost function will bounce up and down, decreasing only on average. Over time
+it will end up very close to the minimum, but once it gets there, it will continue to bounce around, never settling down.
+When the algorithm stops, the final parameters are good, but not optimal.</li>
+</ul>
+<p>Randomness of stochastic GD is good, for escaping from local optima, but also bad, because the algorithm can never settle at minimum.</p>
+<ul class="simple">
+<li>One solution: <strong>simulated anealing</strong> - gradually reduce the learning rate<ul>
+<li>Start with large learning rate<ul>
+<li>makes quick progress</li>
+<li>escape local optima</li>
+</ul>
+</li>
+<li>Get smaller and smaller: allowing the algorithm to settle at the global minimum</li>
+<li><strong>learning schedual</strong>: the function that determines the learning rate at each iteration.</li>
+</ul>
+</li>
+</ul>
+<p>By convention we iterate by rounds of <span class="math">\(m\)</span> iterations, each round is called an <strong>epoch</strong>.</p>
+<ul class="simple">
+<li>Since instances are picked randomly, some instances may be picked several times per epoch while others may not be picked at all. If you want to be sure
+that the algorithm goes through every instance at each epoch, another approach is to shuffle the training set, then go through it instance by instance, then shuffle it again,
+and so on. <em>But it generally converges more slowly</em>.</li>
+</ul>
+<p>TODO: the code.</p>
+</div>
+<div class="section" id="mini-batch-gradient-descent-mbgd">
+<h4>Mini-Batch Gradient Descent (MBGD)</h4>
+<p>At each step, MBGD computes the gradients on small random sets of instances called <strong>mini-batches</strong>.</p>
+<p>Main advantage of MBGD over stochastic GD: you can get a performance boost from hardware optimization of matrix operations, especially using GPUs.</p>
+<p>The algorithm's progress in parameter space is less erratic than with stochastic GD, especially with fairly large mini-batches.</p>
+<ul class="simple">
+<li>MBGD will end up walking around a bit closer to the minimum than stochastic GD.</li>
+<li>It is harder for it to escape from local optima.</li>
+</ul>
+<p>TODO: Comparison of Normal Equation, Batch GD, Stochastic GD, MBGD.</p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-9-up-and-running-with-tensorflow">
+<h2>Chapter 9 - Up and Running with TensorFlow</h2>
+<p><strong>What is TensorFlow?</strong></p>
+<ul class="simple">
+<li>it is a powerful open source software library for numerical computation</li>
+<li>particularly well suited and fine-tuned for large-scale ML.</li>
+<li><strong>basic principle</strong>: You first define in Python a graph of computations to perform (<strong>computation graph</strong>), and then TensorFlow takes that graph and runs it efficiently using optimized C++ code.</li>
+<li><strong>Scalablity/Parallelism</strong>: TF supports distributed computing. (train colossal NNs on humongous training sets by splitting the computations across hundreds of servers. It is possible to break up the graph into several chunks and run them in parallel across multiple CPUs or GPUs.)</li>
+<li><strong>Flexibility</strong>: TF is not limited to neural networks or even Machine Learning.</li>
+</ul>
+<p><strong>TensorFlow's Highlights</strong></p>
+<ul class="simple">
+<li>multi-platform (even on mobile platforms)</li>
+<li>provides a simple python API called <tt class="docutils literal">TF.Learn</tt> (<tt class="docutils literal">tensorflow.contrib.learn</tt>), compatible with Scikit-Learn</li>
+<li>provides another simple API called <tt class="docutils literal"><span class="pre">TF-slim</span></tt> (<tt class="docutils literal">tensorflow.contrib.slim</tt>) to simplify building, training, and evaluating NNs.</li>
+<li>several other high-level APIs have been build independently on top of TF, such as <tt class="docutils literal">Keras</tt> (<tt class="docutils literal">tensorflow.contrib.kera</tt>) or <tt class="docutils literal">Pretty Tensor</tt></li>
+<li>its main Python API offers much more flexibility (at the cost of higher complexity) to create all sorts of computations, including any NN architectures.</li>
+<li>It includes highly efficient C++ implementations of many ML operations. There is also a C++ API to define your own high-performance operations.</li>
+<li>provides several <strong>advanced optimization nodes</strong> to search for the params that minimize a cost function, since TF automatically takes care of computing the gradients of the functions you define (which is called <strong>automatic differentiating</strong>, or <strong>autodiff</strong>).</li>
+<li>it comes with a great visualization tool called <strong>TensorBoard</strong> that allows you to browse through the computation graph, view learning curves, and more.</li>
+<li>Google launched a cloud service to run TF graphs.</li>
+</ul>
+<p><strong>The process of training a model (Construction Phase + Execution Phase)</strong></p>
+<ol class="arabic simple">
+<li>(Construction Phase) Create computation graph with a bottom-top approach</li>
+<li>(Execution Phase) Open a TF session (place the op onto device run them, holds all the variable values). Within the session (<tt class="docutils literal">with</tt> sets <strong>the default session</strong>)<ol class="arabic">
+<li>initialize variables</li>
+<li>perform operations</li>
+<li>(close the session, free up resources)</li>
+</ol>
+</li>
+</ol>
+<p><strong>Some Details</strong></p>
+<ul class="simple">
+<li><strong>interactive session</strong> vs. <strong>regular Session</strong> vs. <strong>the default session</strong></li>
+<li><strong>graph managing</strong>, <strong>the default graph</strong>, reset the default graph, manage <strong>multiple independent graphs</strong></li>
+<li>evaluate a node: TF automatically determines the set of nodes that it depends on and it evaluates those nodes first<ul>
+<li>by default, TF won't reuse the result of the previous evaluation of the variables. All node values are dropped between graph runs, <strong>except variable values</strong>, which are maintained by the session across graph runs.</li>
+<li>efficient single-graph-run evaluation <tt class="docutils literal">sess.run(y, z])</tt></li>
+</ul>
+</li>
+<li><strong>TF operations</strong>: op</li>
+<li><strong>tf.Variable</strong> and <strong>tf.constant</strong>: source ops, take no input. Variables usually contain the model and thus are to be trained.</li>
+<li>input and output: multidimensional arrays (<strong>tensor</strong>), tensors have a type and shape.</li>
+<li><strong>tf.placeholder</strong>, use the following methods to prepare the <tt class="docutils literal">feed_dict</tt> for the <tt class="docutils literal">tf.placeholder</tt>s<ul>
+<li><tt class="docutils literal">NumPy</tt>'s <tt class="docutils literal">reshape()</tt> function takes <tt class="docutils literal"><span class="pre">-1</span></tt> for one of the dimensions, that dimension will be computed based on the array's length and the remaining dimensions.</li>
+<li><tt class="docutils literal">np.c_[left_matrix, right_matrix]</tt></li>
+</ul>
+</li>
+</ul>
+<p><strong>Example 1: Linear Regression with TF (the normal equation)</strong></p>
+<ul class="simple">
+<li><strong>Linear Regressor</strong> with <strong>the normal equation</strong> <span class="math">\(\hat{\theta} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y})\)</span></li>
+</ul>
+<p><strong>Example 2: Batch Gradient Descent</strong></p>
+<ol class="arabic simple">
+<li>Normalize the input feature vectors before using Gradient Descent to speed up the training process (TF, Numpy, Scikit-Learn's <tt class="docutils literal">StandardScaler</tt>)<ul>
+<li>&quot;Normalization&quot; here means: standardize features by removing the mean and scaling to unit variance.</li>
+</ul>
+</li>
+<li>The Gradient Descent part<ul>
+<li>Approache 1: manually compute the gradients<ul>
+<li><tt class="docutils literal">random_uniform()</tt> similar to NumPy's <tt class="docutils literal">rand()</tt>: initialize the models with random numbers</li>
+<li><tt class="docutils literal">tf.assign()</tt>: update the model parameters (in the <tt class="docutils literal">tf.Variable</tt>) after each iteration <span class="math">\(\theta^{\text{next step}}=\theta - \eta \nabla_{\theta}\mathrm{MSE}(\theta)\)</span></li>
+<li><tt class="docutils literal">n_epochs</tt>: number of <strong>epochs</strong>. An epoch is a complete pass through a given dataset (ALL samples in the dataset. ) <a class="reference external" href="https://deeplearning4j.org/glossary">Epoch vs. Iteration</a></li>
+</ul>
+</li>
+<li>Approache 2: use TF's <strong>autodiff</strong> feature<ul>
+<li>like autodiff, <strong>symbolic differentiation</strong> can also achieve the goal, but not efficient</li>
+<li>autodiff: automatically and efficiently computes the gradients for the user.</li>
+<li><tt class="docutils literal">gradients = tf.gradients(mse, <span class="pre">[theta])[0]</span></tt></li>
+</ul>
+</li>
+<li>Approache 3: Implicitly implement Gradient Descent using <strong>optimizers</strong><ul>
+<li>Gradient Descent optimizer</li>
+<li>Momentum Optimizer (converges faster than Gradient Descent)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Example 3: Mini-Batch Gradient Descent</strong></p>
+<ul class="simple">
+<li>feed data to the training algorithm</li>
+<li><tt class="docutils literal">placeholder</tt> nodes (pass the training data to TF during training)<ul>
+<li>required: tensor's data type</li>
+<li>optional: shape, <tt class="docutils literal">None</tt> in one dimension means any size</li>
+</ul>
+</li>
+<li>evaluate phase: pass a <tt class="docutils literal">feed_dict</tt> to <tt class="docutils literal">eval()</tt> that specifies the desired value.</li>
+<li><strong>rank of a tensor</strong> <a class="reference external" href="https://en.wikipedia.org/wiki/Tensor">(Source)</a>: The <strong>order</strong> (also <strong>degree</strong> or <strong>rank</strong>) of a tensor is the dimensionality of the array
+needed to represent it, or equivalently, the number of indices needed to label a component of that array.</li>
+<li>you can feed any operations, not just <tt class="docutils literal">placeholder</tt></li>
+<li>mini-batch approach:<ol class="arabic">
+<li>set <span class="math">\(\mathbf{X}, \mathbf{y}\)</span>'s <tt class="docutils literal">Placeholder</tt></li>
+<li>set <tt class="docutils literal">batch_size</tt>, <tt class="docutils literal">n_epochs</tt>, calculate <tt class="docutils literal">n_batches</tt>, select mini-batch randomly (generate a list of random numbers as indices, use these indices to pick the samples for the mini-batch).</li>
+</ol>
+</li>
+</ul>
+<div class="section" id="saving-and-restoring-models">
+<h3>Saving and Restoring Models</h3>
+<p>You can save model (parameters) to disk / restore the model from disk.</p>
+<p>You can save <strong>checkpoint</strong> at regular intervals, in case the machine crushes when training the models.</p>
+<p><strong>How to save a model?</strong></p>
+<ol class="arabic simple">
+<li>Create <tt class="docutils literal">Saver</tt> node at the end of the construction phase, after all variable nodes are created.</li>
+<li>In execution phase, call <tt class="docutils literal">save()</tt> method to save the model, passing it the session and path of the checkpoint file.</li>
+</ol>
+<p><strong>How to restore a model?</strong></p>
+<ol class="arabic simple">
+<li>create a <tt class="docutils literal">Saver</tt> at the end of the construction phase</li>
+<li>call <tt class="docutils literal">Saver</tt>'s <tt class="docutils literal">restore()</tt> method to initialize the variables at the beginning of the execution phase.</li>
+</ol>
+<p>In addition, you can specify which variables to save/restore and what names to use.</p>
+<p><tt class="docutils literal">save()</tt> also saves the structure of the graph in a second file with the same name plus a <tt class="docutils literal">.meta</tt> extension.</p>
+<ul class="simple">
+<li><tt class="docutils literal">tf.train.import_meta_graph()</tt>: load graph structure, add it to default graph, it returns a <tt class="docutils literal">Saver</tt> instance that you can then use to restore the graph's state (i.e., variable values)</li>
+</ul>
+</div>
+<div class="section" id="visualizing-the-graph-and-training-curves-using-tensorboard">
+<h3>Visualizing the Graph and Training Curves Using TensorBoard</h3>
+<p><strong>What can the TensorBoard do?</strong></p>
+<ul class="simple">
+<li>Feed it some training stats, it will display nice interactive visualizations of these stats in your web browser (e.g. learning curve)</li>
+<li>Provide it the graph's definition to browse through it</li>
+<li>What for?<ul>
+<li>Identify errors in the graphs</li>
+<li>Find bottlenecks</li>
+</ul>
+</li>
+</ul>
+<p><strong>How to use TensorBoard?</strong></p>
+<ol class="arabic">
+<li><p class="first">Write the graph definition and some training stats (e.g. MSE) to a log directory that TensorBoard will read from</p>
+<ul class="simple">
+<li>Use a different log directory every time you run your program or else TensorBoard will merge the stats from different runs.</li>
+<li>Include timestamp in the log directory name is a good choice</li>
+</ul>
+</li>
+<li><p class="first">Create a node in the graph that will evaluate the stats (e.g. MSE) value and write it to <em>a TensorBoard-compatible binary log string</em> called <strong>summary</strong>.</p>
+</li>
+<li><p class="first">Create a <tt class="docutils literal">FileWriter</tt> that you will use to write summaries to the log files in the log directory</p>
+<ul class="simple">
+<li>first parameter: path of the log directory (relative to the current directory)</li>
+<li>second parameter: (optional) the graph you want to visualize</li>
+<li><tt class="docutils literal">FileWriter</tt> writes the graph definition in a binary log file called an <strong>events file</strong></li>
+</ul>
+</li>
+<li><p class="first">Update the execution phase to evaluate the <strong>summary</strong> node regularly during training. You can write its output (a summary) to the <strong>events file</strong> using <tt class="docutils literal">file_writer</tt></p>
+</li>
+<li><p class="first">Close the <tt class="docutils literal">file_writer</tt> at the end of the program.</p>
+</li>
+<li><p class="first">Fire up the TensorBoard server.</p>
+<ol class="arabic">
+<li><p class="first">Run TensorBoard on the log directory:</p>
+<div class="highlight"><pre><span></span>$ tensorboard --logdir tf_logs/
+</pre></div>
+</li>
+<li><p class="first">Open <tt class="docutils literal"><span class="pre">http://localhost:6006</span></tt></p>
+<ul class="simple">
+<li>Scalars Tab (e.g. learning curve)</li>
+<li>Graphs Tab (Graph structure)<ul>
+<li>The Nodes have many <strong>edges</strong> (connections), which are separated out to an auxiliary area on the right (to remove clutter).</li>
+<li>Move a graph back and forth between the main graph and auxiliary area by right clicking on it</li>
+<li>Double click to expand/collapse</li>
+<li><tt class="docutils literal">show_graph()</tt> to show graph within <strong>Jupyter</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="name-scopes">
+<h3>Name Scopes</h3>
+<ul class="simple">
+<li>Create <strong>name scopes</strong> to group related nodes.</li>
+<li>Name of each operation: <tt class="docutils literal"><span class="pre">&lt;operation&gt;.op.name</span></tt></li>
+</ul>
+</div>
+<div class="section" id="modularity">
+<h3>Modularity</h3>
+<ul class="simple">
+<li><strong>ReLU</strong>: <span class="math">\(h_{\vec{w}, b}(\mathbf{X})=\mathrm{max}(\mathbf{X}\cdot \vec{w}+b, 0)\)</span></li>
+<li>How to construct a subsystem to reduce redundancy.</li>
+<li>Use name scope inside subsystem's definition to increase modularity.</li>
+</ul>
+</div>
+<div class="section" id="sharing-variables">
+<h3>Sharing Variables</h3>
+<p><strong>How to share Variables among different operations?</strong></p>
+<p>Approach 1: Pass Variables as arguments in methods.</p>
+<p>Approach 2: Pass Variables in dictionaries in methods.</p>
+<p>Approach 3: Set the shared variables as an attribute of the <tt class="docutils literal">relu()</tt> function upon the first call.</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">relu</span><span class="p">,</span> <span class="s1">&#39;threshold&#39;</span><span class="p">):</span>
+  <span class="n">relu</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;threshold&#39;</span><span class="p">)</span>
+</pre></div>
+<p>Approach 4: (TF's option) Use <tt class="docutils literal">get_variable()</tt> function to create the shared variable if it does not exist yet, or reuse it if it already exists.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-10-introduction-to-artificial-neural-networks">
+<h2>Chapter 10 - Introduction to Artificial Neural Networks</h2>
+<p>Key idea that inspired <strong>Artificial Neural Networks (ANNs)</strong>: Look at the brain's architecture for inspiration on how to build an intelligent machine.</p>
+<ul class="simple">
+<li>ANN have gradually become quite different from their biological cousins, or we should drop the biological analogy altogether, lest we restrict our creativity to biologically plausible systems.</li>
+<li>ANNs are at the very core of <strong>Deep Learning (DL)</strong>.</li>
+</ul>
+<div class="section" id="from-biological-to-artificial-neurons">
+<h3>From Biological to Artificial Neurons</h3>
+<p>A short history:</p>
+<ul class="simple">
+<li>(in 1943) The landmark paper <em>A Logical Calculus of Ideas Immanent in Neurons Activity</em> presented a simplified computational model of how biological neurons might work together in animal brains to perform complex computations
+using <strong>propositional logic</strong>.</li>
+<li>(until 1960s) Early success of ANNs led to the widespread belief that we would soon be conversing with truly intelligent machines. Then it became clear that
+this promise would go unfulfilled (for quite a while, <strong>the dark era</strong>)</li>
+<li>(in 1980) New arcitecture of ANN and better training techniques.</li>
+<li>(in 1990) Powerful alternative ML techniques such as SVM were favored by most researchers.</li>
+<li>(Now) Another wave of ANN:<ul>
+<li>huge quantity of data available</li>
+<li>ANN frequently outperform other ML techniques on very large and complex problems.</li>
+<li>Increasingly computing power.</li>
+<li>Improved training algorithms.</li>
+<li>Some theoretical limitations of ANN have turned out to be benign in practice.</li>
+<li>ANN seem to have entered a virtuous circle of funding and progress.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="biological-neurons">
+<h4>Biological Neurons</h4>
+<p><strong>biological neurons</strong></p>
+<ul class="simple">
+<li>Biological neurons receive short electrical impulses called <strong>signals</strong> from other neurons via these synapses.</li>
+<li>When a neuron receives a sufficient number of signals from other neurons within a few milliseconds, it fires its own signals.</li>
+<li>Individual biological neurons seem to behave in a rather simple way, but they are organized in a vast network of billions of neurons, each neuron typically connected
+to thousands of other neurons. Highly complex computations can be performed by a vast network of fairly simple neurons. <strong>Biological Neuron Network (BNN)</strong></li>
+<li>The architecture of BNN is still the subject of active research, but some parts of the brain have beed mapped. It seems that neurons are often organized in consecutive layers.</li>
+</ul>
+<p>Nomenclature</p>
+<ul class="simple">
+<li>cerebral</li>
+<li>cortex</li>
+<li>nucleus</li>
+<li>dentrites</li>
+<li>axon</li>
+<li>telodendria</li>
+<li>synaptic terminal (synapses): connected to the dendrites (or directly to the cell body) of other neurons</li>
+</ul>
+</div>
+<div class="section" id="logical-computations-with-neurons">
+<h4>Logical Computations With Neurons</h4>
+<p><strong>An Artificial Neuron</strong> by Warren McCulloch and Walter Pitts (there are many types of artificial neurons).</p>
+<ul class="simple">
+<li>It is a simple model of the biological neuron.</li>
+<li>Input: one/more binary input</li>
+<li>Output: one binary output</li>
+<li>Function: The neuron activates when more than a certain number of its inputs are active.</li>
+<li>Network of them can compute any logical proposition you want.</li>
+<li>You can add one input to inhibit the neuron's activity (shut it down).</li>
+</ul>
+</div>
+<div class="section" id="the-perceptron">
+<h4>The Perceptron</h4>
+<p>The Proceptron [1957, Rosenblatt]</p>
+<ul class="simple">
+<li>is one of the simplest ANN architectures</li>
+<li>based on an artificial neuron called <strong>linear threshold unit (LTU)</strong></li>
+<li>in/out: real numbers. Each input connection is associated with a weight.</li>
+<li>Behavior:<ul>
+<li>The LTU computes a weighted sum of its input <span class="math">\(z = w_1x_1 + w_2x_2 + ... + w_nx_n = \vec{w}^T \cdot \vec{x}\)</span></li>
+<li>Then apply a <strong>step function</strong> (the threshold) to that sum. Instances of the step functions are:<ul>
+<li><strong>Heaviside step function</strong></li>
+<li><strong>Sign function</strong></li>
+</ul>
+</li>
+<li>Output the result <span class="math">\(h_{\vec{w}}(\vec{x}) = step(z) = step(\vec{w}^T \cdot \vec{x})\)</span></li>
+</ul>
+</li>
+</ul>
+<p><em>A single LTU computes simple linear binary classification (just like logistic regressor or a linear SVM)</em></p>
+<p><strong>Training an LTU</strong> means find the right values for <span class="math">\(w_0\)</span> (weight for the extra bias feature), <span class="math">\(w_1, w_2, ..., w_n\)</span></p>
+<p><strong>A Proceptron</strong> is composed of a <strong>single layer</strong> of LTUs (The name <em>Perceptron</em> is sometimes used to mean a tiny netowrk with a single LTU.)</p>
+<ul class="simple">
+<li><strong>Input neurons</strong>: special passthrough neurons, they just output whatever input they are fed.</li>
+<li>Each neuron connected to all the <em>inputs</em></li>
+<li>An extra bias feature added, represented using a special type of neuron - <strong>the bias neuron</strong>, which just outputs 1 all the time.</li>
+<li>A proceptron can be (but not only) used as a multioutput classifier.</li>
+</ul>
+<p><strong>The training algorithm</strong></p>
+<ul class="simple">
+<li>proposed by Frank Rosenblatt, inspired by <strong>Hebb's Rule</strong> <a class="citation-reference" href="#hr10" id="id2">[hr10]</a></li>
+<li>Training:<ol class="arabic">
+<li>Perceptron is fed one training example at a time.</li>
+<li>For each instance it makes its predictions.</li>
+<li>For every output neuron that produced a wrong prediction, it reinforces the connection weights from the inputs that would have contributed to the correct prediction.</li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="training-an-mlp-with-tf-s-high-level-api">
+<h3>Training an MLP with TF's High-Level API</h3>
+<p>The simplest way to tarin an MLP with TF is to use the high-level API <tt class="docutils literal">TF.Learn</tt>, which offers a Scikit-Learn-Compatible API.</p>
+<p>The <tt class="docutils literal">DNNClassifier</tt> class makes it fairly easy to train a DNN with any number of hidden layers, and a softmax output layer to output estimated class probabilities.</p>
+<ol class="arabic simple">
+<li>Create a set of real valued columns from the training set, (othertypes of columns, such as categorical columns, are also available)<ol class="arabic">
+<li>Creates all the neuronlayers, based on the ReLU activation function by default (<tt class="docutils literal">activation_fn</tt> hyperparameter)</li>
+<li>Output layer relies on the softmax layer</li>
+<li>Cost function is cross entropy</li>
+</ol>
+</li>
+<li>Create the <tt class="docutils literal">DNNClassifier</tt>, and wrap it in a Scikit-Learn compatible helper</li>
+<li>Prapare the dataset, scale with Scikit-Learn's <tt class="docutils literal">StandardScaler</tt></li>
+<li>Run 40000 training iterations using batches of instances</li>
+<li>Run this model</li>
+</ol>
+<p>Related code</p>
+<ul class="simple">
+<li><tt class="docutils literal">tf.contrib.learn.infer_real_valued_columns_from_input</tt></li>
+<li><tt class="docutils literal">tf.contrib.learn.DNNClassifier</tt>, <tt class="docutils literal">tf.contrib.learn.SKCompat</tt></li>
+<li><tt class="docutils literal">dnn_clf.fit</tt>, <tt class="docutils literal">dnn_clf.predict</tt></li>
+<li><tt class="docutils literal">sklearn.metrics.accuracy_score</tt></li>
+</ul>
+<p><tt class="docutils literal">tensorflow.contrib</tt> package contains many useful, experimental functions that  have not yet graduated to be part of the core TF API. Thy may change without notice in the future.</p>
+</div>
+<div class="section" id="training-a-dnn-using-plain-tf">
+<h3>Training a DNN Using Plain TF</h3>
+<p>If you want more control over the architecture of the network, you may prefer to use TF's lover-level Python API introduced in Chapter 9.</p>
+<p>Here we will build the same model as before and implement MBGD to train it on the MNISt dataset.</p>
+<div class="section" id="construction-phase">
+<h4>Construction Phase</h4>
+<ol class="arabic">
+<li><p class="first">Import tensorflow, specify the number of inputs/outpus and set the number of hidden neurons in each layers.</p>
+</li>
+<li><p class="first">Use <tt class="docutils literal">placeholder</tt> nodes to represent the training data and targets. The shape of <tt class="docutils literal">X</tt> is a 2D tensor (matrix) with instances along the first dimension and features along the second dimension.
+Since we know the number of features is going to be 28x28 and we don't knoow yet how many instances each training batch will contain. So the shape of <tt class="docutils literal">X</tt> is <tt class="docutils literal">(None, n_inputs)</tt>. Shape of <tt class="docutils literal">y</tt> is <tt class="docutils literal">(None)</tt></p>
+</li>
+<li><p class="first">Create the actual NN</p>
+<ul>
+<li><p class="first"><tt class="docutils literal">X</tt> act as the input layer</p>
+</li>
+<li><p class="first">create two hidden layers (with ReLU as activation function) and the output layer (softmax as activation function)</p>
+</li>
+<li><p class="first">create a function <tt class="docutils literal">neuron_layer()</tt> to create one layer at a time. It needs parameters to specify the inputs, the number of neurons, the activation function, and the name of the layer.</p>
+<ol class="arabic">
+<li><p class="first">create a name scope using the name of the layer</p>
+</li>
+<li><p class="first">get number of inputs by looking up the input matrix's shape (the second dimension)</p>
+</li>
+<li><p class="first">create a variable <tt class="docutils literal">W</tt> holding the weights matrix (often called <strong>the layer's kernel</strong>). It's a 2D tensor containing all the connection weights between each input and each neuron,
+hence it's shape is <tt class="docutils literal">(n_inputs, n_neurons)</tt>.</p>
+<p>It will be initialized randomly, using a <strong>truncated normal (Gaussian) distribution</strong> with a standard deviation of <span class="math">\(\frac{2}{\sqrt{n_{inputs}}}\)</span>.
+Using this specific standard deviation helps the algorithm converge much faster.</p>
+<p>It's important to initialze connection weights randomly for all hidden layers to <strong>avoid any symmetries that the Gradient Descent algorithm would be unable to break</strong> <a class="citation-reference" href="#tsi10" id="id3">[tsi10]</a></p>
+</li>
+<li><p class="first">create a <tt class="docutils literal">b</tt> variable for biases, initialized to 0 (no symmetry issue in this case), with one bias parameter per neuron.</p>
+</li>
+<li><p class="first">create a subgraph to compute <span class="math">\(\mathbf{Z}=\mathbf{X} \cdot \mathbf{W} + b\)</span>.
+This vectorized implementation will compute the weighted sums of the inputs plus the bias term for each and every neuron in the layer, <strong>for all the instances in the batch in just one shot</strong>.</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<table class="docutils citation" frame="void" id="hr10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[hr10]</a></td><td><strong>The Hebb's rule</strong>, or <strong>Hebbian Learning</strong>: When a biological neuron often triggers another neuron, the connection between these two neurons grows stronger. In other words, the connection
+weight between two neurons is increased whenever they have the same output.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="tsi10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[tsi10]</a></td><td><strong>The Symmetry Issue</strong>: For example, if you set all the weights to 0, then all neurons will output 0, and the error gradient will be the same for all neurons in a given hidden layer. The
+Gradient Descent step will then update all the weights in exactly the same way in each layer, so they will all remain equal. In other words, despite having hundreds
+of neurons per layer, your model will act as if there were only one neuron per layer.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-11-training-deep-neural-networks">
+<h2>Chapter 11 - Training Deep Neural Networks</h2>
+<p>Some problems when you're training a DNN:</p>
+<ol class="arabic simple">
+<li>Vanishing and exploding gradients: affects DNNs and makes lower layers very hard to train.</li>
+<li>Extremly slow training - The Optimizers</li>
+<li>A model with millions of parameters would severely risk overfitting the training set - The Regularization techniques for large NNs.</li>
+</ol>
+<div class="section" id="vanishing-exploding-gradients-problems">
+<h3>Vanishing/Exploding Gradients Problems</h3>
+<p>In the backpropagation algorithm, it works by going from the output layer to the input layer, propagating the <em>error gradient</em> on the way. Once
+the algo has computed <em>the gradient of the cost function w.r.t. each parameter in the network</em>, it uses these gradients to update each parameter
+with a gradient descent step.</p>
+<ul class="simple">
+<li><strong>The vanishing gradients problem</strong>: gradients sometimes get smaller and smaller as the algorithm progresses down to the lower layers. As a result,
+the Gradient Descent update leaves the lower layer connection weights virtually unchanged, and training never converges to a good solution.</li>
+<li><strong>The exploding gradients problem</strong>: in some cases, the opposite can happen: the gradients can grow bigger and bigger, so many layers get insanely
+large weight updates and the algorithm diverges, which is mostly encountered in recurrent NNs.</li>
+<li>More generally, DNNs usuffer from unstable gradients, different layers may learn at widely different speeds.</li>
+<li>It is one of the reasons why DNN were mostly abandoned for a long time. It is only around 2010 that significant progress was made in understanding it (check out the paper <cite>&quot;Understanding the Difficulty of Training Deep Feedforward Neural Networks&quot;</cite> <a class="citation-reference" href="#gb10" id="id4">[GB10]</a>)</li>
+</ul>
+<p>TODO: Interesting Observations</p>
+<div class="section" id="xavier-and-he-initialization">
+<h4>Xavier and He Initialization</h4>
+<p>In their paper, Glorot and Bengio proposed a way to significantly alleviate this problem: we want the signal to flow properly in both directions:</p>
+<ul class="simple">
+<li>Forward direction when making predictions, and</li>
+<li>In the backward direction, when backpropagating gradients. We don't want the signal to die out, nor do we want it to explode and saturate.</li>
+</ul>
+<p>For the signal to flow properly, the authors argue that we need the variance of the outputs of each layer to be equal to the variance of its inputs, and we
+also need the gradients to have equal variance before and after flowing through a layer in the reverse direction. It is actually not possible to guarantee both unless the layer has an equal number of input and output connections, but they proposed a good compromise that
+has proven to work very well in practice: the connection weights must be initialized randomly as described in [TODO equation 11-1], where <span class="math">\(n_{\text{inputs}}\)</span> are the number of input and output connections for the layer whose weights are
+being initialized (called <strong>fan-in</strong> and <strong>fan-out</strong>). This initialization strategy is often called <strong>Xavier initialization</strong> or <strong>Glorot initialization</strong>.</p>
+<p><em>fan-in</em> and <em>fan-out</em>, in the context of a fully connected layer:</p>
+<ul class="simple">
+<li>fan-in: the number of output neurons of the previous layer</li>
+<li>fan-out: the number of output neurons of itself</li>
+</ul>
+<p><strong>Xavier initialization (when using the logistic activation function)</strong>:</p>
+<div class="math">
+\begin{align*}
+      \text{Normal distribution with mean 0 and standard deviation } \sigma = \sqrt{\frac{2}{n_{inputs}+n_{outputs}}} \\
+\text{Or a uniform distribution between } -r \text{ and } +r \text{, with } r=\sqrt{\frac{6}{n_{inputs}+n_{outputs}}}
+\end{align*}
+</div>
+<p>Using the Xavier initialization strategy can speed up training considerably, and it is one of the tricks that led to the current success of DL.</p>
+<p><strong>Some recent papers have provided similar strategies for different activation functions</strong>:</p>
+<ul class="simple">
+<li>Logistic function</li>
+<li>Hyperbolic tangent function</li>
+<li>ReLU (and its variants)</li>
+</ul>
+<p>TODO: Table 11-1</p>
+<p><strong>He Initialization</strong> is used for ReLU and its variants.</p>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="gb10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[GB10]</a></td><td>Glorot, X. &amp; Bengio, Y.. (2010). Understanding the difficulty of training deep feedforward neural networks. Proceedings of the Thirteenth International Conference on Artificial Intelligence and Statistics, in PMLR 9:249-256</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="chapter-13-convolutional-neural-networks">
+<h2>Chapter 13 - Convolutional Neural Networks</h2>
+<p><strong>Convolutional neural networks (CNNs)</strong> emerged from the study of the brain's visual cortex and they have been used in image recognition since the 1980s.</p>
+<p>In the last few years, thanks to <em>the increase in computational power</em>, <em>the amount of available training data</em>, <em>the tricks for training deep nets</em>, CNNs have managed to chieve superhuman performance on some complex visual tasks.</p>
+<p>CNN are not restricted to visual perception, other tasks such as voice regocnition and Natural Language Processing are also involved.</p>
+<div class="section" id="the-architecture-of-the-visual-coretex">
+<h3>The Architecture of the Visual Coretex</h3>
+<p>The researches <a class="citation-reference" href="#hw58" id="id5">[HW58]</a>, <a class="citation-reference" href="#hw59" id="id6">[HW59]</a> and <a class="citation-reference" href="#hw68" id="id7">[HW68]</a> showed that many neurons in the visual cortex have a small <strong>local receptive field</strong> <a class="citation-reference" href="#lrf13" id="id8">[lrf13]</a> . The receptive fields of
+different neurons may overlap, and together they tile <strong>the whole visual vield</strong>. They also showed that some neurons react only to images of horizontal lines, while others react only to
+lines with different orientations (two neurons may have the same receptive field but react to different line orientations).</p>
+<p>They noticed that some neurons have larger receptive fileds, and they react to more complex patterns that are combinations of the lower-level patterns. These observations led to
+the idea that the higher-level neurons are based on the outputs of neighboring lower-level neurons (with each neuron is connected only to a few neurons from the previous layer). This
+powerful architecture is able to detect all sorts of complex patterns in any area of the visual field.</p>
+<p><a class="citation-reference" href="#fuk80" id="id9">[Fuk80]</a> gradually evolved into convolutional CNNs.</p>
+<p><a class="citation-reference" href="#lbbh98" id="id10">[LBBH98]</a> is the milestone which introduced the famous LeNet-5 architecture, widely used to recognize handwritten check numbers. It introduces two new building blocks: <strong>convolutional layers</strong> and <strong>pooling layers</strong>.</p>
+<p><strong>Why not simply use a regular DNN with fully connected layers for the image recognition tasks?</strong></p>
+<ul class="simple">
+<li>Huge number of parameters are required for large Fully Connected Layers</li>
+<li>CNNs solve this problem using <strong>partially connected layers</strong> <a class="citation-reference" href="#pcl13" id="id11">[pcl13]</a></li>
+</ul>
+</div>
+<div class="section" id="convolutional-layer">
+<h3>Convolutional Layer</h3>
+<p>The most important building block of a CNN is the <strong>convolutional layer (conv layer)</strong> <a class="reference external" href="https://en.wikipedia.org/wiki/Convolution">conv layers actually use cross-correlations, which are very similar to convolutions</a> : neurons in the first conv layer are not connected to every single pixel in the input image, but only to pixels in their receptive fields.
+It also applies to the second, third ... layers, which allows the NN to concentrate on low-level features in the first hidden layer, then assemble them into higher-level features in the next hidden layer, and so on, which is
+also the common case in real-world images.</p>
+<p>Normal case: a neuron in row <span class="math">\(i\)</span> column <span class="math">\(j\)</span> of a given layer is connected to the outputs of the neurons in the previous layer, located in rows <span class="math">\(i\)</span> to <span class="math">\(i+f_h -1\)</span>, columns <span class="math">\(j\)</span> to <span class="math">\(j+f_w -1\)</span>, where
+<span class="math">\(f_h, f_w\)</span> are the height and width of the receptive fields.</p>
+<p><strong>zero padding</strong>: add zeros around the input in order for a layer to have the same height and width as the previous layer.</p>
+<p>It is also possible to connect a large input layer to a much smaller layer by spacing out the receptive field with <strong>stride</strong>, which is the distance between two consecutive receptive fields.</p>
+<p>Conv layer with stride: a neuron located in row <span class="math">\(i\)</span>, column <span class="math">\(j\)</span> in the upper layer is connected to the outputs of the neurons in the previous layer located in rows <span class="math">\(i \times s_h\)</span> to <span class="math">\(i \times s_h + f_h -1\)</span>,
+columns <span class="math">\(j \times s_w + f_w -1\)</span>, where <span class="math">\(s_h, s_w\)</span> are the vertical and horizontal strides.</p>
+<div class="section" id="filters">
+<h4>Filters</h4>
+<p>A neuron's weights can be represented as a small image the size of the receptive field. The weights are called <strong>filters</strong> or <strong>convolution kernels</strong>.</p>
+<p>All neurons in a layer use the same filter, gives you a <strong>feature map</strong>, which highlights the area in an image that are most similar to the filter.</p>
+<p>During training, a CNN finds the most useful filters for its task, and it learns to combine them into more complex patterns.</p>
+</div>
+<div class="section" id="stacking-multiple-feature-maps">
+<h4>Stacking Multiple Feature Maps</h4>
+<p>In reality, we use conv layers composed of several feature maps of equal sizes instead of one single thin 2D layer, so it (the conv layer) is more accurately represented in 3D.</p>
+<p>Within one feature map, all neurons share the same parameters: weights (i.e., the <em>kernel</em>, one per feature map), and the <em>bias term</em> (one per feature map), but different feature maps may have different
+parameters. A neuron's receptived field is the same as described earlier, but it extends across all the previous layer's feature maps. In short, a conv layer simultaneously applies multiple filters
+to its inputs, making it capable of detecting multiple feature anywhere in its inputs.</p>
+<p><em>The face that all neurons in a feature map share the same parameters dramatically reduces the number of parameters in the model, but most importantly it means that once the CNN has learned to recognize a pattern in one location,
+it can recognize it in any other location. In contrast, once a regular DNN has learned to recognize a pattern in one location, it can recognize it only in that particular location.</em></p>
+<p>Input images are probably composed of multiple <strong>sublayers</strong>: one per <strong>color channels</strong>.</p>
+<p>TODO: equation 13-1</p>
+</div>
+<div class="section" id="tensorflow-implementation">
+<h4>TensorFlow Implementation</h4>
+<p>In TF, the typical representations are</p>
+<ul class="simple">
+<li>for an image: 3D tensor of shape <span class="math">\([height, width, channels]\)</span></li>
+<li>for a mini-batch: 4D tensor of shape <span class="math">\([\text{mini-batch size}, height, width, channels]\)</span></li>
+<li>for the weights of a conv layer: 4D tensor of shape <span class="math">\([f_h, f_w, f_n, f_{n'}]\)</span>, where <span class="math">\(f_n, f_{n'}\)</span> are the number of feature maps (kernels)
+of this layer and the previous layer</li>
+<li>for the bias term of a conv layer: 1D tensor of shape <span class="math">\([f_n]\)</span></li>
+</ul>
+<p>An example:</p>
+<ol class="arabic simple">
+<li>loads two sample images <tt class="docutils literal">sklearn.datasets.load_sample_images</tt></li>
+<li>creates two 7x7 filters</li>
+<li>apply them to both images using a conv layer using <tt class="docutils literal">tf.nn.conv2d()</tt> with zero padding and a stride of 2</li>
+<li>plots one of the resulting feature maps</li>
+</ol>
+<p><tt class="docutils literal">tf.nn.conv2d()</tt>:</p>
+<ol class="arabic simple">
+<li><tt class="docutils literal">X</tt>: mini-batch input 4D tensor</li>
+<li><tt class="docutils literal">filters</tt>: the set of filters (4D tensor)</li>
+<li><tt class="docutils literal">strides</tt>: 4 element 1D array. The control elements are the vertical and horizontal strides (<span class="math">\(s_h, s_w\)</span>). The first and last elements must currently be equal to 1.
+They may one day be used to specify a batch stride (to skip some instances) and a channel stride (to skip some of the previous layer's feature maps or channels).</li>
+<li><tt class="docutils literal">padding</tt> must be either &quot;VALID&quot; or &quot;SAME&quot;:</li>
+</ol>
+<blockquote>
+<ul class="simple">
+<li>&quot;VALID&quot;: the conv layer does not use zero padding, and may ignore some rows and columns at bottom and right of the input image depending on the stride</li>
+<li>&quot;SAME&quot;: conv layer uses zero padding if necessary. <strong>The number of output neurons is equal to the number of input neurons divided by the stride, rounded up.</strong>
+Then zeros are added as evenly as possible around the inputs.</li>
+</ul>
+</blockquote>
+<p>In a real CNN you would let the training algorithm discover the best filters automatically. You can use <tt class="docutils literal">tf.layers.conv2d()</tt> to create the filters variable (<strong>kernel</strong>) for you, and
+initialize it randomly: <tt class="docutils literal">conv = tf.layers.conv2d(X, filters = 2, kernel_size = 7, strides = [2, 2], padding = &quot;SAME&quot;)</tt>: 2 kernels, 7x7 kernel size, horizontal stride = 2, vertical stride = 2.</p>
+<p>The conv layers have quite a few hyperparameters. As always you can use corss-validation to find the right hyperparameter values, but this is very time-consuming.
+We'll discuss common CNN architectures later, to give you some idea of what hyperparameter values work best in practice.</p>
+</div>
+<div class="section" id="memory-requirements">
+<h4>Memory Requirements</h4>
+<p>The training of CNN require a huge amount of RAM because the reverse pass of backpropagation requires all the intermediate values computed during the forward pass. The amount of RAM
+neede is at least the total amount of RAM required by all layers.</p>
+<p><strong>The computation of memory consumption</strong> in the book.</p>
+<p>During <strong>inference</strong> <a class="citation-reference" href="#inf13" id="id12">[inf13]</a> the RAM occupied by one layer can be released as soon as the next layer has been computed, so you only need as much RAM as required by two consecutive layers.</p>
+<p>If training crashes because of an out-of-memory error, you can try reducing the mini-batch size or reducing dimensionality using a stride, or removing a few layers, or try using 16-bit
+floats instead of 32-bit floats, or distribute the CNN across multiple devices.</p>
+</div>
+</div>
+<div class="section" id="pooling-layer">
+<h3>Pooling Layer</h3>
+<p>The goal of this layer is to <strong>subsample</strong> (i.e., shrink) the input image in order to reduce the computational load, the memory usage, and the number of parameters (thereby limiting
+the risk of overfitting). Reducing the input image size also makes the NN tolerate a little bit of image shift (<strong>location invariance</strong>).</p>
+<p><strong>Just like in conv layers, each neuron in a pooling layer has a rectangular receptive field.</strong> You need to define its size, the stride, and the padding type. <strong>But a pooling neuron has
+no weights</strong>: all it does is aggregate the inputs using an aggregation function such as the max or mean.</p>
+<dl class="docutils">
+<dt><strong>max pooling layer</strong></dt>
+<dd>Most common type of pooling layer. Only the max input value in each kernel makes it to the next layer, the other inputs are dropped.</dd>
+<dt><strong>Pooling kernel</strong></dt>
+<dd>similar to a convolutional kernel but has no weights or bias.</dd>
+</dl>
+<p><strong>A pooling layer typically works on every input channel independently, so the output depth is the same as the input depth.</strong> You may alternatively pool over the depth dimension, as
+we will see next, in which case the image's spatial dimensions (height and width) remain unchanged, but the number of channels is reduced.
+<tt class="docutils literal">tf.nn.max_pool(X, <span class="pre">ksize=[1,2,2,1],</span> <span class="pre">strides=[1,2,2,1],</span> <span class="pre">padding=&quot;VALID&quot;)</span></tt></p>
+<ul class="simple">
+<li>The <tt class="docutils literal">ksize</tt> argument contains the kernel shape along all four dimensions of the input tensor <tt class="docutils literal">[batch_size, height, width, channels]</tt>. TF currently does not support pooling over
+multiple instances, so <tt class="docutils literal">ksize[0]</tt> must be equal to 1. Moreover, it does not support pooling over both the <strong>spatial dimensions (height and width)</strong> and the <strong>depth information</strong>, so
+either <tt class="docutils literal">ksize[1]</tt> and <tt class="docutils literal">ksize[2]</tt> must both be equal to 1, or <tt class="docutils literal">ksize[3]</tt> must be equal to 1.</li>
+<li>You can also create an <strong>average pooling layer</strong> <tt class="docutils literal">tf.nn.avg_pool()</tt> instead of <tt class="docutils literal">tf.nn.max_pool()</tt></li>
+</ul>
+</div>
+<div class="section" id="cnn-architectures">
+<h3>CNN Architectures</h3>
+<table class="docutils citation" frame="void" id="lrf13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[lrf13]</a></td><td>Many neurons in the visual cortex react only to visual stimuli located in a limited region of the visual field.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pcl13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11">[pcl13]</a></td><td><strong>Partially connected layers</strong>: compared to regular fully connected neural networks, a neuron in the convolutional layer is conneted to the neurons, which are
+located in its receptive field in the previous level.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="inf13" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id12">[inf13]</a></td><td><strong>Inference</strong>: The process which makes prediction for a new instance.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hw58" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[HW58]</a></td><td>&quot;Single Unit Activity in Striate Cortex of Unrestrained Cats,&quot; D. Hubel and T. Wiesel (1958).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hw59" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[HW59]</a></td><td>&quot;Receptive Fields of Single Neurones in the Cat's Striate Cortex,&quot; D. Hubel and T. Wiesel (1959).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hw68" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[HW68]</a></td><td>&quot;Receptive Fields and Functional Architecture of Monkey Striate Cortex,&quot; D. Hubel and T. Wiesel (1968).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="fuk80" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[Fuk80]</a></td><td>&quot;Neocognitron: A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position,&quot; K. Fukushima (1980).</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="lbbh98" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[LBBH98]</a></td><td>&quot;Gradient-Based Learning Applied to Document Recognition&quot;, LeCun, Y. et al.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="/tag/machine-learning.html"><i class="fa fa-tag"></i>Machine Learning</a>&nbsp;
+	<a href="/tag/reading-notes.html"><i class="fa fa-tag"></i>Reading Notes</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="/reading-notes-hands-on-machine-learning-with-scikit-learn-and-tensorflow.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
+        </div><!-- /content -->
+
+        <div class="col-md-3 sidebar-nav" id="sidebar">
+
+<div class="row">
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-comment fa-fw fa-lg"></i> Social</h4>
+<ul class="list-unstyled social-links">
+    <li><a href="https://www.flickr.com/people/150485183@N02/" target="_blank">
+	  <i class="fa fa-flickr fa-fw fa-lg" title="Flickr"></i>
+		Flickr
+	</a></li>
+    <li><a href="pages/images/wechat-QRcode.JPG" target="_blank">
+	  <i class="fa fa-weixin fa-fw fa-lg" title="WeChat"></i>
+		WeChat
+	</a></li>
+</ul>
+</div>
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-folder fa-fw fa-lg"></i> Categories</h4>
+<ul class="list-unstyled category-links">
+  <li><a href="/category/machine-learning.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Machine Learning</a></li>
+</ul>
+</div>
+
+</div> <!-- /row -->
+
+  <h4><i class="fa fa-link fa-fw fa-lg"></i> Links</h4>
+  <ul class="list-unstyled category-links">
+    <li><a href="http://getpelican.com/" >
+      <i class="fa fa-fw fa-external-link-square fa-lg"></i> Pelican</a></li>
+  </ul>
+<h4><i class="fa fa-tags fa-fw fa-lg"></i> Tags</h4>
+<p class="tag-cloud">
+    <span class="tag-4">
+      <a href="/tag/machine-learning.html">
+          <i class="fa fa-tag"></i>
+        Machine Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/reading-notes.html">
+          <i class="fa fa-tag"></i>
+        Reading Notes
+      </a>
+    </span>
+</p>
+
+<hr />
+
+        </div><!--/sidebar -->
+      </div><!--/row-->
+    </div><!--/.container /#main-container -->
+
+    <footer id="site-footer">
+ 
+      <address id="site-colophon">
+        <p class="text-center text-muted">
+        Site built using <a href="http://getpelican.com/" target="_blank">Pelican</a>
+        &nbsp;&bull;&nbsp; Theme based on
+        <a href="http://www.voidynullness.net/page/voidy-bootstrap-pelican-theme/"
+           target="_blank">VoidyBootstrap</a> by 
+        <a href="http://www.robertiwancz.com/"
+           target="_blank">RKI</a>  
+        </p>
+      </address><!-- /colophon  -->
+    </footer>
+
+
+    <!-- javascript -->
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
+</html>

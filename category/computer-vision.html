@@ -15,12 +15,14 @@
                 <h1><a href="/">Shihao Xu </a></h1>
                 <nav><ul>
                     <li class="active"><a href="/category/computer-vision.html">Computer Vision</a></li>
+                    <li><a href="/category/machine-learning.html">Machine Learning</a></li>
+                    <li><a href="/category/novel.html">Novel</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/computer-vision-for-human-computer-interaction.html">Computer Vision for Human Computer Interaction</a></h1>
+                    <h1 class="entry-title"><a href="/computer-vision-for-human-computer-interaction-de.html">Computer Vision for Human Computer Interaction</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2018-02-19T01:27:00+01:00">
                 Published: Mon 19 February 2018
@@ -117,12 +119,337 @@ zur Interaktion. (Welches objekt referenziert der Nutzer?)</p>
 <h3>VL05: Face Recognition I</h3>
 <p>Why Choose face recognition over other biometrics?</p>
 <ul class="simple">
-<li>it requires no physical interaction with the user</li>
+<li>it requires no physical interaction with the user (non-intrusive method)</li>
 <li>it is accurate and allows for high enrollment and verification rates</li>
 <li>it doesn't require an expert to interpret the result</li>
 <li>it can use your existing hardware (cameras etc)</li>
 <li>it is the only biometric that allow to perform passive identification in a one to many scenario</li>
 </ul>
+<p>From object recognition perspective: It is not general object recognition between different classes, it is a single-class object recognition task (differentiate/verify object within one class).</p>
+<div class="section" id="main-problem-challenges">
+<h4>Main problem &amp; Challenges</h4>
+<ul class="simple">
+<li>Extrinsic variations of face images:<ul>
+<li>Illumination variations</li>
+<li>View-point variations</li>
+<li>Occlusions (other objects or people)</li>
+</ul>
+</li>
+<li>Intrinsic variations of face image:<ul>
+<li>Facial expressions</li>
+<li>Aging</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="face-recognition-tasks">
+<h4>Face Recognition Tasks</h4>
+<dl class="docutils">
+<dt>Closed-Set Identification:</dt>
+<dd><p class="first">a biometric task in which an unidentified individual is known to be in the database of biometric characteristics and the system attempts to determine his/her identity.</p>
+<p class="last">Performance metric: correct identification rate</p>
+</dd>
+<dt>Open-Set Identification:</dt>
+<dd><ol class="first arabic simple">
+<li>decides whether the person on the test image is a known or unknown person</li>
+<li>if he is a known person, then who he is?</li>
+</ol>
+<dl class="last docutils">
+<dt>False accept</dt>
+<dd>The <strong>invalid identity</strong> is accepted as one of the individuals in the database</dd>
+<dt>False reject</dt>
+<dd>An individual is rejected <strong>even though</strong> he/she is present in the database</dd>
+<dt>False classify</dt>
+<dd>An individual in the database is <strong>correctly accepted but misclassified</strong> as one of the other individuals in the training data</dd>
+</dl>
+</dd>
+<dt>Authentication/Verification</dt>
+<dd><p class="first">A person claims to be a particular member. The system decides if the person is who he claims to be.</p>
+<p>Performance metric:</p>
+<ul class="last simple">
+<li>false reject rate (FRR): system rejects a valid identity</li>
+<li>false accept rate (FAR): system accepts an invalid identity</li>
+</ul>
+</dd>
+</dl>
+<p>ROC curve here: FAR against FRR</p>
+</div>
+<div class="section" id="traditional-approaches">
+<h4>Traditional Approaches</h4>
+<ul>
+<li><p class="first">Feature-based (Geometrical)</p>
+<ul class="simple">
+<li>fiducial points</li>
+<li>distances, angles, areas, etc.</li>
+<li>geometrical</li>
+</ul>
+<p>possible features:</p>
+<blockquote>
+<ul class="simple">
+<li>eyebrow thickness</li>
+<li>nose vertical position and width</li>
+<li>radii describing the chin shape</li>
+</ul>
+</blockquote>
+<p>Classification</p>
+<blockquote>
+<p>Nearest neighbor classifier with (todo)Mahalanobis distance as the distance metric:</p>
+<blockquote>
+<div class="math">
+\begin{equation*}
+\Delta_j(x)=(x-m_j)^T\Sigma^{-1}(x-m_j)
+\end{equation*}
+</div>
+<p><span class="math">\(x\)</span>: input face image
+<span class="math">\(m_j\)</span>: average vector representing the j-th person
+<span class="math">\(\Sigma\)</span>: Covariance matrix</p>
+</blockquote>
+<p>Different people are characterized only by their average feature vector.</p>
+<p>The Distribution is common and estimated by using all the examples in the training set.</p>
+</blockquote>
+</li>
+<li><p class="first">appearance-based</p>
+<ul class="simple">
+<li>holistic (i.e. process the whole fase as the input) , local/fiducial regions (i.e. precess facial features, such as eyes, mouth, etc. separately)</li>
+<li>statistical</li>
+</ul>
+<p>Preprocessing step</p>
+<blockquote>
+<p>align faces with facial landmarks</p>
+<blockquote>
+<ul class="simple">
+<li>e.g. using manually labeled or automatically detected eye centers</li>
+<li>normalize face images to a common coordination, remove translation, rotation and scaling factors</li>
+<li>crop off unnecessary background</li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="eigenfaces">
+<h4>Eigenfaces</h4>
+<dl class="docutils">
+<dt>Eigenface</dt>
+<dd><p class="first">A face image defines a point in the high dimensional image space</p>
+<p>They can be described by a relatively low dimensional subspace</p>
+<p>Project the face images into an appropriately chosen subspace and perform classification by similarity computation</p>
+<p>Dimensionality reduction procedure used here is called Karhunen-Loeve transformation or Principal Component analysis (PCA)</p>
+<p class="last"><strong>Objective</strong>: Find the vectors that best account for the distribution of face images within the entire image space.</p>
+</dd>
+</dl>
+<div class="section" id="pca">
+<h5>PCA</h5>
+<dl class="docutils">
+<dt>Pricipal components (are called eigenfaces in the context of Eigenface, they span the ''Face Space'')</dt>
+<dd>the eigenvectors of the covariance matrix of the set of face images.</dd>
+</dl>
+<p>Goal of PCA:</p>
+<blockquote>
+<ul class="simple">
+<li>Find direction vectors (using covariance matrix) so as to minimize the average projection error</li>
+<li>Project on the largest K direction vectors, which spans a linear subspace, to reduce dimensionality</li>
+</ul>
+</blockquote>
+<p>Eigenface</p>
+<blockquote>
+<p>Training:</p>
+<blockquote>
+<ol class="arabic">
+<li><p class="first">Acquire initial set of face images (training set),:</p>
+<p><span class="math">\(Y\)</span>: face images</p>
+<p><span class="math">\(y_i\)</span>: one face image</p>
+<div class="math">
+\begin{equation*}
+Y = [y_1, y_2, ...,y_K]
+\end{equation*}
+</div>
+</li>
+<li><p class="first">Calculate the eigenfaces from the training set, keeping only the M images corresponding the highest eigenvalues</p>
+<div class="math">
+\begin{equation*}
+m = \frac{1}{K} \times \sum_{i=1}^Ky
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+C = (Y - m)(Y - m)^T
+\end{equation*}
+</div>
+<div class="math">
+\begin{equation*}
+D = U^T C U
+\end{equation*}
+</div>
+<p><span class="math">\(m\)</span>: mean face</p>
+<p><span class="math">\(C\)</span>: covariance matrix</p>
+<p><span class="math">\(D\)</span>: eigenvalues</p>
+<p><span class="math">\(U\)</span>: eigenvectors</p>
+</li>
+<li><p class="first">Calculate representation of each known individual <span class="math">\(k\)</span> in face space</p>
+<div class="math">
+\begin{equation*}
+\Omega_k = U^T \times (y_k - m)
+\end{equation*}
+</div>
+</li>
+</ol>
+</blockquote>
+<p>Testing:</p>
+<blockquote>
+<p>Project input new image <span class="math">\(y\)</span> into face space: <span class="math">\(\Omega = U^T \times (y - m)\)</span></p>
+<p>class = <span class="math">\(\operatorname*{arg\,min}_k||\Omega - \Omega_k||\)</span></p>
+</blockquote>
+</blockquote>
+</div>
+<div class="section" id="projections-onto-the-face-space">
+<h5>Projections onto the face space</h5>
+<ul>
+<li><p class="first">Images can be reconstructed by their projections in face space: <span class="math">\(Y_f = \sum_{i=1}^M \omega_i u_i\)</span></p>
+</li>
+<li><p class="first">Appearance of faces in face-space does not change a lot</p>
+</li>
+<li><p class="first">Difference of mean-adjusted image <span class="math">\((Y-m)\)</span> and projection <span class="math">\(Y_f\)</span> gives a measure of ''faceness''</p>
+<dl class="docutils">
+<dt>dffs</dt>
+<dd><p class="first last">distance from face space, can be used to detect faces</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">Cases:</p>
+<ul>
+<li><p class="first">case 1: projection of a known individual</p>
+<blockquote>
+<p>near face space and near known face</p>
+</blockquote>
+</li>
+<li><p class="first">case 2: projection of an unknown individual</p>
+<blockquote>
+<p>near face space, far from reference vectors</p>
+</blockquote>
+</li>
+<li><p class="first">case 3: not a face</p>
+<blockquote>
+<p>far from face space</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p class="first">Project all face onto a universal eigenspace (using PCA) to ''encode'' via pricipal components. Then use inverse-distance as a similarity measure <span class="math">\(S(p,g)\)</span> for matching &amp; recognition</p>
+</li>
+</ul>
+<dl class="docutils">
+<dt>View-based Eigenspaces</dt>
+<dd><p class="first">Extension: view-based eigenspaces (parametric eigenspace) for general viewing conditions.</p>
+<ol class="last arabic simple">
+<li>Build an eigenspace for each view</li>
+<li>decide input images' direction of view using distance from view space metric</li>
+<li>do classification in that view-space</li>
+</ol>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="bayesian-face-recognition">
+<h4>Bayesian Face Recognition</h4>
+<p>Problem: Simple nearest-neighbour similarity measures do not exploit knowledge of critical appearance variations</p>
+<dl class="docutils">
+<dt>Bayesian similarity measure:</dt>
+<dd>Denotes belief that image differences are caused by typical appearance variations of an individual (caused by expression, etc). Compares typical within-class (intrapersonal) variations with between-class (extrapersonal) variations</dd>
+</dl>
+<div class="section" id="dual-pca-bayesian">
+<h5>Dual PCA (Bayesian)</h5>
+</div>
+</div>
+</div>
+<div class="section" id="vl08-introduction-to-deep-learning">
+<h3>VL08: Introduction to Deep Learning</h3>
+<div class="section" id="traditional-computer-vision">
+<h4>Traditional computer vision</h4>
+<p>Input data (pixels) -&gt; Feature representation (hand-crafted) -&gt; Learning algorithm (e.g. SVM)</p>
+<p>Features are not learned.</p>
+<p>Popular computer vision features</p>
+<blockquote>
+<ul class="simple">
+<li>SIFT</li>
+<li>HoG</li>
+<li>Gabor filters</li>
+<li>and many others: SURF, LBP, Color Histograms, GLOH, ...</li>
+</ul>
+</blockquote>
+<p>Mid-level representations</p>
+<blockquote>
+<ul class="simple">
+<li>mid-level cues: continuation, parallelism, junctions, corners</li>
+<li>object parts</li>
+</ul>
+</blockquote>
+<p>are difficult to create, how about learning them?</p>
+</div>
+<div class="section" id="learning-feature-hierarchy">
+<h4>Learning feature hierarchy</h4>
+<p>Learn a hierarchy (hierarchical representation of data) from end-to-end (from image pixels to classifier output), and train all layers jointly:</p>
+<blockquote>
+<ul class="simple">
+<li>low-level feature</li>
+<li>mid-level feature</li>
+<li>high-level feature</li>
+<li>trainable classifier</li>
+</ul>
+</blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="neural-networks">
+<h4>Neural Networks</h4>
+<div class="section" id="simple-neuron-model">
+<h5>Simple Neuron Model</h5>
+<p><span class="math">\(out = activation(\vec{x}^T \cdot \vec{w})\)</span></p>
+</div>
+<div class="section" id="nn-topology">
+<h5>NN Topology</h5>
+<ul class="simple">
+<li>Fully connected</li>
+<li>Feed-forward</li>
+<li>Recurrent</li>
+</ul>
+</div>
+<div class="section" id="forward-propagation">
+<h5>Forward propagation</h5>
+</div>
+</div>
+<div class="section" id="convolutional-neural-networks">
+<h4>Convolutional Neural Networks</h4>
+<p>Handwritten digits recognition by LeCun et. al. 1989: multiple convolution and fully connected layers.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Fully Connected Layer</dt>
+<dd><p class="first">Too many model parameters! (200x200 pixels for 40k neurons = 1.6 Billion parameters)</p>
+<blockquote class="last">
+<ul class="simple">
+<li>Waste of resources</li>
+<li>no local correlation</li>
+<li>insufficient data</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Convolutional Layer</dt>
+<dd><p class="first">Reduced number of parameters (200x200 pixels, 96 filter kernels, 11x11 filter size = 11616 parameters)</p>
+<blockquote class="last">
+<ul class="simple">
+<li>connect a hidden unit to image patch</li>
+<li>share weights</li>
+<li>use multiple filters</li>
+<li>Receptive field: The receptive field of an individual sensory neuron is the particular region of the sensory space (e.g., the body surface, or the visual field) in which a stimulus will modify the firing of that neuron.</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
 </div>
 <div class="section" id="vl14-person-detection-i-global-approaches">
 <h3>VL14: Person Detection I - Global Approaches</h3>
@@ -313,6 +640,7 @@ object detections with bounding boxes</dd>
 </div>
 <div class="section" id="classifying-a-hypothesis-roc">
 <h5>Classifying a hypothesis: ROC</h5>
+<p>One kind of ROC curve: TPR against FPR</p>
 <dl class="docutils">
 <dt>TPR (true positive rate)</dt>
 <dd>TP/Pos = TP/(TP+FN)</dd>
@@ -464,6 +792,13 @@ d_{chamfer}(S, C) = \frac{1}{n}\sum_{s_i \in S} \rho (\frac{1}{k}||s_i - c(s_i)|
 <li>Use more than one image to analyse the scene</li>
 <li>Use a-priori knowledge to improve analysis (system dynamics, imaging / measurement process)</li>
 </ul>
+<p><a class="reference external" href="https://www.youtube.com/watch?v=RWl1KZY65q8">Detection vs Tracking</a></p>
+<dl class="docutils">
+<dt>Detection</dt>
+<dd>Detect the object <strong>independently</strong> in each frame</dd>
+<dt>Tracking</dt>
+<dd><strong>predict</strong> the new location of the object in the next frame using <strong>estimated dynamics</strong> Then we <strong>update</strong> based upon measurements.</dd>
+</dl>
 <table border="1" class="docutils">
 <colgroup>
 <col width="54%" />
