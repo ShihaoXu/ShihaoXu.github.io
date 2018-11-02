@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="徐世豪" />
+    <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
+
+    <title>Reading Notes of Classic Shell Scripting - 汪酱的blog</title>
+
+   
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous" />
+      <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+            crossorigin="anonymous">
+
+
+      <link rel="stylesheet" href="/theme/css/pygment.css" />
+      <link rel="stylesheet" href="/theme/css/voidybootstrap.css" />
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" integrity="sha384-FFgGfda92tXC8nCNOxrCQ3R8x1TNkMFqDZVQdDaaJiiVbjkPBXIJBx0o7ETjy8Bh" crossorigin="anonymous"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+   
+    <nav class="navbar navbar-default">
+      <div class="container">
+	   <div class="navbar-header">
+		<button type="button" class="navbar-toggle" 
+				data-toggle="collapse" data-target="#main-navbar-collapse">
+		  <span class="sr-only">Toggle navigation</span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/" rel="home">
+          <i class="fa fa-home fa-fw fa-lg"> </i> </a>
+       </div>
+
+      <div class="collapse navbar-collapse" id="main-navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="">
+              <a href="/archives.html">Archives</a>
+            </li>
+          <li class="divider"></li>
+        </ul> <!-- /nav -->
+      </div> <!-- /navbar-collapse -->
+	  </div> <!-- /container -->
+    </nav> <!-- /navbar -->
+
+	<div class="jumbotron" id="overview">
+	  <div class="container">
+		<h1><a href="/">汪酱的blog</a></h1>
+		<p class="lead">I'm just thinking a lot about the site subtitle</p>
+	  </div>
+	</div>
+
+    <div class="container" id="main-container">
+      <div class="row">
+        <div class="col-md-9" id="content">
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
+<abbr class="article-header-date">
+  Sat 09 June 2018
+</abbr> <h1>
+  <a href="/reading-notes-of-classic-shell-scripting.html" rel="bookmark"
+     title="Permalink to Reading Notes of Classic Shell Scripting">
+    Reading Notes of <cite>Classic Shell Scripting</cite>
+  </a>
+</h1><div class="article-header-info">
+  <p>
+      Posted by <a href="/author/shihao-xu.html">Shihao Xu</a>
+    in 
+    <a href="/category/reading-notes.html">
+      Reading Notes</a>
+    &nbsp;&nbsp;
+  </p>
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<div class="section" id="chapter-6-variables-making-decisions-and-repeating-actions">
+<h2>Chapter 6 - Variables, Making Decisions, and Repeating Actions</h2>
+<div class="section" id="variables-and-arithmetic">
+<h3>6.1 Variables and Arithmetic</h3>
+<p>We described the basics of shell variable names and values in &quot;Variables&quot; [2.5.2]. In addition, shell scripts and functions have <strong>positional parameter</strong>, which is a fancy term for &quot;command-line arguments&quot;.</p>
+<p>The POSIX shell provides a notation for inline arithmetic called <strong>arithmetic expansion</strong>. The shell evaluates arithmetic expressions inside <code>$((...))</code>, and places the results back into the text of the command.</p>
+<div class="section" id="variable-assignment-and-the-environment">
+<h4>6.1.1 Variable Assignment and the Environment</h4>
+<p>Normal Shell Variable assignment in [2.5.2].</p>
+<p>Two similar commands provide variable management.</p>
+<ul>
+<li><p class="first"><code>readonly</code> command makes variables read-only.</p>
+</li>
+<li><p class="first"><code>export</code> command puts variables into the environment. <strong>The environment</strong> is simply a list of name-value pairs that is available to every running program. <strong>New processes inherit the environment from their parent, and are able to modify it before creating new child processes of their own.</strong></p>
+<div class="highlight"><pre><span></span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/bin <span class="c1"># update PATH</span>
+<span class="nb">export</span> PATH <span class="c1"># export it, this is consistent with the original Bourne Shell: two-step process</span>
+</pre></div>
+</li>
+</ul>
+<p>The POSIX standard: do the assignment and command together:</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="nb">readonly</span> <span class="nv">hours_per_day</span><span class="o">=</span><span class="m">24</span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/bin
+</pre></div>
+</blockquote>
+<p><strong>Print the current environment</strong>: <code>$ export -p</code></p>
+<p>Variables may be added to program's environment without permanently affecting the environment of the shell of subsequent commands:</p>
+<ul>
+<li><p class="first"><code>PATH=/bin:/usr/bin awk '...' file1 file2 # done by prefixing the assignment to the command name and args</code>. This changes the value of <code>PATH</code> <strong>only</strong> for execution of the single <code>awk</code> command.</p>
+</li>
+<li><p class="first">The <code>env</code> command may be used to remove variables from a program's environment, or to temprarily change environment variable values: <code>env -i PATH=$PATH HOME=$HOME LC_ALL=C awk '...' file1 file2</code>. The <code>-i</code> option <strong>initializes</strong> the environment; i.e., throws away any inherited values, passing in to
+the program only those variables named on the command line.</p>
+</li>
+<li><p class="first">the <code>unset</code> command removes variables and functions from the running shell:</p>
+<div class="highlight"><pre><span></span><span class="nb">unset</span> variable_name1
+<span class="nb">unset</span> -v variable_name2 <span class="c1"># unset variable explicitly</span>
+
+who_is_on<span class="o">()</span> <span class="o">{</span>
+  who <span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span> <span class="p">|</span> sort -u <span class="c1"># generate sorted list of users</span>
+<span class="o">}</span>
+<span class="nb">unset</span> -f who_is_on <span class="c1"># unset function</span>
+</pre></div>
+</li>
+</ul>
+<p><strong>The assignment</strong> <code>myvar=</code> doesn't remove <code>myvar</code>, it merely sets it to the null string. <code>unset myvar</code> removes it completely. <strong>Differentiate &quot;the variable is set&quot; and &quot;the variable is set but not null&quot;</strong>.</p>
+</div>
+<div class="section" id="parameter-expansion">
+<h4>6.1.2 Parameter Expansion</h4>
+<p><strong>Parameter Expansion</strong> is the process by which the shell provides the value of a variable for use in the program</p>
+<div class="highlight"><pre><span></span><span class="nv">reminder</span><span class="o">=</span><span class="s2">&quot;Time to go to the dentist!&quot;</span>
+sleep <span class="m">120</span> <span class="c1"># wait 2 minutes</span>
+<span class="nb">echo</span> <span class="nv">$reminder</span>
+</pre></div>
+<p>The shell has more complicated forms that are useful in more specialized situations. All of those forms enclose the var's namme in braces <code>${varialbe}</code> and then add additional syntax telling the shell what to do. Braces by themselves are also useful, should you need to immediately follow a variable name with
+a character that might otherwise be interpreted as part of the name, e.g., <code>echo _${reminder}_</code>.</p>
+<p>By default, <strong>undefined variables</strong> expand to the null string. <code>rm -rf /$MYPROGRAM # disaster!!!</code></p>
+<div class="section" id="expansion-operators">
+<h5>6.1.2.1 Expansion operators</h5>
+<p>This group of string-handling operators tests for the existence of variables and allow substitution of default values under certain conditions.</p>
+<ul class="simple">
+<li><code>${varname:-word}</code>: return value if <cite>varname</cite> is set and isn't null, otherwise return <cite>word</cite></li>
+<li><code>${varname:=word}</code>: if <cite>varname</cite> exists and isn't null, return its value; otherwise, set it to <cite>word</cite> and then return its value.</li>
+</ul>
+<p>todo</p>
+</div>
+<div class="section" id="positional-parameters">
+<h5>6.1.2.2 Positional Parameters</h5>
+<dl class="docutils">
+<dt>Positional Parameters</dt>
+<dd>represent a shell script's command-line arguments. They also represent a function's arguments within shell function. Individual arguments are named by integer numbers. You have to enclose the number in braces if it's greater than nine.</dd>
+</dl>
+<p>You can apply all of the value-testing and pattern-matching operators from the previous section to the positional parameters as well.</p>
+<div class="highlight"><pre><span></span><span class="nb">echo</span> first arg is <span class="nv">$1</span>
+<span class="nb">echo</span> tenth arg is <span class="si">${</span><span class="nv">10</span><span class="si">}</span>
+
+<span class="nv">filename</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="p">/dev/tty</span><span class="si">}</span>
+</pre></div>
+<p><strong>&quot;Special variable&quot;</strong></p>
+<ul class="simple">
+<li><code>$#</code>: provides the total number of arguments passed to the shell script or function is useful for creating loops to process options and arguments.</li>
+<li><code>$*</code>, <code>$&#64;</code>: represents all the command-line arguments at once. They can be used to pass the command-line arguments to a program being run by a script or function.<ul>
+<li><code>&quot;$*&quot;</code>: represents all the command-line arguments as a single string. <strong>The first character of</strong> <code>$IFS</code> <strong>is used as the separator for the different values to create the string</strong>.</li>
+<li><code>&quot;$&#64;&quot;</code>: represents all the command-line arguments as separate, individual strings. Equivalent to <code>&quot;$1&quot; &quot;$2&quot; ...</code>. This is the best way to pass the arguments on to another program, since it preserves any white space embedded within each argument.</li>
+</ul>
+</li>
+</ul>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><span class="c1"># “$#”</span>
+<span class="k">while</span> <span class="o">[</span> <span class="nv">$#</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span>
+<span class="k">do</span>
+  <span class="k">case</span> <span class="nv">$1</span> in
+  -x<span class="o">)</span> ...
+      <span class="p">;;</span>
+  <span class="k">esac</span>
+  <span class="nb">shift</span>
+<span class="k">done</span>
+
+<span class="c1"># &quot;$*&quot;</span>
+<span class="nb">printf</span> <span class="s2">&quot;The arguments were %s\n&quot;</span> <span class="s2">&quot;</span><span class="nv">$*</span><span class="s2">&quot;</span>
+
+<span class="c1"># &quot;$@&quot;</span>
+lpr <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+<p>The <code>set</code> command, when invoked without options, <strong>sets the value of the positional parameters, throwing away any previously existing values</strong>: <code>set -- hi there how do you do</code></p>
+<p>The <code>shift</code> command &quot;lops off&quot; positional parameters from the list, starting at the left. It takes an optional argument, which is a count of how many arguments to shift off the list. The value of <code>$#</code> changes accordingly.</p>
+<div class="highlight"><pre><span></span><span class="nb">set</span> -- hello <span class="s2">&quot;hi there&quot;</span> greetings
+<span class="nb">echo</span> there are <span class="nv">$#</span> total arguments  <span class="c1"># 3</span>
+<span class="k">for</span> i in <span class="nv">$*</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> i is <span class="nv">$i</span>
+<span class="k">done</span>
+<span class="c1"># i is hello ...</span>
+<span class="k">for</span> i in <span class="nv">$@</span>      <span class="c1"># without quotes, $* and $@ are the same</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> i is <span class="nv">$i</span>
+<span class="k">done</span>
+
+<span class="k">for</span> i in <span class="s2">&quot;</span><span class="nv">$*</span><span class="s2">&quot;</span>    <span class="c1"># with quotes, $* is one string</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> i is <span class="nv">$i</span>
+<span class="k">done</span>
+
+<span class="k">for</span> i in <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>    <span class="c1"># with quotes, $@ preserves exact argument values</span>
+<span class="k">do</span>
+  <span class="nb">echo</span> i is <span class="nv">$i</span>
+<span class="k">done</span>
+
+<span class="nb">shift</span>
+<span class="nb">echo</span> there are now <span class="nv">$#</span> arguments
+</pre></div>
+</div>
+<div class="section" id="special-variables">
+<h5>6.1.2.3 Special Variables</h5>
+<p>The shell has a number of built-in variables.</p>
+<p>todo: table 6-3, POSIX built-in shell variables.</p>
+</div>
+</div>
+<div class="section" id="arithmetic-expansion">
+<h4>6.1.3 Arithmetic Expansion</h4>
+<p>The shell arithmetic operators are equivalent to their counterparts in the C language. Precedence and associativity are the same as in C. The expressions must be enclosed in <code>$((...))</code>.</p>
+<p>todo: table 6-4 arithmetic operators in order from highest precedence to lowest.</p>
+<p>Parentheses can be used to group subexpressions. The relational operators procude a numeric result that acts as a truth value: 1 for true and 0 for false. For the logical AND and OR operators, any nonzero value functions as true.</p>
+<p>The <code>++`and :code:</code>--` operators are optional: conforming implementations do not have to support them. The standard allows an implementation to support additional operators, such as
+<code>,</code> - the C comma operator, and <code>**</code> - exponentiation operator. The standard only describes arithmetic using constant values. In practice, all shells that support <code>$((...))</code> allow you to provide a variable name
+without prefixing it with <code>$</code>, e.g., <code>echo $((x=x+2))</code>.</p>
+<p>According to POSIX, arithmetic is done using C signed <code>long</code> integers.</p>
+</div>
+</div>
+<div class="section" id="exit-statuses">
+<h3>6.2 Exit Statuses</h3>
+<p>Every command - be it built-in, shell function, or external - when it exits, returns a small integer value to the program that invoked it. This is known as <strong>the programs exit status</strong>.
+There are a number of ways to use a program's exit status when programming with the shell.</p>
+<div class="section" id="exit-status-values">
+<h4>6.2.1 Exit Status Values</h4>
+<p>By convention, an exit status of 0 indicates &quot;success&quot;. Any other exit status indicates failure. The build-in variable <code>?</code> (accessed as <code>$?</code>) contains <strong>the exit value of the last program that the shell ran</strong>.
+The POSIX standard defines the exit statuses and their meanings, as shown here (Table 6-5):</p>
+<p>todo: read this</p>
+<ul class="simple">
+<li>0: command exited successfully</li>
+<li>&gt;0: Failure during redirection or word expansion (tilde, variable, command, and arithmetic expansions, as well as word splitting).</li>
+<li>1-125: command exited unsuccesfully. The meanings of particular exit values are defined by each individual command.</li>
+<li>126: command found, but file was not executable</li>
+<li>127: command not found</li>
+<li>&gt;128: command died due to receiving a signal.</li>
+</ul>
+<p><strong>Only the low-order eight bits are returned to the parent process</strong>, so an exit status greater than 255 is replaced by the remainder of that value divided by 256.</p>
+<p><strong>Your shell script can pass an exit value back to its caller</strong>, using the <code>exit</code> command. Simply pass a number to it as the first argument. The script will exit immediately, and the caller receives that number as your script's exit value. e.g., <code>exit 42</code></p>
+</div>
+<div class="section" id="if-elif-else-fi">
+<h4>6.2.2 if-elif-else-fi</h4>
+<p>The <code>if</code> statement can use a program's exit status. The general syntax is:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> commands-pipeline
+  <span class="o">[</span> commands-pipeline ... <span class="o">]</span>
+<span class="k">then</span>
+  statements-if-true-1
+<span class="o">[</span> <span class="k">elif</span> commands-pipeline
+    <span class="o">[</span> commands-pipeline ... <span class="o">]</span>
+<span class="k">then</span>
+  statements-if-true-2
+... <span class="o">]</span>
+<span class="o">[</span> <span class="k">else</span>
+    statements-if-all-else-fails <span class="o">]</span>
+<span class="k">fi</span>
+</pre></div>
+<p>The square brackets indicate optional parts; they are not typed literally. The shell's syntax is most notable for the use of opening and closing keywords to
+bracket statement groups. The exit status of the entire <code>if...fi</code> statement is that of the last command executed following a <code>then</code> or <code>else</code>. If none was executed, the exit status is 0.</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> grep pattern myfile &gt; /dev/null
+<span class="k">then</span>
+  ... <span class="c1"># pattern is there</span>
+<span class="k">else</span>
+  ... <span class="c1"># pattern is not there</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<div class="section" id="logical-not-and-and-or">
+<h4>6.2.3 Logical NOT, AND, and OR</h4>
+<ul class="simple">
+<li>Logical NOT: <code>! commands-pipeline</code></li>
+<li><strong>Short-circuit</strong> logical AND： <code>commands-pipeline-1 &amp;&amp; commands-pipeline-2</code></li>
+<li><strong>Short-circuit</strong> logical OR:  <code>commands-pipeline-1 || commands-pipeline-2</code></li>
+</ul>
+<p>You will likely see older shell scripts that use <strong>the colon command</strong>: <code>(:)</code>, which does nothing, just to simulate a logical NOT operator:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> grep pattern myfile &gt; /dev/null
+<span class="k">then</span>
+  : <span class="c1"># do nothing</span>
+<span class="k">fi</span>
+</pre></div>
+<p>Some vendor shell scripts use constructs like this:</p>
+<div class="highlight"><pre><span></span>some_command <span class="o">&amp;&amp;</span> <span class="o">{</span>
+  one <span class="nb">command</span>
+  a second <span class="nb">command</span>
+  and a third <span class="nb">command</span>
+<span class="o">}</span>
+</pre></div>
+<p>The braces serve to group all the commands together, which are executed only if <code>come_command</code> succeeds. This would be much more cleanly written using a simple <code>if</code>:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> some_command
+<span class="k">then</span>
+  one <span class="nb">command</span>
+  a second <span class="nb">command</span>
+  and a third <span class="nb">command</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<div class="section" id="the-test-command">
+<h4>6.2.4 The <code>test</code> Command</h4>
+<p>The <code>test</code> command produces no regular output, instead being used exclusively for its exit status. <code>test</code> accepts a number of different arguments that control what kind of test it performs.
+The <code>test</code> command has a variant form: <code>[ ... ]</code>. It works identically to the command. e.g., these are the same: <code>if test &quot;$str1&quot; = &quot;$str2&quot;</code>, <code>if [ &quot;$str1&quot; = &quot;$str2&quot; ]</code>.</p>
+<p>POSIX describes the arguments to <code>test</code> as &quot;expressions&quot;. There are unary and binary expressions. The binary expressions have two operands with an embedded operator that performs some sort of comparison.
+<code>man test</code> for the expressions (options).</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span>
+<span class="k">then</span>
+  <span class="nb">echo</span> <span class="nv">$file</span> is a regular file
+<span class="k">fi</span>
+
+<span class="k">fi</span> <span class="o">[</span>! -x <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span>
+<span class="k">then</span>
+  <span class="nb">echo</span> <span class="nv">$file</span> is NOT executable
+<span class="k">fi</span>
+</pre></div>
+<p>XSI-conformant systems have a more complicated version of <code>test</code>. Expressions can be combined with <code>-a</code> for logical AND and with <code>-o</code> for logical OR. <code>-a</code> has higher precedence thant <code>-o</code>, and <code>=</code> and <code>!=</code> have higher precedence than the other binary operators. Parentheses may be used for grouping and to change evaluation order.
+There is a difference between using <code>-a</code> &amp; <code>-o</code>, which are <code>test</code> operators, and <code>&amp;&amp;</code> &amp; <code>||</code>, which are shell operators.</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$str</span><span class="s2">&quot;</span> -a -f <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span>  ... <span class="k">fi</span>  <span class="c1"># two condifions, one test command</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$str</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> -f <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span> ... <span class="k">fi</span> <span class="c1"># two commands, short-circuit evaluation</span>
+<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$str</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> -f <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span> ...    <span class="c1"># syntax error</span>
+  ...
+<span class="k">fi</span>
+</pre></div>
+<p>For portability, the POSIX standard recommends the use of shell-level tests for multiple conditions, instead of the <code>-a</code> and <code>-o</code> operators:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> ! <span class="o">[</span> -w <span class="s2">&quot;</span><span class="nv">$file</span><span class="s2">&quot;</span> <span class="o">]</span>
+<span class="k">then</span>
+  <span class="c1"># $file exists and is a regular file, but is not writable</span>
+  <span class="nb">echo</span> <span class="nv">$0</span>: <span class="nv">$file</span> is not writable, giving up. &gt;<span class="p">&amp;</span><span class="m">2</span>
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+<span class="nb">exit</span> <span class="m">0</span>
+</pre></div>
+<p>Some traps associated with <code>test</code>:</p>
+<ul>
+<li><p class="first">Arugments are required: All shell variable expansions should be quoted so that <code>test</code> receives an argument, even if it turns out to be the null string. <code>if [ -f &quot;$file&quot; ] ...</code> is correct, <code>if [ -f $file ] ...</code> is incorrect: should <code>$file</code> happen to be empty, <code>test</code> receives one less argument than it needs, leading to strange behavior.</p>
+</li>
+<li><p class="first">String comparisons are tricky: If a string value is empty, or starts with a minus, <code>test</code> could become confused. This leads to the rather ugly, but widespread convention of prefixing string values with the letter X: <code>if [ &quot;X$answer&quot; = &quot;Xyes&quot; ]</code>. The algorithm just given for <code>test</code>, along with always quoting all arguemtns, should be enough for a modern version of <code>test</code>, even if the first argument starts with a minus.</p>
+</li>
+<li><p class="first"><code>test</code> can be fooled: When checking the access of files mounted over a network, it is possible for unusual combinations of mount options and file permissions to &quot;fool&quot; <code>test</code> into thinking that a file is readable, when in fact the operating system won't let you access the file. Thus, <code>test -r a_file &amp;&amp; cat a_file</code> should always work in principle, it can fail in practice. All you can do is add another alyer of <strong>defensive programming</strong>:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">test</span> -r a_file <span class="o">&amp;&amp;</span> cat a_file
+<span class="k">then</span>
+  <span class="c1"># cat worked, proceed on</span>
+<span class="k">else</span>
+  <span class="c1"># attempt to recover, issue an error message, etc.</span>
+<span class="k">fi</span>
+</pre></div>
+</li>
+<li><p class="first">Numeric tests are integer-only.</p>
+</li>
+</ul>
+<p>An improved version of <cite>finduser</cite> script presented in &quot;Accessing Shell Script Arguments&quot; [2.6].</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/sh</span>
+
+<span class="c1"># finduser --- see if user named by first argument is logged in</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">1</span> <span class="o">]</span>
+<span class="k">then</span>
+  <span class="nb">echo</span> Usage: finduser username &gt;<span class="p">&amp;</span><span class="m">2</span>  <span class="c1"># the &gt;&amp;2 sends the output to standard error.</span>
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+who <span class="p">|</span> grep <span class="nv">$1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-case-statement">
+<h3>6.3 The <code>case</code> Statement</h3>
+<p>If you need to check a variable for one of many values:</p>
+<div class="highlight"><pre><span></span><span class="k">case</span> <span class="nv">$1</span> in
+  -f<span class="o">)</span>
+    ... <span class="c1"># code for -f option</span>
+    <span class="p">;;</span>
+  -d <span class="p">|</span> --directory<span class="o">)</span> <span class="c1"># long option allowed</span>
+    ... <span class="c1"># code for -d option</span>
+    <span class="p">;;</span>
+  *<span class="o">)</span>
+    <span class="nb">echo</span> <span class="nv">$1</span>: unknown option &gt;<span class="p">&amp;</span><span class="m">2</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+    <span class="p">;;</span> <span class="c1"># is good form before `esac&#39;, but not required`</span>
+<span class="k">esac</span>
+</pre></div>
+<p>The value to be tested appears between <code>case</code> and <code>in</code>. <strong>The value is tested against each list of shell patterns in turn</strong>.  When one matches, the corresponding body of code, up to the <code>;;</code>, is executed.
+Multiple patterns may be used, separated by the <code>|</code> charactor, which in this context means &quot;or&quot;. The patterns may contain any <strong>shell wildcard characters</strong>, and <strong>variable; command, and arithmetic substitutions</strong>
+are performed on the value before it is used for pattern matching.</p>
+<p>The unbalanced right parenthesis after each pattern list is perhaps surprising; this is the only instance in the shell language of <strong>unbalenced delimiters</strong>.</p>
+<p>It is typical, but not required, to use a final pattern of <code>*</code>, which acts as a default case. This is usually where you would print a diagnostic message and exit. The final case does not require the trailing
+<code>;;</code>, although it's definetely good form to include it.</p>
+</div>
+<div class="section" id="looping">
+<h3>6.4 Looping</h3>
+<div class="section" id="for-loops">
+<h4>6.4.1 <code>for</code> loops</h4>
+<p>The <cite>for</cite> loop iterates over a list of objects, executing the loop body for each individual object in turn. The objects may be <strong>command-line arguments</strong>, <strong>filenames</strong>, or <strong>anything else that can be created in list format</strong>.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> i in atlbrochure*.xml
+<span class="k">do</span>
+  <span class="nb">echo</span> <span class="nv">$i</span>
+  mv <span class="nv">$i</span> <span class="nv">$i</span>.old
+  sed <span class="s1">&#39;s/Atlanta/&amp;, the capital of the South/&#39;</span> &lt; <span class="nv">$i</span>.old &gt; <span class="nv">$i</span>
+<span class="k">done</span>
+</pre></div>
+<p>The <cite>list</cite> part of the <cite>for</cite> loop is optional. When omitted, the shell loops over the command-line arguments. Specifically, it's as if you had typed <code>for i in &quot;$#&quot;</code>:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> i     <span class="c1"># loop over command-line args</span>
+<span class="k">do</span>
+  <span class="k">case</span> <span class="nv">$i</span> in
+    -f<span class="o">)</span> ...
+      <span class="p">;;</span>
+    -x<span class="o">)</span> ...
+      <span class="p">;;</span>
+  <span class="k">esac</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<div class="section" id="while-and-until-loops">
+<h4>6.4.2 <cite>while</cite> and <cite>until</cite> Loops</h4>
+<div class="highlight"><pre><span></span><span class="k">while</span> condition
+<span class="k">do</span>
+  statements
+<span class="k">done</span>
+
+<span class="k">until</span> condition
+<span class="k">do</span>
+  statements
+<span class="k">done</span>
+</pre></div>
+<p>As for the <code>if</code> statement, <code>condition</code> may be a simple list of commands, or commands involving <code>&amp;&amp;</code> and <code>||</code>.</p>
+<p><code>while</code> continues to loop as long as <code>condition</code> exited successfully. <code>until</code> loops as long as <code>condition</code> exits unsuccessfully.</p>
+<div class="highlight"><pre><span></span><span class="nv">pattern</span><span class="o">=</span>...
+<span class="k">while</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$string</span><span class="s2">&quot;</span> <span class="o">]</span>
+<span class="k">do</span>
+  process current value of <span class="nv">$string</span>
+  <span class="nv">string</span><span class="o">=</span><span class="si">${</span><span class="nv">string</span><span class="p">%</span><span class="nv">$pattern</span><span class="si">}</span>
+<span class="k">done</span>
+</pre></div>
+<div class="highlight"><pre><span></span>print <span class="s2">&quot;Enter username: &quot;</span>
+<span class="nb">read</span> user
+<span class="k">until</span> who <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$user</span><span class="s2">&quot;</span> &gt; /dev/null
+<span class="k">do</span>
+  sleep <span class="m">30</span>
+<span class="k">done</span>
+</pre></div>
+<p><strong>It is possible to pipe into a</strong> <code>while</code> <strong>loop, for iterating over each line of input</strong>. In such cases, the command used for the <cite>while</cite> loop's condition is usually the <cite>read</cite> command.</p>
+<div class="highlight"><pre><span></span>data_generation_command <span class="p">|</span>
+  <span class="k">while</span> <span class="nb">read</span> name rank serial_no
+  <span class="k">do</span>
+    ...
+  <span class="k">done</span>
+</pre></div>
+<ul class="simple">
+<li>In &quot;Additional Redirection Operators&quot; [7.3.1], we present a real-life example when discussing here-documents.</li>
+<li>In &quot;Command Substitution&quot; [7.6], we show that you can also <strong>pipe the output of a loop into another command</strong>.</li>
+</ul>
+</div>
+<div class="section" id="break-and-continue">
+<h4>6.4.3 <cite>break</cite> and <cite>continue</cite></h4>
+<div class="highlight"><pre><span></span><span class="nb">printf</span> <span class="s2">&quot;Enter username: &quot;</span>
+<span class="nb">read</span> user
+<span class="k">while</span> <span class="nb">true</span>
+<span class="k">do</span>
+  <span class="k">if</span> who <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$user</span><span class="s2">&quot;</span> &gt; /dev/null
+  <span class="k">then</span>
+    <span class="nb">break</span>
+  <span class="k">fi</span>
+
+  sleep <span class="m">30</span>
+<span class="k">done</span>
+</pre></div>
+<p>The <code>true</code> command does nothing but exit successfully. The less-used command <code>false</code>, does nothing but exit unsuccessfully.</p>
+<p>The <code>continue</code> command is used to start the next iteration of a loop early, before reaching the bottom of a loop's body.</p>
+<p>Both the <code>break</code> and the <code>continue</code> commands take an optional numeric argument. This indicates how many enclosing loops should be broken out of or continued. Use <code>$((..))</code> if the
+loop count needs to be an expression calculated at runtime.</p>
+</div>
+<div class="section" id="shift-and-option-processing">
+<h4>6.4.4 <code>shift</code> and Option processing</h4>
+<p><cite>shift</cite> is used when working with command-line arguments. Its job is to move them left by one (or more). After executing <cite>shift</cite>, the original <cite>$1</cite> is lost; it is replaced with the old value of <cite>$2</cite>, and so on.
+The number of <cite>$#</cite> decreases each time, as well. <cite>shift</cite> accepts an optional argument, which is the number of places to shift by: the default is 1.</p>
+<p>Simple option processing is often done by combining <cite>while</cite>, <cite>case</cite>, <cite>break</cite>, and <cite>shift</cite>, like so:</p>
+<div class="highlight"><pre><span></span><span class="c1"># set flag vars to empty</span>
+<span class="nv">file</span><span class="o">=</span> <span class="nv">verbose</span><span class="o">=</span> <span class="nv">quiet</span><span class="o">=</span> <span class="nv">long</span><span class="o">=</span>
+
+<span class="k">while</span> <span class="o">[</span> <span class="nv">$#</span> -gt <span class="m">0</span> <span class="o">]</span>  <span class="c1"># loop until no args left</span>
+<span class="k">do</span>
+  <span class="k">case</span> <span class="nv">$1</span> in
+  -f<span class="o">)</span>   <span class="nv">file</span><span class="o">=</span><span class="nv">$2</span>
+        <span class="nb">shift</span>
+        <span class="p">;;</span>
+  -v<span class="o">)</span>   <span class="nv">verbose</span><span class="o">=</span><span class="nb">true</span>
+        <span class="nv">quiet</span><span class="o">=</span>
+        <span class="p">;;</span>
+  -q<span class="o">)</span>   <span class="nv">quiet</span><span class="o">=</span><span class="nb">true</span>
+        <span class="nv">verbose</span><span class="o">=</span>
+        <span class="p">;;</span>
+  -l<span class="o">)</span>   <span class="nv">long</span><span class="o">=</span><span class="nb">true</span>
+        <span class="p">;;</span>
+  --<span class="o">)</span>   <span class="nb">shift</span>        <span class="c1"># by convention, -- ends options</span>
+        <span class="nb">break</span>
+        <span class="p">;;</span>
+  -*<span class="o">)</span>   <span class="nb">echo</span> <span class="nv">$0</span>: <span class="nv">$1</span>: unrecognized option &gt;<span class="p">&amp;</span><span class="m">2</span>
+        <span class="p">;;</span>
+  *<span class="o">)</span>    <span class="nb">break</span>        <span class="c1"># Nonoption argument, break while loop</span>
+        <span class="p">;;</span>
+  <span class="k">esac</span>
+
+  <span class="nb">shift</span>
+<span class="k">done</span>
+</pre></div>
+<p>After this loop has finished, the various flag variables are set, and may be tested using <code>test</code> or <code>case</code>. <strong>Any remaining nonoption arguments are still available for further processing in</strong> <code>&quot;$&#64;&quot;</code>.</p>
+<p>The <code>getopts</code> command simplifies option processing. It understands the POSIX option conventions that allow grouping of multiple option letters together, and can be used to loop through command-line arguments one at a time.</p>
+<p>todo</p>
+</div>
+</div>
+<div class="section" id="functions">
+<h3>6.5 Functions</h3>
+<p>Functions must be defined before they can be used. This is done either at the beginning of a script, or by having them in a separate file and sourcing them with <strong>the &quot;dot&quot; (.) command</strong> (will be discussed in [7.9]).</p>
+<div class="highlight"><pre><span></span><span class="c1"># wait_for_user --- wait for a user to log in</span>
+<span class="c1">#</span>
+<span class="c1"># usage: wait_for_user user [ sleep time ]</span>
+
+wait_for_user <span class="o">()</span> <span class="o">{</span>
+  <span class="k">until</span> who <span class="p">|</span> grep <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> &gt; /dev/null
+  <span class="k">do</span>
+    sleep <span class="si">${</span><span class="nv">2</span><span class="k">:-</span><span class="nv">30</span><span class="si">}</span>
+  <span class="k">done</span>
+<span class="o">}</span>
+</pre></div>
+<p>Functions are invoked (executed) the same way a command is: by providing its name and any corresponding arguments. You can invoke this function in one of two ways:</p>
+<div class="highlight"><pre><span></span>wait_for_user tolstoy <span class="c1"># wait for tolstoy, check every 30 seconds</span>
+wait_for_user tolstoy <span class="m">60</span> <span class="c1"># wait for tolstoy, check every 60 seconds</span>
+</pre></div>
+<p>Within a function body, the positional parameters (<code>$1</code>, <code>$2</code>, etc., <code>$#</code>, <code>$*</code>, and <code>$&#64;</code>) refer to the <em>function's</em> arguments. The parent script's arguments are temporarily <strong>shadowed</strong>, or hidden,
+by the function's arguments. <code>$0</code> remains the name of the parent script. When the function finishes, the original command-line arguments are restored.</p>
+<p>Witnin a shell function, the <code>return</code> command serves the same function as <code>exit</code> and works the same way. Note that using <code>exit</code> in the body of a shell function terminates the entire shell script!</p>
+<div class="highlight"><pre><span></span>answer_the_question <span class="o">()</span> <span class="o">{</span>
+  ...
+  <span class="k">return</span> <span class="m">42</span>
+<span class="o">}</span>
+</pre></div>
+<p>Since the <code>return</code> statement returns an exit value to the caller, you can use functions in <code>if</code> and <code>while</code> statements.</p>
+<div class="highlight"><pre><span></span><span class="c1"># equal --- compare two string</span>
+equal <span class="o">(){</span>
+  <span class="k">case</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> in
+    <span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span><span class="o">)</span>  <span class="k">return</span> <span class="m">0</span> <span class="p">;;</span> <span class="c1"># they match</span>
+  <span class="k">esac</span>
+  <span class="k">return</span> <span class="m">1</span>  <span class="c1"># they don&#39;t match</span>
+<span class="o">}</span>
+<span class="c1"># then, you can use the equal() function:</span>
+<span class="c1"># if equal &quot;$a$&quot; &quot;$b&quot; ...</span>
+<span class="c1"># if ! equal &quot;$c&quot; &quot;$d&quot;...</span>
+</pre></div>
+<p>One item to note here is <strong>the use of double quotes</strong> in the <code>case</code> pattern list. This <strong>forces the value to be trated as a literal string, rather than as a shell pattern</strong>. The quotes around <code>$1</code> don't hert, but aren't necessary here.</p>
+<p>Functions return integer exit status values, just like commands. For functions zero means success, nonzero means failure. To return some other value, a function should either set a global shell variable, or print the value, with the parent script
+capturing it using <strong>command substitution</strong> (see [7.6]):</p>
+<div class="highlight"><pre><span></span>myfunc <span class="o">()</span> <span class="o">{</span>
+  ...
+<span class="o">}</span>
+...
+<span class="nv">x</span><span class="o">=</span><span class="k">$(</span>myfunc <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span><span class="k">)</span>
+</pre></div>
+<p>todo: Example 5-6 in &quot;Tag Lists&quot; ...</p>
+<p>Functions (at least in the POSIX shell) have no provision for local variables (some shell do provide for local variables, but not necessarily using the same syntax). Thus, <strong>all functions share variables with the parent script</strong>; this means you have to be careful not to
+change something that the parent script doesn't expect to be changed, such as <code>PATH</code>. It also means that other state is shared, such as the current directory and traps for signals. (Signals and traps are discussed in &quot;Trapping Process Signals&quot; [13.3.2])</p>
+</div>
+<div class="section" id="summary">
+<h3>6.6 Summary</h3>
+<p>todo</p>
+</div>
+</div>
+<div class="section" id="chapter-7-input-and-output-files-and-command-evaluation">
+<h2>Chapter 7 - Input and Output, Files, and Command Evaluation</h2>
+<div class="section" id="standard-input-output-and-error">
+<h3>7.1 Standard Input, Output, and Error</h3>
+<dl class="docutils">
+<dt>Standard I/O</dt>
+<dd>programs should have a data source, a data sink (where data goes), and a place to report problems. These are referred to by the names <strong>standard input</strong>, <strong>standard output</strong>, <strong>standard error</strong>, respectively. A program should neither know, nor care, what kind of device
+lies behind its input and outputs: disk files, terminals, tape drives, network connections, or even another running program. A program can expect these standard places to be already open and ready to use then it starts up.</dd>
+<dt>Filter programs</dt>
+<dd>Many Unix programs follow this design (read from standard input, write standard output, and send error message to standard error). Such programs are called <strong>filters</strong> because they &quot;filter&quot; streams of data, each one performing some operation on the data stream and
+passing it down the pipeline to the next one.</dd>
+</dl>
+</div>
+<div class="section" id="reading-lines-with-read">
+<h3>7.2 Reading Lines with <code>read</code></h3>
+<div class="highlight"><pre><span></span><span class="nv">x</span><span class="o">=</span>abc <span class="p">;</span> <span class="nb">printf</span> <span class="s2">&quot;x is now &#39;%x&#39;. Enter new value: &quot;</span> <span class="nv">$x</span> <span class="p">;</span> <span class="nb">read</span> x
+<span class="c1"># (output:) x is now &#39;abc&#39;. Enter new value: PDQ</span>
+<span class="nb">echo</span> <span class="nv">$x</span>
+<span class="c1"># (output:) PDQ</span>
+</pre></div>
+<p><code>read</code> can read values into multiple variables at one time. In this case characters in <code>$IFS</code> separate the input line into individual words <code>read name rank serno</code>. A typical use is processing the
+<code>/etc/passwd</code> file. The standard format is seven colon-separated fields: username, encrypted password, numeric user ID, numeric group ID, full name, home directory, and login shell.</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span>: <span class="nb">read</span> user pass uid gid fullname homedir shell <span class="p">;</span> <span class="k">do</span>
+  ... <span class="c1"># process each user&#39;s line</span>
+<span class="k">done</span> &lt; /etc/passwd
+</pre></div>
+<p>The loop does <strong>NOT</strong> say &quot;while IFS is equal to colon, read ...&quot;. Rather, the assignment to <code>IFS</code> causes <code>read</code> to use a colon as the field separator, without affecting the value of <code>IFS</code> for use in the loop body. It changes the value of <code>IFS</code> <strong>only</strong> in
+the environment inherited by <code>read</code>. This was described in <strong>&quot;Variable Assignment and the Environment&quot;</strong> [6.1.1]. The <code>while</code> loop was described in &quot;Looping&quot; [6.4].
+<code>read</code> exits with a nonzero exit status when it encounters the end of the input file. This terminates the <code>while</code> loop.</p>
+<p>The redirection from <code>/etc/passwd</code> at the end of the loop body looks odd, but necessary. An alternatime to the <code>while read ... do ... done &lt; file</code> syntax is to use <code>cat</code> in a pipeline with the loop:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Easier to read, with tiny efficiency loss in using cat:</span>
+cat /etc/passwd <span class="p">|</span>
+  <span class="k">while</span> <span class="nv">IFS</span><span class="o">=</span>: <span class="nb">read</span> user pass uid gid fullname homedir shell <span class="p">;</span> <span class="k">do</span>
+    ... <span class="c1"># process each user&#39;s line</span>
+  <span class="k">done</span>
+</pre></div>
+<p>This is a general technique: <strong>any</strong> command can be used to pipe input into <code>read</code>. This is particularly useful when <code>read</code> is used in a loop.</p>
+<p>todo</p>
+</div>
+<div class="section" id="more-about-redirections">
+<h3>7.3 More About Redirections</h3>
+<p>todo</p>
+<div class="section" id="file-descriptor-manipulation">
+<h4>7.3.2 File Descriptor Manipulation</h4>
+<p>Internally, Unix represents each process's open files with small integer numbers called <strong>file descriptors</strong>. These numbers start at zero, and go up to some system-defined limit on the number of open files. The POSIX standard leaves
+this number up to the implementation.</p>
+<p>File descriptors 0, 1 and 2 correspond to standard input, standard output, and standard error, respectively. As previously mentioned, each program starts out with these file descriptors attached to the terminal (be it a real terminal or a pseudoterminal, such as an X window). By far
+the most common activity is to change the location of one of these three file descriptors, although it is possible to manipulate others as well. e.g., <code>make 1&gt; results 2&gt; ERRS</code> sends make's standard output (file descriptor 1) to <code>results</code> and its standard error (file descriptor 2)
+to <code>ERRS</code>. You can review the error messages in a separate file with a <strong>pager</strong> or <strong>editor</strong> while you fix the problems.</p>
+<p>The default file desciptor for output redirection is standard output: i.e., file descriptor 1. The next example sends both output and error messages to the same file:</p>
+<div class="highlight"><pre><span></span>make &gt; results <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</pre></div>
+<p>The redirection <code>&gt; results</code> makes file descriptor 1 be the file <code>results</code>. The subsequent redirection, <code>2&gt;&amp;1</code>, has two parts. <code>2&gt;`redirects file descriptor 2; i.e., standard error. The :code:`&amp;1</code> is the shell's notation for &quot;wherever file descriptor 1 is&quot;. Note that the four charactors <code>2&gt;&amp;1</code> must be
+kept together on the command line. Ordering here is significant: the shell processes redirections left to right. Had the example been: <code>make 2&gt;&amp;1 &gt; results</code>, the shell would first sned standard error to wherever file descriptor 1 is -- which is still the terminal -- and then change file
+descriptor 1 to be <code>results</code>. Furthermore, <strong>the shell processes pipelines before file descriptor redirections, makeing it possible to send both standard output and standard error down the same pipeline</strong>: <code>make 2&gt;&amp;1 | ...</code>.</p>
+<p>Finally, the <code>exec</code> command may be used to change the shell's own I/O settings. When used with just I/O redirections and no arguments <code>exec</code> chagnes the shell's file descriptors.</p>
+<div class="highlight"><pre><span></span><span class="nb">exec</span> <span class="m">2</span>&gt; /tmp/<span class="nv">$0</span>.log  <span class="c1"># redirect shell&#39;s own standard error</span>
+<span class="nb">exec</span> <span class="m">3</span>&lt; /some/file   <span class="c1"># open new file descriptor 3</span>
+...
+<span class="nb">read</span> name rank serno &lt;<span class="p">&amp;</span><span class="m">3</span>  <span class="c1"># read from that file</span>
+</pre></div>
+<p>The first example line that redirects the shell's standard error should be used only in a script. If you wish to be able to undo a redirection of standard error, save the file desciptor first by copying it to a new one.</p>
+<div class="highlight"><pre><span></span><span class="nb">exec</span> <span class="m">5</span>&gt;<span class="p">&amp;</span><span class="m">2</span>            <span class="c1"># save original standard error on fd 5</span>
+<span class="nb">exec</span> <span class="m">2</span>&gt; /tmp/<span class="nv">$0</span>.log  <span class="c1"># redirect standard error</span>
+...
+<span class="nb">exec</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">5</span>            <span class="c1"># copy original back to fd 2</span>
+<span class="nb">exec</span> <span class="m">5</span>&gt;<span class="p">&amp;</span>-            <span class="c1"># close fd5, no longer needed</span>
+</pre></div>
+<p><strong>When used with arguments,</strong> <code>exec</code> <strong>serves a different purpose, which is to run the named program in place of the current shell.</strong> In other words, the shell starts the new program running in its current process.</p>
+<p>For example, suppose that you wish to do option processing using the shell, but that most of your task is accomplished by some other program. You can do it this way:</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="o">[</span> <span class="nv">$#</span> -gt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+  <span class="k">case</span> <span class="nv">$1</span> in
+    -f<span class="o">)</span> <span class="c1"># code for -f here</span>
+      <span class="p">;;</span>
+    -q<span class="o">)</span> <span class="c1"># code for -q here</span>
+      <span class="p">;;</span>
+    ...
+    *<span class="o">)</span> <span class="nb">break</span> <span class="p">;;</span>
+  <span class="k">esac</span>
+
+  <span class="nb">shift</span>
+<span class="k">done</span>
+
+<span class="nb">exec</span> real-app -q <span class="s2">&quot;</span><span class="nv">$qargs</span><span class="s2">&quot;</span> -f <span class="s2">&quot;</span><span class="nv">$fargs</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span> real-app failed, get help! <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+</pre></div>
+<p>When used this way, <code>exec</code> is a one-way operation. In other words, control never returns to the script. THe only exception is if the new program can't be invoked.
+In that case, you may wish to have &quot;emergency&quot; code that at least prints a message and then does any other possible clean-up tasks.</p>
+</div>
+</div>
+<div class="section" id="the-full-story-on-printf">
+<h3>7.4 The Full Story on <code>printf</code></h3>
+<p>todo</p>
+</div>
+<div class="section" id="quoting">
+<h3>7.7 Quoting</h3>
+<p><strong>Quoting</strong> is how you prevent the shell from interpreting things differently from what you want it to.</p>
+<p>For example,</p>
+<ul class="simple">
+<li>If you want a command to receive an argument containing metacharacters, suc as <code>*</code> or <code>?</code>, you have to quote the metacharacters. Or, quite typically,</li>
+<li>when you want to keep something as a single argument that the shell would otherwise treat as separate arguments, you have to quote the arguments.</li>
+</ul>
+<p>There are three ways to quote things.</p>
+<ol class="arabic">
+<li><p class="first"><strong>Backslash Escaping</strong>: preceding a character with a backslash: tells the shell to treat that character literally. It's the easiest way to quote a single character. <code>echo here is a star: \* and a question mark \?</code></p>
+</li>
+<li><p class="first"><strong>Single Quotes</strong>: force the shell to treat everything between the pair of quotes literally. There is no way to embed a single quote within a single-quoted string. Even backslash is not special within single quotes. If you
+need to mix single and double quotes, you can do so by careful use of backslash escaping and conctenation of differently quoted strings.</p>
+<div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="s1">&#39;He said, &quot;how&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;s tricks?&quot;&#39;</span>
+<span class="nb">echo</span> <span class="s2">&quot;She replied, \&quot;Movin&#39; along\&quot;&quot;</span>
+</pre></div>
+</li>
+<li><p class="first"><strong>Double quotes</strong>: like single quotes, double quotes <code>(&quot;...&quot;)</code> group the enclosed test as a single string. However, the shell does process the enclosed test for escaped characters and for variable, arighmetic, and command substitutions. Within double quotes,
+the characters <code>$</code>, <code>&quot;</code>, <strong>backtick</strong>, <strong>backslash</strong>, must be preceded by a <strong>backslash**if they are to be included literally. A backslash in front of any other character is not special. The sequence :code:`-newline` is removed completely, just as when
+used in the body of a script. Note that **single quotes are not special inside double quotes</strong>. They don't have to be in matching pairs, nor do they have to be escaped.</p>
+<div class="highlight"><pre><span></span><span class="nv">x</span><span class="o">=</span><span class="s2">&quot;I am x&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;\$x is \&quot;</span><span class="nv">$x</span><span class="s2">\&quot;. Here is some output: &#39;</span><span class="k">$(</span><span class="nb">echo</span> Hello World<span class="k">)</span><span class="s2">&#39;&quot;</span>
+</pre></div>
+</li>
+</ol>
+<p>In general, use single quotes when you want no processing done at all. Otherwise, use double quotes when you want multiple words to be treated as a single string, but you need the shell to do some work for you.</p>
+</div>
+<div class="section" id="evaluation-order-and-eval">
+<h3>7.8 Evaluation Order and eval</h3>
+<p>todo</p>
+</div>
+</div>
+
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="/tag/shell-script.html"><i class="fa fa-tag"></i>Shell Script</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="/reading-notes-of-classic-shell-scripting.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
+        </div><!-- /content -->
+
+        <div class="col-md-3 sidebar-nav" id="sidebar">
+
+<div class="row">
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-comment fa-fw fa-lg"></i> Social</h4>
+<ul class="list-unstyled social-links">
+    <li><a href="https://www.flickr.com/people/150485183@N02/" target="_blank">
+	  <i class="fa fa-flickr fa-fw fa-lg" title="Flickr"></i>
+		Flickr
+	</a></li>
+    <li><a href="pages/images/wechat-QRcode.JPG" target="_blank">
+	  <i class="fa fa-weixin fa-fw fa-lg" title="WeChat"></i>
+		WeChat
+	</a></li>
+</ul>
+</div>
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-folder fa-fw fa-lg"></i> Categories</h4>
+<ul class="list-unstyled category-links">
+  <li><a href="/category/reading-notes.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Reading Notes</a></li>
+  <li><a href="/category/vorlesung.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Vorlesung</a></li>
+</ul>
+</div>
+
+</div> <!-- /row -->
+
+  <h4><i class="fa fa-link fa-fw fa-lg"></i> Links</h4>
+  <ul class="list-unstyled category-links">
+    <li><a href="http://getpelican.com/" >
+      <i class="fa fa-fw fa-external-link-square fa-lg"></i> Pelican</a></li>
+  </ul>
+<h4><i class="fa fa-tags fa-fw fa-lg"></i> Tags</h4>
+<p class="tag-cloud">
+    <span class="tag-4">
+      <a href="/tag/keras.html">
+          <i class="fa fa-tag"></i>
+        Keras
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/deep-learning.html">
+          <i class="fa fa-tag"></i>
+        Deep Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/scikit-learn.html">
+          <i class="fa fa-tag"></i>
+        Scikit-Learn
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/machine-learning.html">
+          <i class="fa fa-tag"></i>
+        Machine Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/tensorflow.html">
+          <i class="fa fa-tag"></i>
+        TensorFlow
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/shell-script.html">
+          <i class="fa fa-tag"></i>
+        Shell Script
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/mikroprozessor.html">
+          <i class="fa fa-tag"></i>
+        Mikroprozessor
+      </a>
+    </span>
+</p>
+
+<hr />
+
+        </div><!--/sidebar -->
+      </div><!--/row-->
+    </div><!--/.container /#main-container -->
+
+    <footer id="site-footer">
+ 
+      <address id="site-colophon">
+        <p class="text-center text-muted">
+        Site built using <a href="http://getpelican.com/" target="_blank">Pelican</a>
+        &nbsp;&bull;&nbsp; Theme based on
+        <a href="http://www.voidynullness.net/page/voidy-bootstrap-pelican-theme/"
+           target="_blank">VoidyBootstrap</a> by 
+        <a href="http://www.robertiwancz.com/"
+           target="_blank">RKI</a>  
+        </p>
+      </address><!-- /colophon  -->
+    </footer>
+
+
+    <!-- javascript -->
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
+</html>

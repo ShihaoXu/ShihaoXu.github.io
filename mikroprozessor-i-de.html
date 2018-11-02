@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="徐世豪" />
+    <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
+
+    <title>Mikroprozessor I - 汪酱的blog</title>
+
+   
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous" />
+      <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+            crossorigin="anonymous">
+
+
+      <link rel="stylesheet" href="/theme/css/pygment.css" />
+      <link rel="stylesheet" href="/theme/css/voidybootstrap.css" />
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" integrity="sha384-FFgGfda92tXC8nCNOxrCQ3R8x1TNkMFqDZVQdDaaJiiVbjkPBXIJBx0o7ETjy8Bh" crossorigin="anonymous"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" integrity="sha384-ZoaMbDF+4LeFxg6WdScQ9nnR1QC2MIRxA1O9KWEXQwns1G8UNyIEZIQidzb0T1fo" crossorigin="anonymous"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+   
+    <nav class="navbar navbar-default">
+      <div class="container">
+	   <div class="navbar-header">
+		<button type="button" class="navbar-toggle" 
+				data-toggle="collapse" data-target="#main-navbar-collapse">
+		  <span class="sr-only">Toggle navigation</span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="/" rel="home">
+          <i class="fa fa-home fa-fw fa-lg"> </i> </a>
+       </div>
+
+      <div class="collapse navbar-collapse" id="main-navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li class="">
+              <a href="/archives.html">Archives</a>
+            </li>
+          <li class="divider"></li>
+        </ul> <!-- /nav -->
+      </div> <!-- /navbar-collapse -->
+	  </div> <!-- /container -->
+    </nav> <!-- /navbar -->
+
+	<div class="jumbotron" id="overview">
+	  <div class="container">
+		<h1><a href="/">汪酱的blog</a></h1>
+		<p class="lead">I'm just thinking a lot about the site subtitle</p>
+	  </div>
+	</div>
+
+    <div class="container" id="main-container">
+      <div class="row">
+        <div class="col-md-9" id="content">
+<article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
+  <header class="article-header">
+<abbr class="article-header-date">
+  Fri 08 June 2018
+</abbr> <h1>
+  <a href="/mikroprozessor-i-de.html" rel="bookmark"
+     title="Permalink to Mikroprozessor I">
+    Mikroprozessor I
+  </a>
+</h1><div class="article-header-info">
+  <p>
+      Posted by <a href="/author/shihao-xu.html">Shihao Xu</a>
+    in 
+    <a href="/category/vorlesung.html">
+      Vorlesung</a>
+    &nbsp;&nbsp;
+  </p>
+</div> <!-- /.article-header-info -->  </header>
+  <div class="content-body" itemprop="text articleBody">
+	<div class="section" id="kapitel-1-grundlagen">
+<h2>Kapitel 1 - Grundlagen</h2>
+<div class="section" id="einfuhrung">
+<h3>1.1 Einführung</h3>
+<p>Genealogie(血统，谱系) des programmierbaben Universalrechners</p>
+<ul class="simple">
+<li><strong>Mechanisierung des Rechnens</strong>:  Chinesischer Suan Pan; Vierspezies Rechenmaschine.</li>
+<li><strong>Programmsteuerung</strong>: Lochkartengesteuerter Webstuhl; Lochkartenstanzer, -leser, -sortierer</li>
+</ul>
+<dl class="docutils">
+<dt>Rechnerarchitektur (Disziplin)</dt>
+<dd><p class="first">Ingenieurwissenschaftliche Disziplin, die bestehende und zukünftige Rechenanlagen beschreibt, vergleicht, beurteilt, verbessert und entwirft.</p>
+<p class="last">Betrachtet den Aufbau und die Eigenschaften des Ganzen (Rechenanlage), seiner Teile (Komponenten) und seiner Verbindungen (Globalstruktur, Infrastruktur).</p>
+</dd>
+<dt>Rechnerarchitektur (Systemsicht)</dt>
+<dd><ul class="first simple">
+<li>Befehlssatzarchitektur (<strong>Instruction Set Architecture, ISA</strong>)<ul>
+<li>Beschreibung der Attribute und des funktionellen Verhaltens einers Rechners</li>
+<li>Sichtweise des Maschinenprogrammierers</li>
+<li>Schnittstelle zwischen Hardware und Software</li>
+<li>Spezifikation der Befehlssatzarchitektur</li>
+<li>Ausführungsmodell</li>
+<li>Datenformate, Datentypen</li>
+<li>Adressierungsarten</li>
+<li>Befehlsformat und Befehlssatz</li>
+<li>Logischer Adressraum</li>
+<li>Unterbrechungssystem</li>
+</ul>
+</li>
+<li>Organisation<ul>
+<li>Höhere Aspekte des Rechenerentwurfs:</li>
+<li>Entwurf der internen CPU</li>
+<li>Art und Anzahl der internen Ausführungseinheiten</li>
+<li>Art und Stufenzahl der Befehlspipeline</li>
+<li>Grad und Verwendung der Superskalartechnik, VLIW, EPIC, Multithreading</li>
+<li>Speicher- und Cachesystem</li>
+<li>Busstruktur</li>
+</ul>
+</li>
+<li>Hardware<ul>
+<li>Betrifft die speziellen Hardware-Eigenschaften des Rechners, einschließlich dem Logik-Entwurf bis hin zur Verpackungstechnik</li>
+</ul>
+</li>
+</ul>
+<p>Rechnerarchitektur umfasst</p>
+<ul class="simple">
+<li>Befehlssatzarchitektur (ISA)</li>
+<li>Implementierung<ul>
+<li>Organisation</li>
+<li>Hardware</li>
+</ul>
+</li>
+</ul>
+<p class="last">Heutige Sichtweise (Dubois, Annavaram, Stenström, 2012; und Hennessy/Patterson, 2011)</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="entwurf-von-rechenanlagen-entwurfsfragen">
+<h3>1.2 Entwurf von Rechenanlagen - Entwurfsfragen</h3>
+<dl class="docutils">
+<dt>Entwurf einer Rechenanlage</dt>
+<dd><p class="first">Ingenieurmäßige Aufgabe der Kompromissfindung zwischen:</p>
+<ol class="last arabic simple">
+<li>Zielsetzungen<ul>
+<li>Einsatzgebiet: Personal Mobile Devices; Desktop Computing; Server; Eingebettete Systeme</li>
+<li>Anwendungsbereich: Technisch-Wissenschaftlichen Bereich; Kommerzieller Bereich; Eingebettete Systeme Eingebettete Systeme</li>
+<li>Rechenleistung (Bewertung der Leistungsfähigkeit): Bandbreite, Durchsatz (Ausgeführte Arbeit in einem gegebenen Zeitintervall); Latenz, Antwortzeit;</li>
+<li>Zuverlässigkeit (Bewertung mittels stochastischer Verfahren)</li>
+<li>Verfügbarkeit: Wahrscheinlichkeit, ein System zu einem beliebigen Zeitpunkt fehlerfrei anzutreffen.</li>
+<li>Energieverbrauch, Leistungsaufnahme</li>
+</ul>
+</li>
+<li>Randbedingungen<ul>
+<li>Technologiesche Entwicklung: Mikrominiaturisierung (小型化), Verkleinerung der Strukturbreiten führt zu erhöhten Problemen der Zuverlässigkeit auf Schaltkreis- / Chip-Ebene</li>
+<li>Elektrische Leistung<ul>
+<li>Leistungsaufnahme bei CMOS-Schaltungen: <span class="math">\(P_{total} = P_{switching}+P_{shortcircuit}+P_{static}+P_{leakage}, P_{switching=C_{eff} * V_{dd}^2 * f}\)</span></li>
+<li>Leistungsdichte: Verlustleistung pro Fläche</li>
+</ul>
+</li>
+<li>Kosten eines integrierten Schaltkreises: Kosten des Dies + Kosten für das Testen des Dies + Kosten für das Packaging und den endgültigen Test in Bezug auf die endgültige Testausbeute<ul>
+<li>Ausbeute (Die Yield, 芯片成品率): <span class="math">\(\text{Die Yield} = \text{Wafer Yield} \times (1+\frac{\text{Defekte pro Flächeneinheit} \times \text{Diefläche}}{\alpha})^{\alpha}\)</span><ul>
+<li>Waferausbeute (Wafer Yield, 晶圆成品率)</li>
+<li>Defekte pro Flächeneinheit: Maß für die zufälig auftretenden Defekte bei der Herstellung. Hängt von der Reife des Herstellungsprozesses ab.</li>
+<li><span class="math">\(\alpha\)</span>: Maß für die Komplexität des Herstellungsprozesses</li>
+</ul>
+</li>
+<li>Fazit: Der Herstellungsprozess diktiert die Kosten für den Wafer, die Wafer Ausbeute und die Defekte pro Flächeneinheit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Gestaltungsgrundsätzen (Modularität, ...)</li>
+<li>Anforderungen (Betriebssystemanforderungen, ...)</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="einfuhrung-in-den-entwurf-eingebetteter-systeme-vl02">
+<h3>1.3 Einführung in den Entwurf eingebetteter Systeme (VL02)</h3>
+<dl class="docutils">
+<dt>Beispiel - Regelsystem:</dt>
+<dd>Umgebung -&gt; Sensoren -&gt; A/D Wandler -&gt; Informationsverarbeitung (und Anzeige) -&gt; D/A Wandler -&gt; Aktuatoren -&gt; [Umgebung]</dd>
+<dt>Mikroprozessorsysteme</dt>
+<dd><p class="first">Mikrorechner(-system):</p>
+<ul class="last simple">
+<li>Mikroprozessor. Am Wichtigsten ist der Prozessorkern: Steuerwerk + Rechenwerk.</li>
+<li>Verbindungsstrukturen</li>
+<li>Speicher (für Programme und Daten)</li>
+<li>Ein-/Ausgabe-Schnittstellen &lt;--&gt; (Mikrorechnersystem) Peripheriegeräte</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="kapitel-2-mikroprozessoren-fur-desktop-und-server">
+<h2>Kapitel 2 - Mikroprozessoren für Desktop und Server</h2>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+  
+<div class="article-tag-list">
+<span class="label label-default">Tags</span>
+	<a href="/tag/mikroprozessor.html"><i class="fa fa-tag"></i>Mikroprozessor</a>&nbsp;
+</div>  <hr />
+  <div class="well well-sm">  <!-- Social media sharing buttons -->
+
+    <!-- Google+ -->
+    <div class="g-plus" data-action="share" data-annotation="bubble"></div>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="g-plusone" data-size="medium"></div>&nbsp;
+
+    <!-- Facebook -->
+    <div class="fb-like" 
+        data-href="/mikroprozessor-i-de.html" 
+        data-layout="button_count" 
+        data-action="like" data-show-faces="true" 
+        data-share="true">
+    </div>
+    &nbsp;
+  </div> <!-- /Social media sharing buttons -->
+</article>
+        </div><!-- /content -->
+
+        <div class="col-md-3 sidebar-nav" id="sidebar">
+
+<div class="row">
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-comment fa-fw fa-lg"></i> Social</h4>
+<ul class="list-unstyled social-links">
+    <li><a href="https://www.flickr.com/people/150485183@N02/" target="_blank">
+	  <i class="fa fa-flickr fa-fw fa-lg" title="Flickr"></i>
+		Flickr
+	</a></li>
+    <li><a href="pages/images/wechat-QRcode.JPG" target="_blank">
+	  <i class="fa fa-weixin fa-fw fa-lg" title="WeChat"></i>
+		WeChat
+	</a></li>
+</ul>
+</div>
+
+<div class="col-xs-6 col-md-12">
+<h4><i class="fa fa-folder fa-fw fa-lg"></i> Categories</h4>
+<ul class="list-unstyled category-links">
+  <li><a href="/category/reading-notes.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Reading Notes</a></li>
+  <li><a href="/category/vorlesung.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Vorlesung</a></li>
+</ul>
+</div>
+
+</div> <!-- /row -->
+
+  <h4><i class="fa fa-link fa-fw fa-lg"></i> Links</h4>
+  <ul class="list-unstyled category-links">
+    <li><a href="http://getpelican.com/" >
+      <i class="fa fa-fw fa-external-link-square fa-lg"></i> Pelican</a></li>
+  </ul>
+<h4><i class="fa fa-tags fa-fw fa-lg"></i> Tags</h4>
+<p class="tag-cloud">
+    <span class="tag-4">
+      <a href="/tag/keras.html">
+          <i class="fa fa-tag"></i>
+        Keras
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/deep-learning.html">
+          <i class="fa fa-tag"></i>
+        Deep Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/scikit-learn.html">
+          <i class="fa fa-tag"></i>
+        Scikit-Learn
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/machine-learning.html">
+          <i class="fa fa-tag"></i>
+        Machine Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/tensorflow.html">
+          <i class="fa fa-tag"></i>
+        TensorFlow
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/shell-script.html">
+          <i class="fa fa-tag"></i>
+        Shell Script
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/mikroprozessor.html">
+          <i class="fa fa-tag"></i>
+        Mikroprozessor
+      </a>
+    </span>
+</p>
+
+<hr />
+
+        </div><!--/sidebar -->
+      </div><!--/row-->
+    </div><!--/.container /#main-container -->
+
+    <footer id="site-footer">
+ 
+      <address id="site-colophon">
+        <p class="text-center text-muted">
+        Site built using <a href="http://getpelican.com/" target="_blank">Pelican</a>
+        &nbsp;&bull;&nbsp; Theme based on
+        <a href="http://www.voidynullness.net/page/voidy-bootstrap-pelican-theme/"
+           target="_blank">VoidyBootstrap</a> by 
+        <a href="http://www.robertiwancz.com/"
+           target="_blank">RKI</a>  
+        </p>
+      </address><!-- /colophon  -->
+    </footer>
+
+
+    <!-- javascript -->
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google+ -->
+<!-- Synchronous 
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+<!-- Asynchronous -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>  </body>
+</html>

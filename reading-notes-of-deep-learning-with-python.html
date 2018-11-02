@@ -8,7 +8,7 @@
     <meta name="author" content="徐世豪" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
 
-    <title>Concepts &amp; Definition - 汪酱的blog</title>
+    <title>Reading notes of Deep Learning with Python - 汪酱的blog</title>
 
    
         <link rel="stylesheet"
@@ -72,29 +72,65 @@
 <article itemscope="itemscope" itemtype="http://schema.org/BlogPosting">
   <header class="article-header">
 <abbr class="article-header-date">
-  Wed 21 February 2018
+  Fri 08 June 2018
 </abbr> <h1>
-  <a href="/drafts/reading-notes-hands-on-machine-learning-with-scikit-learn-and-tensorflow.html" rel="bookmark"
-     title="Permalink to Concepts &amp; Definition">
-    Concepts &amp; Definition
+  <a href="/reading-notes-of-deep-learning-with-python.html" rel="bookmark"
+     title="Permalink to Reading notes of Deep Learning with Python">
+    Reading notes of <cite>Deep Learning with Python</cite>
   </a>
 </h1><div class="article-header-info">
   <p>
       Posted by <a href="/author/shihao-xu.html">Shihao Xu</a>
     in 
-    <a href="/category/machine-learning.html">
-      Machine Learning</a>
+    <a href="/category/reading-notes.html">
+      Reading Notes</a>
     &nbsp;&nbsp;
   </p>
 </div> <!-- /.article-header-info -->  </header>
   <div class="content-body" itemprop="text articleBody">
-	
+	<p>Resources:</p>
+<ol class="arabic simple">
+<li><cite>Deep Learning with Python</cite></li>
+</ol>
+<div class="section" id="chapter-5-deep-learning-for-computer-vision">
+<h2>Chapter 5 - Deep Learning for computer vision</h2>
+<p>todo</p>
+<div class="section" id="visualizing-whtat-convnets-learn">
+<h3>5.4 Visualizing whtat convnets learn</h3>
+<p>It's often said that deep-learning models are <strong>&quot;black boxes&quot;</strong>: learning representations that are difficult to extract and present in a human-readable form.
+Although this is partially true for certain types of deep-learning models, it's definitely not true for convnets. The representations learned by convnets are <strong>representations of visual concepts</strong>.
+Amoung all the techniques developed for visualizing and interpreting these representations, we'll present three of the most accessible and usfule ones:</p>
+<ul class="simple">
+<li><strong>Visualizing intermediate convnet outputs (intermediate activations)</strong>: useful for understanding how successive convnet layers transform their input</li>
+<li><strong>Visualizing convnets filters</strong>: useful for understanding precisely what visual pattern or concept each filter in a convnet is receptive to.</li>
+<li><strong>Visualizing heatmaps of class activation in an image</strong>: useful for understanding which parts of an image were identified as belonging to a given class, thus allowing you to localize objects in images.</li>
+</ul>
+<p>For the first method, you'll use the small convnet thaty ou trained from scratch on the dogs-versus-cats classification problem in section 5.2. For the next two methods, you'll use the VGG16 model introduced insection 5.3.</p>
+<div class="section" id="visualizing-intermediate-activations">
+<h4>5.4.1 Visualizing Intermediate Activations</h4>
+<p>Visualizing intermediate activations consists of displaying the feature maps that are output by various convolution and pooling layers in a network, given a certain input (the output of a layer is often called its <strong>activation</strong>, the
+output of the activation function). This gives a view into how an input is decomposed into the different filters learned by the network.</p>
+<p>You want to visualize feature maps with three dimensions: width, height, and depth (channels). The proper way to visualize these feature maps is by independently ploting the contents of every channel as a 2D image.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">load_model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;cats_and_dogs_small_2.h5&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span> <span class="c1"># summary of the model&#39;s architecture</span>
+</pre></div>
+<p>todo</p>
+</div>
+<div class="section" id="visualizing-convnet-filters">
+<h4>5.4.2 Visualizing Convnet Filters</h4>
+<p>Display the visual pattern that each filter is meant to respond to. This can be done with <strong>gradient ascent in input space</strong>: applying <strong>gradient descent</strong> to the value of the input image
+so as to <strong>maximize</strong> the response of a specific filter, starting from a blank input image. The resulting input image will be one that the chosen filter is maximally responsive to.</p>
+</div>
+</div>
+</div>
+
   </div>
   
 <div class="article-tag-list">
 <span class="label label-default">Tags</span>
-	<a href="/tag/machine-learning.html"><i class="fa fa-tag"></i>Machine Learning</a>&nbsp;
-	<a href="/tag/reading-notes.html"><i class="fa fa-tag"></i>Reading Notes</a>&nbsp;
+	<a href="/tag/deep-learning.html"><i class="fa fa-tag"></i>Deep Learning</a>&nbsp;
+	<a href="/tag/keras.html"><i class="fa fa-tag"></i>Keras</a>&nbsp;
 </div>  <hr />
   <div class="well well-sm">  <!-- Social media sharing buttons -->
 
@@ -105,7 +141,7 @@
 
     <!-- Facebook -->
     <div class="fb-like" 
-        data-href="/drafts/reading-notes-hands-on-machine-learning-with-scikit-learn-and-tensorflow.html" 
+        data-href="/reading-notes-of-deep-learning-with-python.html" 
         data-layout="button_count" 
         data-action="like" data-show-faces="true" 
         data-share="true">

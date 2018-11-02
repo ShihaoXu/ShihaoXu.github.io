@@ -82,8 +82,8 @@
   <p>
       Posted by <a href="/author/shihao-xu.html">Shihao Xu</a>
     in 
-    <a href="/category/machine-learning.html">
-      Machine Learning</a>
+    <a href="/category/reading-notes.html">
+      Reading Notes</a>
     &nbsp;&nbsp;
   </p>
 </div> <!-- /.article-header-info -->  </header>
@@ -473,12 +473,28 @@ the next component to use. Each component is fairly self-contained: the interfac
 Grab an instance's feature vector, reshape it to a 28x28 array, and display it using Matplotlib's <tt class="docutils literal">imshow()</tt> function.</li>
 </ul>
 <p>Scikit-Learn provides many helper functions to download popular datasets.</p>
+<ul>
+<li><p class="first">Datasets loaded by Scikit-Learn generally have a similar <strong>dictionary structure</strong> including:</p>
 <ul class="simple">
-<li>Datasets loaded by Scikit-Learn generally have a similar <strong>dictionary structure</strong> including:<ul>
 <li><tt class="docutils literal">DESCR</tt> key: describes the dataset</li>
 <li><tt class="docutils literal">data</tt> key: an array with one row per instance and one column per feature</li>
 <li><tt class="docutils literal">target</tt> key: an array with the labels</li>
 </ul>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_mldata</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">fetch_mldata</span><span class="p">(</span><span class="s1">&#39;MNIST original&#39;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">mnist</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">some_digit</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">36000</span><span class="p">]</span>
+<span class="n">some_digit_image</span> <span class="o">=</span> <span class="n">some_digit</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">some_digit_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">36000</span><span class="p">]</span>
+</pre></div>
 </li>
 </ul>
 <p>Prepare the Dataset</p>
@@ -487,6 +503,12 @@ Grab an instance's feature vector, reshape it to a 28x28 array, and display it u
 <li>Shuffle the dataset, which guarantee that all cross-validation folds will be similar.</li>
 <li>Split the dataset into training and test set.</li>
 </ul>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">60000</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">60000</span><span class="p">:],</span> <span class="n">y</span><span class="p">[:</span><span class="mi">60000</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">60000</span><span class="p">:]</span>
+<span class="n">shuffle_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="mi">60000</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">shuffle_index</span><span class="p">],</span> <span class="n">y_train</span><span class="p">[</span><span class="n">shuffle_index</span><span class="p">]</span>
+</pre></div>
 </div>
 <div class="section" id="training-a-binary-classifier">
 <h3>Training a Binary Classifier</h3>
@@ -497,6 +519,17 @@ so,</p>
 <li>SGD is capable of handling very large datasets efficiently</li>
 <li>SGD is well suited for <strong>online learning</strong></li>
 </ul>
+<div class="highlight"><pre><span></span><span class="n">y_train_5</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_train</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># True for all 5s, False for all other digits</span>
+<span class="n">y_test_5</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+
+<span class="n">sgd_clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">sgd_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train_5</span><span class="p">)</span>
+<span class="c1"># Use it to detect images of the number 5</span>
+<span class="n">sgd_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">some_digit</span><span class="p">])</span>
+</pre></div>
+<p>The <code>SGDClassifier</code> relies on randomness during training (hence the name &quot;stochastic&quot;). If you want reproducible results, you should set the <code>random_state</code> parameter.</p>
 </div>
 <div class="section" id="performance-measures">
 <h3>Performance Measures</h3>
@@ -504,7 +537,12 @@ so,</p>
 <div class="section" id="measuring-accuracy-using-cross-validation">
 <h4>Measuring Accuracy Using Cross-Validation</h4>
 <p><em>A good way to evaluate a model is to use cross-validation.</em></p>
-<p>TODO: Implementing Cross-Validation</p>
+<p>TODO</p>
+</div>
+<div class="section" id="confusion-matrix">
+<h4>Confusion Matrix</h4>
+<p>A much better way to evaluate the performance of a classifier is to look at the <strong>confusion matrix</strong>. The general idea is to count the number of times instances of class A are classified as class B.
+For example, to know the number of times the classifier confused images of 5s with 3s, you look in the 5th row and 3rd column of the confusion matrix.</p>
 </div>
 </div>
 </div>
@@ -846,8 +884,8 @@ needed to represent it, or equivalently, the number of indices needed to label a
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="chapter-10-introduction-to-artificial-neural-networks">
-<h2>Chapter 10 - Introduction to Artificial Neural Networks</h2>
+<div class="section" id="todo-rework-chapter-10-introduction-to-artificial-neural-networks">
+<h2>TODO(rework): Chapter 10 - Introduction to Artificial Neural Networks</h2>
 <p>Key idea that inspired <strong>Artificial Neural Networks (ANNs)</strong>: Look at the brain's architecture for inspiration on how to build an intelligent machine.</p>
 <ul class="simple">
 <li>ANN have gradually become quite different from their biological cousins, or we should drop the biological analogy altogether, lest we restrict our creativity to biologically plausible systems.</li>
@@ -958,7 +996,48 @@ to thousands of other neurons. Highly complex computations can be performed by a
 <li><code>penalty = None</code> (no regularization)</li>
 </ul>
 <p>Unlike logistic Regression, Perceptrons don't output a class probability.</p>
+<p>In a 1969 monograph titled <em>Perceptrons</em>, by Marvin Minsky and Seymour Papert, several serious weaknesses of Perceptrons were mentioned, in particular the fact that incapable of solving some trivial problems (e.g. <strong>the Exclusive OR classification problem</strong>). Many reserchers dropped <strong>connectionism</strong> (i.e. the
+study of NNs) altogether in favor of higher-level problems such as logic, problem solving, and search.</p>
+<p>It turns out some of the limitations of Perceptrons can be eliminated by stacking multiple Perceptrons. The resulting NN: <strong>Multi-Layer Perceptron (MLP)</strong>. MLP can solve the XOR problem.</p>
 </div>
+</div>
+<div class="section" id="multi-layer-perceptron-and-backpropagation">
+<h3>Multi-Layer Perceptron and Backpropagation</h3>
+<p>Composition of MLP:</p>
+<blockquote>
+<ul class="simple">
+<li>one (passthrough) input layer</li>
+<li>one or more layers of LTUs (hidden layer)</li>
+<li>one final layer of LTUs (output layer)</li>
+</ul>
+<p>Every layer except the output layer includes a bias neuron and is fully connected to the next layer. When an ANN has two or more hidden layers, it is called a <strong>Deep Neural Network (DNN)</strong>.</p>
+</blockquote>
+<p>Many researchers struggled to find a way to train MLPs, failed.</p>
+<p><a class="citation-reference" href="#rhw86" id="id5">[RHW86]</a> published Backpropagation training algorithm (today we describe it as Gradient Descent using reverse-mode autodiff).</p>
+<dl class="docutils">
+<dt>The Backpropagation Algorithm</dt>
+<dd><ol class="first arabic simple">
+<li>Forward Pass: for each training instance the backpropagation algorithm makes a prediction</li>
+<li>Reverse Pass: measure the error, then goes through each layer in reverse to measure the error contribution from each connection.</li>
+<li>Gradient Descent Step: slightly tweaks the connection weights to reduce the error.</li>
+</ol>
+<p class="last">In order for this algorithm to work properly, the authors make a key change to the MLP's architecture: they replaced the step function with the logistic function, <span class="math">\(\sigma (z)=\frac{1}{1+\exp{-z]}}\)</span>. This was essential because the step function contains only flat segments, so there is no gradient to work with, while the logistic function has a well-defined non zero derivative everywhere, allowing Gradient Descent to make some progress at every step. The backpropagation algorithm may be used with other <strong>activation functions</strong>,</p>
+</dd>
+</dl>
+<p>Activation functions</p>
+<blockquote>
+<ul class="simple">
+<li>logistic function</li>
+<li>the hyperbolic tangent function. Its output value ranges from -1 to 1 (instead of 0 to 1 inthe case of the logistic function), which tends to make each layer's output more or less normalized (i.e., centered around 0) at the beginning of training. This often helps speed up convergence.</li>
+<li>The ReLU function. It is continuous but unfortunately not differentiable at <code>z=0</code> (the slope changes abruptly, which can make Gradient Descent bounce around). However, in practice it works very well and has the advantage of being fast to compute. Most importantly, the face that it does not have a maximum output value also helps reduce some issues during Gradient Descent.</li>
+</ul>
+</blockquote>
+<p>MLP is often used for classification, with each output neuron corresponds to a different binary class. For exclusive classes: the output layer is typically modified by replacing the individual activation functions by a shared <strong>softmax function</strong>. The output of each neuron corresponds to the
+estimated probability of the corresponding class.</p>
+<dl class="docutils">
+<dt>Feedforward Neural Netowrk</dt>
+<dd>NNs whose signal flows only in one direction (from the inputs to the outputs). e.g.: MLP.</dd>
+</dl>
 </div>
 <div class="section" id="training-an-mlp-with-tf-s-high-level-api">
 <h3>Training an MLP with TF's High-Level API</h3>
@@ -978,12 +1057,12 @@ to thousands of other neurons. Highly complex computations can be performed by a
 </ol>
 <p>Related code</p>
 <ul class="simple">
-<li><tt class="docutils literal">tf.contrib.learn.infer_real_valued_columns_from_input</tt></li>
-<li><tt class="docutils literal">tf.contrib.learn.DNNClassifier</tt>, <tt class="docutils literal">tf.contrib.learn.SKCompat</tt></li>
-<li><tt class="docutils literal">dnn_clf.fit</tt>, <tt class="docutils literal">dnn_clf.predict</tt></li>
-<li><tt class="docutils literal">sklearn.metrics.accuracy_score</tt></li>
+<li><code>tf.contrib.learn.infer_real_valued_columns_from_input</code></li>
+<li><code>tf.contrib.learn.DNNClassifier</code>, <code>tf.contrib.learn.SKCompat</code></li>
+<li><code>dnn_clf.fit</code>, <code>dnn_clf.predict</code></li>
+<li><code>sklearn.metrics.accuracy_score</code></li>
 </ul>
-<p><tt class="docutils literal">tensorflow.contrib</tt> package contains many useful, experimental functions that  have not yet graduated to be part of the core TF API. Thy may change without notice in the future.</p>
+<p><code>tensorflow.contrib</code> package contains many useful, experimental functions that  have not yet graduated to be part of the core TF API. Thy may change without notice in the future.</p>
 </div>
 <div class="section" id="training-a-dnn-using-plain-tf">
 <h3>Training a DNN Using Plain TF</h3>
@@ -1013,7 +1092,7 @@ Since we know the number of features is going to be 28x28 and we don't knoow yet
 hence it's shape is <tt class="docutils literal">(n_inputs, n_neurons)</tt>.</p>
 <p>It will be initialized randomly, using a <strong>truncated normal (Gaussian) distribution</strong> with a standard deviation of <span class="math">\(\frac{2}{\sqrt{n_{inputs}}}\)</span>.
 Using this specific standard deviation helps the algorithm converge much faster.</p>
-<p>It's important to initialze connection weights randomly for all hidden layers to <strong>avoid any symmetries that the Gradient Descent algorithm would be unable to break</strong> <a class="citation-reference" href="#tsi10" id="id5">[tsi10]</a></p>
+<p>It's important to initialze connection weights randomly for all hidden layers to <strong>avoid any symmetries that the Gradient Descent algorithm would be unable to break</strong> <a class="citation-reference" href="#tsi10" id="id6">[tsi10]</a></p>
 </li>
 <li><p class="first">create a <tt class="docutils literal">b</tt> variable for biases, initialized to 0 (no symmetry issue in this case), with one bias parameter per neuron.</p>
 </li>
@@ -1035,9 +1114,16 @@ weight between two neurons is increased whenever they have the same output.</td>
 <table class="docutils citation" frame="void" id="tsi10" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id5">[tsi10]</a></td><td><strong>The Symmetry Issue</strong>: For example, if you set all the weights to 0, then all neurons will output 0, and the error gradient will be the same for all neurons in a given hidden layer. The
+<tr><td class="label"><a class="fn-backref" href="#id6">[tsi10]</a></td><td><strong>The Symmetry Issue</strong>: For example, if you set all the weights to 0, then all neurons will output 0, and the error gradient will be the same for all neurons in a given hidden layer. The
 Gradient Descent step will then update all the weights in exactly the same way in each layer, so they will all remain equal. In other words, despite having hundreds
 of neurons per layer, your model will act as if there were only one neuron per layer.</td></tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="rhw86" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[RHW86]</a></td><td>&quot;Learning Internal Representations by Error Propagation&quot;, D. Rumelhart, G. Hinton, R. Williams (1986).</td></tr>
 </tbody>
 </table>
 </div>
@@ -1063,7 +1149,7 @@ the Gradient Descent update leaves the lower layer connection weights virtually 
 <li><strong>The exploding gradients problem</strong>: in some cases, the opposite can happen: the gradients can grow bigger and bigger, so many layers get insanely
 large weight updates and the algorithm diverges, which is mostly encountered in recurrent NNs.</li>
 <li>More generally, DNNs suffer from unstable gradients, different layers may learn at widely different speeds.</li>
-<li>It is one of the reasons why DNN were mostly abandoned for a long time. It is only around 2010 that significant progress was made in understanding it (check out the paper <cite>&quot;Understanding the Difficulty of Training Deep Feedforward Neural Networks&quot;</cite> <a class="citation-reference" href="#gb10" id="id6">[GB10]</a>)</li>
+<li>It is one of the reasons why DNN were mostly abandoned for a long time. It is only around 2010 that significant progress was made in understanding it (check out the paper <cite>&quot;Understanding the Difficulty of Training Deep Feedforward Neural Networks&quot;</cite> <a class="citation-reference" href="#gb10" id="id7">[GB10]</a>)</li>
 </ul>
 <p>TODO: Interesting Observations</p>
 <div class="section" id="xavier-and-he-initialization">
@@ -1109,14 +1195,14 @@ It is also the default for the <tt class="docutils literal">train.contrib.layers
 </div>
 <div class="section" id="nonsaturating-activation-functions">
 <h4>Nonsaturating Activation Functions</h4>
-<p>The paper <a class="citation-reference" href="#gb10" id="id7">[GB10]</a> gave some insights, one of them was that the vanishing/exploding gradient problems were in part due to a poor choice of activation function.</p>
+<p>The paper <a class="citation-reference" href="#gb10" id="id8">[GB10]</a> gave some insights, one of them was that the vanishing/exploding gradient problems were in part due to a poor choice of activation function.</p>
 <p>It turns out that other activation functions behave much better in DNNs, in particular the ReLU function, mostly because it does not saturate for positive values and also fast to compute.</p>
-<p>But the ReLU is not perfect. It suffers from a problem known as <strong>the dying ReLU</strong> <a class="citation-reference" href="#tdr11" id="id8">[tdr11]</a>. To solve this problem, you may want to use a variant of the ReLU function, such as <strong>the leaky ReLU</strong> <a class="citation-reference" href="#tlr11" id="id9">[tlr11]</a>. This
+<p>But the ReLU is not perfect. It suffers from a problem known as <strong>the dying ReLU</strong> <a class="citation-reference" href="#tdr11" id="id9">[tdr11]</a>. To solve this problem, you may want to use a variant of the ReLU function, such as <strong>the leaky ReLU</strong> <a class="citation-reference" href="#tlr11" id="id10">[tlr11]</a>. This
 small slope ensures that leaky ReLUs never die; they can go into a long coma, but they have a chance to eventually wake up.</p>
-<p>The paper <a class="citation-reference" href="#xwcl15" id="id10">[XWCL15]</a> compared several variants of the ReLU and one of its conclusions was that <strong>the leaky variants always outperformed the strict ReLU</strong>. In face, setting <span class="math">\(\alpha = 0.2\)</span> (huge leak) seemed to
-result in better performance than <span class="math">\(\alpha = 0.01\)</span> (small leak). They also evaluate <strong>the randomized ReLU (RReLU)</strong> <a class="citation-reference" href="#trr11" id="id11">[trr11]</a>. It also performed fairly well and seemed to act as a regularizer (reducing the risk of overfitting the training set).
-Finally they also evaluated <strong>the parametric ReLU (PReLU)</strong> <a class="citation-reference" href="#tpr11" id="id12">[tpr11]</a>. This was reported to strongly outperform ReLU on large image datasets, but on smaller datasets it has the risk of overfitting the training set.</p>
-<p>The paper <a class="citation-reference" href="#cuh15" id="id13">[CUH15]</a> proposed a new activation function called the <strong>exponential linear unit (ELU)</strong> that outperformed all the ReLU variants in their experiments: training time was reduced and the NN performed better on the test set.</p>
+<p>The paper <a class="citation-reference" href="#xwcl15" id="id11">[XWCL15]</a> compared several variants of the ReLU and one of its conclusions was that <strong>the leaky variants always outperformed the strict ReLU</strong>. In face, setting <span class="math">\(\alpha = 0.2\)</span> (huge leak) seemed to
+result in better performance than <span class="math">\(\alpha = 0.01\)</span> (small leak). They also evaluate <strong>the randomized ReLU (RReLU)</strong> <a class="citation-reference" href="#trr11" id="id12">[trr11]</a>. It also performed fairly well and seemed to act as a regularizer (reducing the risk of overfitting the training set).
+Finally they also evaluated <strong>the parametric ReLU (PReLU)</strong> <a class="citation-reference" href="#tpr11" id="id13">[tpr11]</a>. This was reported to strongly outperform ReLU on large image datasets, but on smaller datasets it has the risk of overfitting the training set.</p>
+<p>The paper <a class="citation-reference" href="#cuh15" id="id14">[CUH15]</a> proposed a new activation function called the <strong>exponential linear unit (ELU)</strong> that outperformed all the ReLU variants in their experiments: training time was reduced and the NN performed better on the test set.</p>
 <div class="math">
 \begin{equation*}
       \text{ELU activation function}:
@@ -1142,7 +1228,7 @@ Finally they also evaluated <strong>the parametric ReLU (PReLU)</strong> <a clas
 <div class="section" id="batch-normalization-bn">
 <h4>Batch Normalization (BN)</h4>
 <p>Using He initialization along with ELU (or ReLU variants) can reduce the vanishing/exploding gradient problem at the beginning of training, it doesn't guarantee that they won't come back during training.</p>
-<p><a class="citation-reference" href="#is15" id="id14">[IS15]</a> proposed a technique called <strong>Batch Normalization</strong> to address the vanishing/exploding gradients problems, and more generally the problem that the distribution of each layer's inputs changes during training, as the parameters of the previous layers
+<p><a class="citation-reference" href="#is15" id="id15">[IS15]</a> proposed a technique called <strong>Batch Normalization</strong> to address the vanishing/exploding gradients problems, and more generally the problem that the distribution of each layer's inputs changes during training, as the parameters of the previous layers
 change (which they call the <strong>Internal Covariate Shift</strong> problem).</p>
 <p>The technique consists of adding an operation in the model just before the activation function of each layer, simply zero-centering and normalizing the inputs, then scaling and shifting the result using two new parameters per layer (one for scaling, the other for shifting).
 This operation lets the model learn the optimal scale and mean of the inputs for each layer.</p>
@@ -1188,13 +1274,276 @@ function whether it should use the current mini-batch's mean and standard deviat
 </pre></div>
 <p><strong>The execution phase</strong>: pretty much the same but with two exceptions:</p>
 <ol class="arabic simple">
-<li>During training, whenever you run an operation that depends on the <code>batch_normalization()</code> layer, you need to set the <code>training</code> placeholder to <code>True</code>.</li>
-<li>The <code>batch_normalization()</code> function creates a few operations that must be evaluated at each step during training in order to update the moving avrages (recall that )</li>
+<li>During training, whenever you run an operation that depends on the <code>batch_normalization()</code> layer, you need to set the <code>training</code> placeholder to <code>True</code> .</li>
+<li>The <code>batch_normalization()</code> function creates a few operations that must be evaluated at each step during training in order to update the moving avrages (recall that these moving averages are needed to evaluate the training set's mean and standard deviation). These operations are automatically added to the <code>UPDATE_OPS</code> collection, so all we need to do is get the list of operations in the collection and run them at each training iteration.</li>
 </ol>
+<div class="highlight"><pre><span></span><span class="n">extra_update_ops</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">UPDATE_OPS</span><span class="p">)</span>
+<span class="c1"># ...</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">training_op</span><span class="p">,</span> <span class="n">extra_update_ops</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">training</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span><span class="n">y_batch</span><span class="p">})</span>
+<span class="c1"># ...</span>
+<span class="n">accuracy_val</span> <span class="o">=</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span><span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">labels</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gradient-clipping">
+<h4>Gradient Clipping</h4>
+<p>Popular technique to lessen the exploding gradients problem: simply clip the gradients during backpropagation so that they never exceed some threshold -&gt; Gradient Clipping</p>
+<p>In general people new prefer Batch Normalization. But it's useful to know about Gradient Clipping and How to implement it.</p>
+<p>In TF, the optimizer's <code>minimize()</code> function takes care of both computing the gradients and applying them, so you must first</p>
+<ol class="arabic simple">
+<li>call the optimizer's <code>compute_gradients()</code> method, then</li>
+<li>create an operation to clip the gradients using the <code>clip_by_value()</code> function, and finally</li>
+<li>create an operation to apply the clipped gradients using the optimizer's <code>apply_gradients()</code> method</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="c1"># This code compute the gradients, clip them between `-threshold` and `threshold`, and apply them. The `threshold` is a hyperparameter you can tune.</span>
+<span class="n">grads_and_vars</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">compute_gradients</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+<span class="n">capped_grads</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tf</span><span class="o">.</span><span class="n">clip_by_value</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="o">-</span><span class="n">threshold</span><span class="p">,</span> <span class="n">threshold</span><span class="p">),</span> <span class="n">var</span><span class="p">)</span> <span class="k">for</span> <span class="n">grad</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">grads_and_vars</span><span class="p">]</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="n">capped_grads</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reusing-pretrained-layers">
+<h3>Reusing Pretrained Layers</h3>
+<p>It is generally not a good idea to train a very large DNN from scratch: instead, you shold always try to find an existing NN that accomplishes a similar task to the one you're trying to
+tackle, then just reuse the lower layers of this network: this is called <strong>transfer learning</strong>. It will not only speedup training considerably, but will also require much less training data.</p>
+<p>You perhaps need to add a preprocessing step to resize the images to the size expected by the original model.</p>
+<p>More generally, transfer learning will only work well if the inputs have similar low-level features.</p>
+<div class="section" id="reusing-a-tensorflow-model">
+<h4>Reusing a TensorFlow Model</h4>
+<p>If the model was trained using TF, you can simply restore it and train it on the new task.</p>
+<p><code>import_meta_graph()</code> function imports the operations (graph architecture) into the default graph. Then returns a <code>Saver</code> that you can later use to load the model's state: <code>saver = tf.train.import_meta_graph(&quot;./my_final_model.ckpt.meta&quot;)</code>.</p>
+<p>You must then get a handle on the operations and tensors you will need for training:</p>
+<div class="highlight"><pre><span></span><span class="n">default_graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">default_graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s2">&quot;X:0&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">default_graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s2">&quot;y:0&quot;</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s2">&quot;eval/accuracy:0&quot;</span><span class="p">)</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span><span class="o">.</span><span class="n">get_operation_by_name</span><span class="p">(</span><span class="s2">&quot;GradientDescent&quot;</span><span class="p">)</span>
+</pre></div>
+<p>The name of a tensor is the name of the operation that outputs it followed by <code>:0</code> (if it is the first output).</p>
+<p>If the pretrained model is not well documented, you need to explore the graph to find the names of the operations you will need</p>
+<ul>
+<li><p class="first">You can explore the graph using TensorBoard (first export the graph using a <code>FileWriter</code>)</p>
+</li>
+<li><p class="first">You can use the graph's <code>get_operations()</code> to list all the operations.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span><span class="o">.</span><span class="n">get_operations</span><span class="p">():</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</li>
+</ul>
+<p>If you are the author of the original model, you should give operations very clear names and document them. Another approach: create a collection containing all the important operations that people
+will want to get a handle on:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">trainin_op</span><span class="p">):</span>
+  <span class="n">tf</span><span class="o">.</span><span class="n">add_to_collection</span><span class="p">(</span><span class="s2">&quot;my_important_ops&quot;</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+</pre></div>
+<p>Reuse: <code>X, y, accuracy, training_op = tf.get_collection(&quot;my_important_ops&quot;)</code></p>
+<p>Restore the model's state using the <code>Saver</code> and continue training using your own data.</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+  <span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./my_model_final.ckpt&quot;</span><span class="p">)</span>
+  <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="c1"># train the model on your own data</span>
+</pre></div>
+<p>Alternatively, you can use the code that build the original graph if you have access to it, instead of <code>import_meta_graph()</code>.</p>
+<p>In general, you will want to reuse only part of the original model, typically the lower layers. You can ignore the pretrained higher layers, build new layers on top of a pretrained layer, compute the loss for this new output,
+and create an optimizer to minimize that loss.</p>
+<p>If you have access to the pretrained graph's Python code, you cann just reuse the parts you need and chop out the rest. However, in this case you need a <code>Saver</code> to restore the pretrained model (specifying which variables you want to restore;
+otherwise, TensorFlow will complain that the graphs do not match), and another <code>Saver</code> to save the new model.</p>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="c1"># build the new model with the same hidden layers 1-3 as before</span>
+
+<span class="n">reuse_vars</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">GLOBAL_VARIABLES</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden[123]&quot;</span><span class="p">)</span> <span class="c1"># regular expression</span>
+<span class="n">reuse_vars_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">({(</span><span class="n">var</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">reuse_vars</span><span class="p">]})</span>
+<span class="n">restore_saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">(</span><span class="n">reuse_vars_dict</span><span class="p">)</span> <span class="c1"># to restore layers 1-3</span>
+
+<span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span> <span class="c1"># to init all variables, old and new</span>
+<span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span> <span class="c1"># to save the new model</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+  <span class="n">init</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+  <span class="n">restore_saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./my_model_final.ckpt&quot;</span><span class="p">)</span>
+  <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="c1"># train the model</span>
+  <span class="n">save_path</span> <span class="o">=</span> <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;./my_new_model_final.ckpt&quot;</span><span class="p">)</span>
+</pre></div>
+<p>First we build the new model by copying the original model's hidden layers 1 to 3. Then we get the list of all variables in hidden layers 1 to 3, using the regular expression <code>&quot;hidden[123]&quot;</code>. Next, we create a dictionary that maps the name of
+each variable in the original model to its name in the new model (generally you want to keep the exact same names). Then we create a <code>Saver</code> that willrestore only these variables. We also create an operation to initialize all the variables
+(old and new) and a second <span class="math">\(Saver\)</span> to save the entire new model, not just layers 1 to 3. We then start a session and initialize all variables in the model, then restore the variable values from the original model's layers 1 to 3.
+Finally, we train the model on the new task and save it.</p>
+</div>
+<div class="section" id="reusing-models-from-other-frameworks">
+<h4>Reusing Models from Other Frameworks</h4>
+<p>TODO</p>
+</div>
+<div class="section" id="freezing-the-lower-layers">
+<h4>Freezing the Lower Layers</h4>
+<p>It is likely that the lower layers of the first DNN have learned to detect low-level features in pictures that will be useful across both image classification tasks, so you can just reuse these layers as they are. It is generally a good idea
+to &quot;freeze&quot; their weights when training the new DNN: if the lower-layer weights are fixed, then the higher layer weights will be easier to train (because they won't have to learn a moving target). To freeze the lower layers:</p>
+<ul>
+<li><p class="first">Solution 1: give the optimizer the list of variables to train, excluding the variables form the lower layers.</p>
+<div class="highlight"><pre><span></span><span class="n">train_vars</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">TRAINABLE_VARIABLES</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s2">&quot;hidden[34]|outputs&quot;</span><span class="p">)</span>
+<span class="n">training_op</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">train_vars</span><span class="p">)</span>
+</pre></div>
+<ol class="arabic simple">
+<li>Get the list of all trainable variables in hidden layers 3 and 4 and in the output layer. This leaves out the variables in the hidden layers 1 and 2.</li>
+<li>We provide this restricted list of trainable variables to the optimizer's <code>minimize()</code> function.</li>
+</ol>
+</li>
+<li><p class="first">Solution 2: add a <code>tf.stop_gradient()</code> layer in the graph. Any layer below (in the sense of NN structure) it will be frozen.</p>
+<p><code>hidden2_stop = tf.stop_gradient(hidden2)</code></p>
+</li>
+</ul>
+</div>
+<div class="section" id="caching-the-frozen-layers">
+<h4>Caching the Frozen Layers</h4>
+<p>Cache the output of the topmost frozen layer for each training instance. This will give you huge speed boost as you will only need to go through the frozen layers one per training instance (instead of once per epoch), assuming you have enough RAM.
+Then during training, you would build batches of outputs from hidden layer 2 and feed them to the training operation.</p>
+<div class="highlight"><pre><span></span><span class="n">h2_cache</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hidden2</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">X</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">images</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+  <span class="n">shuffled_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">num_examples</span><span class="p">)</span>
+  <span class="n">hidden2_batches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">h2</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">shuffled_idx</span><span class="p">],</span> <span class="n">n_batches</span><span class="p">)</span>
+  <span class="n">y_batches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">shuffled_idx</span><span class="p">],</span> <span class="n">n_batches</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">hidden2_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">hidden2_batches</span><span class="p">,</span> <span class="n">y_batches</span><span class="p">):</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_op</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">hidden2</span><span class="p">:</span> <span class="n">hidden2_batch</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">y_batch</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="section" id="tweaking-dropping-or-replacing-the-upper-layers">
+<h4>Tweaking, Dropping, or Replacing the Upper Layers.</h4>
+<p>The output layer of the original model should usually be replaced since it is most likely not useful at all for the new task, and it may not even have the right number of outputs for the new task.</p>
+<p>Similarly, the upper hidden layers of the original model are less likely to be as useful as the lower layers, since the high-level features that are most useful for the new task may differ significantly from the ones that were most useful for the
+original task. You want to find the right number of layers to reuse.</p>
+<p>Try freezing all the copied layers first, then train your model and see how it performs. Then try unfreezing one or two of the top hidden layers to let backpropagation tweak them and see if performance improves. The more training data you have, the more
+layers you can unfreeze.</p>
+<p>If you still cannot get good performance, and you have little training data, try dropping the top hidden layer(s) and freeze all remaining hidden layers again. You can iterate until you find the right number of layers to reuse. If you have plenty of training data,
+you may try replacing the top hidden layers indtead of dropping them, and even add more hidden layers.</p>
+<p>Try freezing ...</p>
+<p>If you still ...</p>
+</div>
+<div class="section" id="model-zoos">
+<h4>Model Zoos</h4>
+<p>Where can you find a NN trained for a task similar to the one you want to tackle?</p>
+<ol class="arabic simple">
+<li>Your own catelog of models</li>
+<li>Search in the <strong>model zoo</strong>. Many people train ML models for various tasks and kindly release their pretrained models to the public<ul>
+<li>TF's own model zoo: <a class="reference external" href="https://github.com/tensorflow/models">https://github.com/tensorflow/models</a>, VGG, Inception, ResNet &amp; Tools to download popular image Datasets.</li>
+<li>Caffe's Model Zoo. There is a converter: <em>caffe-tensorflow</em>.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="unsupervised-pretraining">
+<h4>Unsupervised Pretraining</h4>
+<p>You want to tackle a complex task for which you don't have much labeled training data, but unfortunately you cannot find a model trained on a similar task.</p>
+<p>You can perform <strong>unsupervised pretraining</strong>, that is, if you have plenty of unlabeled training data, you can try to train the layers one by one, starting with the lowest layer and then going up, using an unsupervised feature detector algorithm
+such as <strong>Restricted Boltzmann Machine (RBM)</strong> or autoencoders. Each layer is trained on the output of the previously trained layers (all layers except the one being trained are frozen). Once all layers have been trained this way, you can
+fine-tune the network using supervised learning (i.e., with Backpropagation).</p>
+<p>It is this technique that Geofferey Hinton and his team used in 2006 and which led to the revival of NNs and the success of Deep Learning. Until 2010, unsupervised pretraining (typically using RBMs) was the norm for deep nets, and it was only
+after the vanishing gradients problem was alleviated that it became much more common to train DNNs purely using backpropagation.</p>
+<p>However, unsupervised pretraining (today typically using autoencoders rather than RBMs) is still a good option when you have a complex task to solve, no similar model you can reuse, and only little labeled training data but plenty of unlabeled data.</p>
+<p>Another option is to come up with a supervised task for which you can easily gather a lot of labeled training data, then use transfer learning.</p>
+</div>
+<div class="section" id="pretraining-on-an-auxiliary-task">
+<h4>Pretraining on an auxiliary task</h4>
+<p>One last option is to train a first NN on an auxiliary task for which you can easily obtain or generate labeled training data, then reuse the lower layers of that network for your actual task. The first NN's lower layers will learn feature
+detectors that will likely be reusable by the second NN.</p>
+<p>For example, if you want to build a system to recognize faces, you may only have a few pictures of each individual - clearly not enough to train a good classifier. Gathering hundreds of pictures of each person would not be practical. However,
+you could gather a lot of pictures of random people on the internet and train a first NN to detect whether or not two different pictures the same person. Such a network would learn good feature detectors for faces,
+so reusing its lower layers would allow you to train a good face classifier using little training data.</p>
+<p>It is often rather cheap to gather unlabeled training examples, but quite expensive to label them. In this situation, a commmon technique is to label all your training examples as &quot;good&quot;, then generate many new training instances by corrupting
+the good ones, and label these corrupted instances as &quot;bad&quot;. Then you can train a first NN to classify instances as good or bad. For example, you could download millions of sentences, label them as &quot;good&quot;, then randomly change a word in each
+sentence and label the resulting sentences as &quot;bad&quot;. If a NN can tell that &quot;The dog sleeps&quot; is a good sentence but &quot;The dog they&quot; is bad, it probably knows quite a lot about language. Reusing its lower layers will likely help in many language
+processing tasks.</p>
+<p>Another approache is to train a first NN to output a score for each training instance, and use a cost function that ensures that a good instance's score is greater than a bad instance's score by at least some margin. This is called <strong>max margin learning</strong>.</p>
+</div>
+</div>
+<div class="section" id="faster-optimizers">
+<h3>Faster Optimizers</h3>
+<p>4 wyas to speed up training so far:</p>
+<ol class="arabic simple">
+<li>apply a good initialization strategy for the connection weights.</li>
+<li>use a good activation function</li>
+<li>use batch normalization</li>
+<li>reuse parts of a pretrained network</li>
+</ol>
+<p>Now, the fifth element: use a fast optimizer: Momentum optimization, Nesterov Accelerated Gradient, AdaGrad, RMSProp, Adam optimization.</p>
+</div>
+<div class="section" id="avoid-overfitting-through-regularization">
+<h3>Avoid Overfitting Through Regularization</h3>
+<p>DNNs has so many parameters that it has an incredible amount of freedom and can fit a huge variety of complex datasets. But this great flexibility also means that it prone to overfitting the training set.</p>
+<div class="section" id="early-stopping">
+<h4>Early Stopping</h4>
+<p>Interrupt the training when its performance on the validation set starts dropping.</p>
+<p>One way to implement this in TF: evaluate a model on a validation set at regular intervals (e.g., every 50 steps), and save a &quot;winner&quot; snapshot if it outperforms previous &quot;winner&quot; snapshots. Count the number of
+steps since the last &quot;winnner&quot; snapshot was saved, and interrupt training when this number reaches some limit (e.g., 2000 steps). Then restore the last &quot;winner&quot; snapshot.</p>
+<p>You can usually get even much higher performance by combining early stopping with other regularization techniques.</p>
+</div>
+<div class="section" id="l-1-and-l-2-regularization">
+<h4><span class="math">\(l_1\)</span> and <span class="math">\(l_2\)</span> Regularization</h4>
+<p>You can use <span class="math">\(l_1\)</span> and <span class="math">\(l_2\)</span> regularization to constrain a NN's connection weights (but typically not on its biases), like you did in chapter 4 for simple linear models.</p>
+<p>One way to do this using TF is to simply add the approapriate regularization terms to your cost function.</p>
+<p><span class="math">\(l_1\)</span>-Regularization:</p>
+<div class="highlight"><pre><span></span><span class="n">scale</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="c1"># l1 Regularization hyperparameter</span>
+<span class="n">xentropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sparse_softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
+<span class="n">base_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">xentropy</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;avg_xentropy&#39;</span><span class="p">)</span>
+<span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">W1</span><span class="p">))</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">W2</span><span class="p">))</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">base_loss</span><span class="p">,</span> <span class="n">scale</span><span class="o">*</span><span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+</pre></div>
+<p>If there are many layer, there is a better option. Many functions that create vaiables (such as <code>get_variable()</code>) or <code>tf.layers.dense()</code>) accept a <code>*_regularizer</code> argument for each created variable (e.g., <code>kernel_regularizer</code>).
+You can pass any function that takes weights as an argument and returns the corresponding regularization loss. The <code>l1_regularizer()</code>, <code>l2_regularizer()</code>, and <code>l1_l2_regularizaer()</code> functions return such functions.</p>
+<div class="highlight"><pre><span></span><span class="n">my_dense_layer_with_l1_reg</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span> <span class="n">kernel_regularizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">l1_regularizer</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
+</pre></div>
+<p>The regularizations are represented and computed by the nodes in the graph. TensorFlow automatically creates these nodes and add them to a special collection containing all the regularization losses. You just need to add these regularization losses to your overall loss, like this:</p>
+<div class="highlight"><pre><span></span><span class="n">reg_losses</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">REGULARIZATION_LOSSES</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">([</span><span class="n">base_loss</span><span class="p">]</span> <span class="o">+</span> <span class="n">reg_losses</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="dropout-todo">
+<h4>Dropout :todo</h4>
+</div>
+<div class="section" id="max-norm-regularization">
+<h4>Max-Norm Regularization</h4>
+<p>Max-Norm regularization is a very popular regularization technique for NNs.</p>
+<dl class="docutils">
+<dt>How does Max-Norm Regularization work</dt>
+<dd>For each neuron, it constrains the weights <span class="math">\(\vec{w}\)</span> of the incoming connections such that <span class="math">\(||\vec{w}||_2 \le r\)</span>, where <span class="math">\(r\)</span> is the max-norm hyperparameter and <span class="math">\(||\cdot ||_2\)</span> is the <span class="math">\(l_2\)</span> norm.
+We typically implement this constraint by computing <span class="math">\(||\vec{w}||_2\)</span> after each training step and clipping <span class="math">\(\vec{w}\)</span> if needed (<span class="math">\(\vec{w} \leftarrow \vec{w}\frac{r}{||\vec{w}||_2}\)</span>). Reducing <span class="math">\(r\)</span> increases the amount of regularizatin and helps reduce overfitting. Max-norm
+regularization can also alleviate the vanishing/exploding gradient problems (if you are not using batch normalization).</dd>
+</dl>
+<p>todo: implement</p>
+</div>
+<div class="section" id="data-augmentation">
+<h4>Data Augmentation</h4>
+<p>Generate new training instances from existing ones, artificially boosting the size of the training set. This will reduce overfitting, making this a regularization technique. The trick is to generate <strong>realistic</strong> training instances; ideally,
+a human should not be able to tell which instanceswere generated and which ones were not. More over, simply adding white noise will not help; the modifications you apply should be learnable (white noise is not)</p>
+<p>e.g., shift, rotate, flip( for symmetrical objects), resize, adjust constrast or combination of transformations and then add the resulting pictures to the training set. This forces the model to be more tolerant to the position, orientation,lighting conditions, and size of the objects in the picture.</p>
+<p>It is preferable to generate training instances on the fly during training rather than wasting storage space and network bandwidth.</p>
+<p>TF offers several image manipulation operations. See API for details.</p>
+</div>
+<div class="section" id="skip-connections">
+<h4>Skip connections</h4>
+<p>Another powerful technique to train very deep NNs is to add <strong>skip connections</strong> (that is, when you add the input of a layer to the output of a higher layer, e.g., in deep residual networks.</p>
+</div>
+</div>
+<div class="section" id="practical-guidelines">
+<h3>Practical Guidelines</h3>
+<p>This configuration will work fine in most cases - <strong>default DNN configuration</strong>:</p>
+<ul class="simple">
+<li>Initialization: He Initialization</li>
+<li>Activation function: ELU</li>
+<li>Normalization: Batch Normalization</li>
+<li>Regularization: Dropout</li>
+<li>Optimizer: Nesterov Accelerated Gradient</li>
+<li>Learning rate schedule: None</li>
+</ul>
+<p>You should try to reuse parts of a pretrained NN if you can find one that solves a similar problem.</p>
+<p>This default configuration may need to be tweaked:</p>
+<ul class="simple">
+<li>If you can't find a good learning rate (slow convergence or suboptimal accuracy), then you can try adding a learning schedule such as exponential decay.</li>
+<li>If your training set is a bit too small, you can implement data augmentation.</li>
+<li>If you need a sparse model, you can add some <span class="math">\(l_1\)</span> regularization to the mix (and optionally zero out the tiny weights after training). If you need an even sparser model, you can try using
+FTRL instead of Adam optimization, along with <span class="math">\(l_1\)</span> regularization.</li>
+<li>If you need a lightning-fast model at runtime, you may want to drop Batch Normalization, and possibly replace the ELU activation function with the leaky ReLU. Having a sparse model will also help.</li>
+</ul>
+<p>With these guidelines, you are now ready to train very deep nets.</p>
 <table class="docutils citation" frame="void" id="tdr11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id8">[tdr11]</a></td><td><strong>The dying Relu</strong>: during training, some neurons effectively die, meaning they stop outputting anything other than 0. In some cases, you may find that half of your network's neurons are dead, especially if you used a large learning rate.
+<tr><td class="label"><a class="fn-backref" href="#id9">[tdr11]</a></td><td><strong>The dying Relu</strong>: during training, some neurons effectively die, meaning they stop outputting anything other than 0. In some cases, you may find that half of your network's neurons are dead, especially if you used a large learning rate.
 During training, if a neuron's weights get updated such that the weighted sum of the neuron's inputs is negative, it will start outputting 0. When this happen, the neuron is unlikely to comback to life since the gradient of the ReLU function
 is 0 when its input is negative.</td></tr>
 </tbody>
@@ -1202,48 +1551,46 @@ is 0 when its input is negative.</td></tr>
 <table class="docutils citation" frame="void" id="tlr11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id9">[tlr11]</a></td><td><strong>The leaky Relu</strong>: <span class="math">\(\mathrm{LeakyReLU}_\alpha (z) = \mathrm{max}(\alpha z, z)\)</span>. The <span class="math">\(\alpha\)</span> defines how much the function &quot;leaks&quot;, typically set to 0.01.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id10">[tlr11]</a></td><td><strong>The leaky Relu</strong>: <span class="math">\(\mathrm{LeakyReLU}_\alpha (z) = \mathrm{max}(\alpha z, z)\)</span>. The <span class="math">\(\alpha\)</span> defines how much the function &quot;leaks&quot;, typically set to 0.01.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="trr11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id11">[trr11]</a></td><td><strong>The randomized ReLU (RReLU)</strong>: Similar to the leaky ReLU, where <span class="math">\(\alpha\)</span> is picked randomly in a given range during training, and it is fixed to an average value during testing.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id12">[trr11]</a></td><td><strong>The randomized ReLU (RReLU)</strong>: Similar to the leaky ReLU, where <span class="math">\(\alpha\)</span> is picked randomly in a given range during training, and it is fixed to an average value during testing.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="tpr11" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id12">[tpr11]</a></td><td><strong>The parametric ReLU (PReLU)</strong>: Similar to the leaky ReLU, where <span class="math">\(\alpha\)</span> is authorized to be learned during training (a parameter that can be modified by backpropagation instead of being a hyperparameter).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id13">[tpr11]</a></td><td><strong>The parametric ReLU (PReLU)</strong>: Similar to the leaky ReLU, where <span class="math">\(\alpha\)</span> is authorized to be learned during training (a parameter that can be modified by backpropagation instead of being a hyperparameter).</td></tr>
 </tbody>
 </table>
 <p class="rubric">References</p>
 <table class="docutils citation" frame="void" id="gb10" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label">[GB10]</td><td><em>(<a class="fn-backref" href="#id6">1</a>, <a class="fn-backref" href="#id7">2</a>)</em> Glorot, X. &amp; Bengio, Y.. (2010). Understanding the difficulty of training deep feedforward neural networks. Proceedings of the Thirteenth International Conference on Artificial Intelligence and Statistics, in PMLR 9:249-256</td></tr>
+<tr><td class="label">[GB10]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id8">2</a>)</em> Glorot, X. &amp; Bengio, Y.. (2010). Understanding the difficulty of training deep feedforward neural networks. Proceedings of the Thirteenth International Conference on Artificial Intelligence and Statistics, in PMLR 9:249-256</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="xwcl15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id10">[XWCL15]</a></td><td>&quot;Empirical Evaluation of Rectified Activations in Convolution Network&quot;, B. Xu et al. (2015).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id11">[XWCL15]</a></td><td>&quot;Empirical Evaluation of Rectified Activations in Convolution Network&quot;, B. Xu et al. (2015).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="cuh15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id13">[CUH15]</a></td><td>&quot;Fast and Accurate Deep Network Learning by Exponential Linear Units (ELUs)&quot;, D. Clevert, T. Unterhiner, S. Hochreiter (2015).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id14">[CUH15]</a></td><td>&quot;Fast and Accurate Deep Network Learning by Exponential Linear Units (ELUs)&quot;, D. Clevert, T. Unterhiner, S. Hochreiter (2015).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="is15" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id14">[IS15]</a></td><td>&quot;Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift&quot;, S. Ioffe and C. Szegedy (2015).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id15">[IS15]</a></td><td>&quot;Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift&quot;, S. Ioffe and C. Szegedy (2015).</td></tr>
 </tbody>
 </table>
-</div>
-</div>
 </div>
 </div>
 <hr class="docutils" />
@@ -1254,18 +1601,18 @@ is 0 when its input is negative.</td></tr>
 <p>CNN are not restricted to visual perception, other tasks such as voice regocnition and Natural Language Processing are also involved.</p>
 <div class="section" id="the-architecture-of-the-visual-cortex">
 <h3>The Architecture of the Visual Cortex</h3>
-<p>The researches <a class="citation-reference" href="#hw58" id="id15">[HW58]</a>, <a class="citation-reference" href="#hw59" id="id16">[HW59]</a> and <a class="citation-reference" href="#hw68" id="id17">[HW68]</a> showed that many neurons in the visual cortex have a small <strong>local receptive field</strong> <a class="citation-reference" href="#lrf13" id="id18">[lrf13]</a> . The receptive fields of
+<p>The researches <a class="citation-reference" href="#hw58" id="id16">[HW58]</a>, <a class="citation-reference" href="#hw59" id="id17">[HW59]</a> and <a class="citation-reference" href="#hw68" id="id18">[HW68]</a> showed that many neurons in the visual cortex have a small <strong>local receptive field</strong> <a class="citation-reference" href="#lrf13" id="id19">[lrf13]</a> . The receptive fields of
 different neurons may overlap, and together they tile <strong>the whole visual vield</strong>. They also showed that some neurons react only to images of horizontal lines, while others react only to
 lines with different orientations (two neurons may have the same receptive field but react to different line orientations).</p>
 <p>They noticed that some neurons have larger receptive fileds, and they react to more complex patterns that are combinations of the lower-level patterns. These observations led to
 the idea that the higher-level neurons are based on the outputs of neighboring lower-level neurons (with each neuron is connected only to a few neurons from the previous layer). This
 powerful architecture is able to detect all sorts of complex patterns in any area of the visual field.</p>
-<p><a class="citation-reference" href="#fuk80" id="id19">[Fuk80]</a> gradually evolved into convolutional CNNs.</p>
-<p><a class="citation-reference" href="#lbbh98" id="id20">[LBBH98]</a> is the milestone which introduced the famous LeNet-5 architecture, widely used to recognize handwritten check numbers. It introduces two new building blocks: <strong>convolutional layers</strong> and <strong>pooling layers</strong>.</p>
+<p><a class="citation-reference" href="#fuk80" id="id20">[Fuk80]</a> gradually evolved into convolutional CNNs.</p>
+<p><a class="citation-reference" href="#lbbh98" id="id21">[LBBH98]</a> is the milestone which introduced the famous LeNet-5 architecture, widely used to recognize handwritten check numbers. It introduces two new building blocks: <strong>convolutional layers</strong> and <strong>pooling layers</strong>.</p>
 <p><strong>Why not simply use a regular DNN with fully connected layers for the image recognition tasks?</strong></p>
 <ul class="simple">
 <li>Huge number of parameters are required for large Fully Connected Layers</li>
-<li>CNNs solve this problem using <strong>partially connected layers</strong> <a class="citation-reference" href="#pcl13" id="id21">[pcl13]</a></li>
+<li>CNNs solve this problem using <strong>partially connected layers</strong> <a class="citation-reference" href="#pcl13" id="id22">[pcl13]</a></li>
 </ul>
 </div>
 <div class="section" id="convolutional-layer">
@@ -1362,7 +1709,7 @@ We'll discuss common CNN architectures later, to give you some idea of what hype
 <p>The training of CNN require a huge amount of RAM because the reverse pass of backpropagation requires all the intermediate values computed during the forward pass. The amount of RAM
 neede is at least the total amount of RAM required by all layers.</p>
 <p><strong>The estimation of memory consumption</strong> in the book.</p>
-<p>During <strong>inference</strong> <a class="citation-reference" href="#inf13" id="id23">[inf13]</a> the RAM occupied by one layer can be released as soon as the next layer has been computed, so you only need as much RAM as required by two consecutive layers.</p>
+<p>During <strong>inference</strong> <a class="citation-reference" href="#inf13" id="id24">[inf13]</a> the RAM occupied by one layer can be released as soon as the next layer has been computed, so you only need as much RAM as required by two consecutive layers.</p>
 <p>If training crashes because of an out-of-memory error, you can try reducing the mini-batch size or reducing dimensionality using a stride, or removing a few layers, or try using 16-bit
 floats instead of 32-bit floats, or distribute the CNN across multiple devices.</p>
 </div>
@@ -1395,7 +1742,7 @@ either <tt class="docutils literal">ksize[1]</tt> and <tt class="docutils litera
 and smaller as it progresses through the network, but it also typically gets <strong>deeper and deeper</strong> (i.e., with more feature maps) thanks to the conv layers. At the top of the stack, a regular feedforward NN is added,
 composed of a few fully connected layers (+ReLUs), and the final layer outputs the prediction (e.g., a softmax layer that outputs estimated class probabilities).</p>
 <p>You can get the effect of a 9x9 kernel by stacking two 3x3 kernels on top of each other, for a lot less computation and parameters.</p>
-<p>A good measure of the progress of variants of the fundamental architecture above, is the error rate in competitions such as the <strong>ILSVRC ImageNet challenge</strong>. <strong>Top-5 error rate for image classification</strong> <a class="citation-reference" href="#trf13" id="id24">[trf13]</a>.
+<p>A good measure of the progress of variants of the fundamental architecture above, is the error rate in competitions such as the <strong>ILSVRC ImageNet challenge</strong>. <strong>Top-5 error rate for image classification</strong> <a class="citation-reference" href="#trf13" id="id25">[trf13]</a>.
 Looking at the evolution of the winning entries is a good way to understand how CNN work.</p>
 <ul class="simple">
 <li>LeNet-5 1998 (classic for handwritten digits recognition)</li>
@@ -1434,7 +1781,7 @@ function is now preferred, as it penalizes bad predictions much more, producing 
 </ol>
 </div>
 <div class="section" id="alexnet-ksh12">
-<h4>AlexNet  <a class="citation-reference" href="#ksh12" id="id25">[KSH12]</a></h4>
+<h4>AlexNet  <a class="citation-reference" href="#ksh12" id="id26">[KSH12]</a></h4>
 <p>Similar to LeNet-5 but much larger and deeper. It's the first to stack convlayers directly on top of each other, instead of stacking a pooling layer on top of each conv layer.</p>
 <p>TODO: architecture</p>
 <p>To reduce overfitting:</p>
@@ -1442,7 +1789,7 @@ function is now preferred, as it penalizes bad predictions much more, producing 
 <li>They applied dropout (with a 50% dropout rate) during training to the outputs of layers F8 and F9.</li>
 <li>They performed data augmentation by randomly shifting the training images by various offsets, flipping them horizontally, and changing the lighting conditions</li>
 </ol>
-<p>AlexNet also uses a competitive normalization step immediately after the ReLU step of layers C1 and C3, called <strong>local response normalization</strong> <a class="citation-reference" href="#lrn13" id="id26">[lrn13]</a>. This step can
+<p>AlexNet also uses a competitive normalization step immediately after the ReLU step of layers C1 and C3, called <strong>local response normalization</strong> <a class="citation-reference" href="#lrn13" id="id27">[lrn13]</a>. This step can
 be implemented using TF's <tt class="docutils literal">tf.nn.local_response_normalization()</tt> operation.</p>
 </div>
 <div class="section" id="todo-googlenet">
@@ -1460,7 +1807,7 @@ forced to model <span class="math">\(f(\vec{x}) = h(\vec{x}) - \vec{x}\)</span> 
 </dl>
 <p>When you initialize a regular NN, its weights are close to zero, so the network just outputs values close to zero. If you add a skip connection, the resulting network just outputs a copy of its inputs; in other words, it initially models the identity function. If
 the target function is fairly close to the identity function (which is often the case), this will speed up training considerably. Moreover, if you add many skip connections, the network can start making progress even if several layers have not started learning yet
-(the normal network layers, instead, initially outputs close to zero and block backpropagation) Thanks to skip connections, the signal can easily make its way across the whole network. The Deep ResNet can be seen as a stack of <strong>Residual Units</strong> <a class="citation-reference" href="#ru13" id="id27">[ru13]</a> .</p>
+(the normal network layers, instead, initially outputs close to zero and block backpropagation) Thanks to skip connections, the signal can easily make its way across the whole network. The Deep ResNet can be seen as a stack of <strong>Residual Units</strong> <a class="citation-reference" href="#ru13" id="id28">[ru13]</a> .</p>
 <p>TODO: architecture</p>
 <p>The architecture starts and ends exactly like GoogLeNet (except without a dropout layer) and in between is just a very deep stack of simple residual units. Note that the number of feature maps is doubled every few residual units, at the same time as their height and width are halved
 (using a convolutional layer with stride 2). <em>When this happends the input cannot be added directly to the outputs of the residual unit since they don't have the same shape</em>. To solve this problem, the inputs are passed through a 1x1 convolutional layer with stride 2 and the right
@@ -1478,8 +1825,8 @@ but keep looking at the ILSVRC challenge every year. The winner of 2016 achieved
 <li><tt class="docutils literal">tf.layers.conv1d()</tt>, convolutional layer for 1D inputs. Useful, for example, in NLP, where a sentence may be represented as a 1D array of words, and the receptive field covers a few neighboring words.</li>
 <li><tt class="docutils literal">tf.layers.conv3d()</tt>, creates a von layer for 3D inputs, such as <a class="reference external" href="https://de.wikipedia.org/wiki/Positronen-Emissions-Tomographie">3D PET scan</a></li>
 <li><tt class="docutils literal">tf.nn.atrous_conv2d()</tt>, creates an <strong>atrous convolutional layer</strong> (&quot;à trous&quot; is French for &quot;with holes&quot;). This is equivalent to using a regular conv layer with a filter dilated by inserting rows and columns of zeros (i.e., holes). This allows the convolutional layer
-to have a larger receptive field at no computational price and using no extra parameters. An example here <a class="citation-reference" href="#acl13" id="id28">[acl13]</a>.</li>
-<li><tt class="docutils literal">tf.layers.conv2d_transpose()</tt> creates a <strong>transpose convolutional layer</strong>, sometimes called a <strong>deconvolutional layer</strong> <a class="citation-reference" href="#dl13" id="id29">[dl13]</a> which <strong>upsamples an image</strong>. It does so by inserting zeros between the inputs, you can think of this as a regular convolutional layer
+to have a larger receptive field at no computational price and using no extra parameters. An example here <a class="citation-reference" href="#acl13" id="id29">[acl13]</a>.</li>
+<li><tt class="docutils literal">tf.layers.conv2d_transpose()</tt> creates a <strong>transpose convolutional layer</strong>, sometimes called a <strong>deconvolutional layer</strong> <a class="citation-reference" href="#dl13" id="id30">[dl13]</a> which <strong>upsamples an image</strong>. It does so by inserting zeros between the inputs, you can think of this as a regular convolutional layer
 using a fractional stride. Upsampling is useful, for example, in image segmentation: in a typical CNN, feature maps get smaller and smaller as you progress through the network, so if you want to output an image of the same size as the input, you need and upsampling layer.</li>
 <li><tt class="docutils literal">tf.nn.depthwise_conv2d()</tt> creates a <strong>depthwise convolutional layer</strong> that applies every filter to every individual input channel independently. Thus, if there are <span class="math">\(f_n\)</span> filters and <span class="math">\(f_{n'}\)</span> input channels, then this will
 output <span class="math">\(f_n \times f_{n'}\)</span> feature maps. <strong>distinguish with the normal ``tf.layers.conv2d()``</strong>.</li>
@@ -1488,32 +1835,32 @@ output <span class="math">\(f_n \times f_{n'}\)</span> feature maps. <strong>dis
 <table class="docutils citation" frame="void" id="lrf13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id18">[lrf13]</a></td><td>Many neurons in the visual cortex react only to visual stimuli located in a limited region of the visual field.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id19">[lrf13]</a></td><td>Many neurons in the visual cortex react only to visual stimuli located in a limited region of the visual field.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="pcl13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id21">[pcl13]</a></td><td><strong>Partially connected layers</strong>: compared to regular fully connected neural networks, a neuron in the convolutional layer is conneted to the neurons, which are
+<tr><td class="label"><a class="fn-backref" href="#id22">[pcl13]</a></td><td><strong>Partially connected layers</strong>: compared to regular fully connected neural networks, a neuron in the convolutional layer is conneted to the neurons, which are
 located in its receptive field in the previous level.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="inf13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id23">[inf13]</a></td><td><strong>Inference</strong>: The process which makes prediction for a new instance.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id24">[inf13]</a></td><td><strong>Inference</strong>: The process which makes prediction for a new instance.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="trf13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id24">[trf13]</a></td><td><strong>Top-5 error rate for image classification</strong>: The number of test images for which the system's top 5 predictions did not include the correct answer.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id25">[trf13]</a></td><td><strong>Top-5 error rate for image classification</strong>: The number of test images for which the system's top 5 predictions did not include the correct answer.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="lrn13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id26">[lrn13]</a></td><td><dl class="first docutils">
+<tr><td class="label"><a class="fn-backref" href="#id27">[lrn13]</a></td><td><dl class="first docutils">
 <dt><strong>Local Response Normalization (LRN)</strong>: This form of normalization makes the neurons that most strongly activate inhibit neurons</dt>
 <dd><p class="first">at the same location but in neighboring feature maps (such competitive activation has been observed in biological neurons). This encourages different feature maps to specialize, pushing them apart and forcing them to explore a wider range of features,
 ultimately improving generalization.</p>
@@ -1536,56 +1883,56 @@ b_i = a_i \left( k+ \alpha \sum_{\mathrm{max}(0, i - \frac{r}{2})}^{\mathrm{min}
 <table class="docutils citation" frame="void" id="ru13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id27">[ru13]</a></td><td><strong>Residual Units</strong>: A small neural network with a skip connection. The real residual unit in ResNet-34 is composed of two convolutional layers, with Batch Normalization (BN) and ReLU activation, using
+<tr><td class="label"><a class="fn-backref" href="#id28">[ru13]</a></td><td><strong>Residual Units</strong>: A small neural network with a skip connection. The real residual unit in ResNet-34 is composed of two convolutional layers, with Batch Normalization (BN) and ReLU activation, using
 3x3 kernels and preserving spatial dimensions (stride 1, SAME padding).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="acl13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id28">[acl13]</a></td><td>A 1x3 filter <tt class="docutils literal">[[1, 2, 3]]</tt> may be dilated with a <strong>dilation rate</strong> of 4, resulting in a <strong>dilated filter</strong> <tt class="docutils literal">[[1, 0, 0, 0, 2, 0, 0, 0, 3]]</tt>.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id29">[acl13]</a></td><td>A 1x3 filter <tt class="docutils literal">[[1, 2, 3]]</tt> may be dilated with a <strong>dilation rate</strong> of 4, resulting in a <strong>dilated filter</strong> <tt class="docutils literal">[[1, 0, 0, 0, 2, 0, 0, 0, 3]]</tt>.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="dl13" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id29">[dl13]</a></td><td>This layer does <strong>not</strong> perform a deconvolution, which is a well-defined mathematical operation (the inverse of a convolution).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id30">[dl13]</a></td><td>This layer does <strong>not</strong> perform a deconvolution, which is a well-defined mathematical operation (the inverse of a convolution).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="hw58" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id15">[HW58]</a></td><td>&quot;Single Unit Activity in Striate Cortex of Unrestrained Cats,&quot; D. Hubel and T. Wiesel (1958).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id16">[HW58]</a></td><td>&quot;Single Unit Activity in Striate Cortex of Unrestrained Cats,&quot; D. Hubel and T. Wiesel (1958).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="hw59" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id16">[HW59]</a></td><td>&quot;Receptive Fields of Single Neurones in the Cat's Striate Cortex,&quot; D. Hubel and T. Wiesel (1959).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id17">[HW59]</a></td><td>&quot;Receptive Fields of Single Neurones in the Cat's Striate Cortex,&quot; D. Hubel and T. Wiesel (1959).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="hw68" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id17">[HW68]</a></td><td>&quot;Receptive Fields and Functional Architecture of Monkey Striate Cortex,&quot; D. Hubel and T. Wiesel (1968).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id18">[HW68]</a></td><td>&quot;Receptive Fields and Functional Architecture of Monkey Striate Cortex,&quot; D. Hubel and T. Wiesel (1968).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="fuk80" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id19">[Fuk80]</a></td><td>&quot;Neocognitron: A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position,&quot; K. Fukushima (1980).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id20">[Fuk80]</a></td><td>&quot;Neocognitron: A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position,&quot; K. Fukushima (1980).</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="lbbh98" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id20">[LBBH98]</a></td><td>&quot;Gradient-Based Learning Applied to Document Recognition&quot;, LeCun, Y. et al.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id21">[LBBH98]</a></td><td>&quot;Gradient-Based Learning Applied to Document Recognition&quot;, LeCun, Y. et al.</td></tr>
 </tbody>
 </table>
 <table class="docutils citation" frame="void" id="ksh12" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id25">[KSH12]</a></td><td>&quot;ImageNet Classification with Deep Convolutional Neural Networks&quot;, A. Krizhevsky et al. (2012).</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id26">[KSH12]</a></td><td>&quot;ImageNet Classification with Deep Convolutional Neural Networks&quot;, A. Krizhevsky et al. (2012).</td></tr>
 </tbody>
 </table>
 </div>
@@ -1594,6 +1941,68 @@ b_i = a_i \left( k+ \alpha \sum_{\mathrm{max}(0, i - \frac{r}{2})}^{\mathrm{min}
 <hr class="docutils" />
 <div class="section" id="chapter-15-autoencoders">
 <h2>Chapter 15 - Autoencoders</h2>
+<p>Autoencoders are ANNs capable of learning the <strong>codings</strong> <a class="citation-reference" href="#cod12" id="id31">[cod12]</a> , without any supervision.</p>
+<ul class="simple">
+<li>These codings typically have a much lower dimensionality than the input data, making autoencoders useful for <strong>dimensionality reduction</strong>.</li>
+<li>Moreover, autoencoders acts as powerful <strong>feature detectors</strong> and they can be used for <strong>unsupervised pretraining of DNNs</strong>.</li>
+<li>Lastly, they are capable of randomly generating new data that look very similar to the training data; this is called a <strong>generative model</strong>.</li>
+</ul>
+<p>Autoencoders works by simply learning to copy their inputs to their outputs. By constraining the network in various ways, we can make this task rather difficult thus making this task non-trivial.
+The constraints forces the autoencoders to learn efficient ways of representing the data. The codings are byproducts of the autoencoder's attempt to learn the identity function under some constraints.
+Some possible constraint methods are:</p>
+<ul class="simple">
+<li>limit the size of the internal representations</li>
+<li>add noise to the inputs and train the network to recover the original inputs.</li>
+</ul>
+<div class="section" id="efficient-data-representations">
+<h3>Efficient Data Representations</h3>
+<p>It is the fact that it is hard to memorize long sequences that makes it useful to recognize patterns, and hopefully this clarifies why contraining an autoencoder during training pushes it to discover and exploit patterns in the data.</p>
+<p><a class="citation-reference" href="#cs73" id="id32">[CS73]</a> studied the famous relationship between memory perception, and pattern matching. The chess players were able to memorize the positions of all the pieces in a <em>realistic game*</em> by looking at the board for just 5 seconds. While it is not
+even possible for normal people. But If the placement of the pieces are totally random, the chess experts are not better than you and i. They just see chess patterns more easily thanks to their experience with the game.
+<strong>Noticing patterns helps them store information efficiently.</strong></p>
+<p>Just like a chess player, an autoencoder looks at the inputs, converts them to an efficient internal representation, and then spits out something that (hopefully) looks very close to the inputs.</p>
+<p>An autoencoder is always composed of two parts: an <strong>encoder</strong> - <strong>recognition network</strong> - that converts the inputs to an internal representation, followed by a <strong>decoder</strong> - <strong>generative network</strong> - that converts the internal representation to the outputs.</p>
+<dl class="docutils">
+<dt>Architecture of an autoencoder</dt>
+<dd>An autoencoder typically has the same architecture as a MLP, except that the number of neurons in the output layer must be equal to the number of inputs. The outputs are often called <strong>the reconstructions</strong> since the autoencoder tries to reconstruct the inputs, and the cost function contains a
+<strong>reconstruction loss</strong> that penalizes the model when the reconstructions are different from the inputs.</dd>
+<dt>Autoencoder is undercomplete</dt>
+<dd>Because the internal representation has a lower dimensionality than the input data, the autoencoder is said to be <strong>undercomplete</strong>.
+An undercomplete autoencoder cannot trivially copy its inputs to the codings, yet it must find a way to output a copy of its inputs. It is forced to learn the most important features in the input data (and drop the unimportant ones).</dd>
+</dl>
+</div>
+<div class="section" id="performing-pca-with-an-undercomplete-linear-autoencoder">
+<h3>Performing PCA with an Undercomplete Linear Autoencoder</h3>
+<p>If the autoencoder uses only linear activations and the cost function is the MSE, then it can be shown that it ends up performing PCA.</p>
+<p>Implementation Note</p>
+<ol class="arabic simple">
+<li>The number of outputs is equal to the number of inputs.</li>
+<li>To perform simple PCA, do not use any activation functions, (i.e., all neurons are linear) and the cost function is the MSE.</li>
+<li>Unsupervised (no labels!)</li>
+<li>The autoencoder finds the best subspace to project the data onto, preserving as much variance in the data as it could.</li>
+</ol>
+</div>
+<div class="section" id="stacked-autoencoders">
+<h3>Stacked Autoencoders</h3>
+<dl class="docutils">
+<dt>Stacked Autoencoders (or Deep Autoencoders)</dt>
+<dd>Autoencoders can have multiple hidden layers, just like other NNs. In this case they are called <strong>stacked autoencoders</strong> (or <strong>deep autoencoders</strong>). Adding more layers helps the autoencoder learn more complex codings.</dd>
+</dl>
+<p>However, one must be careful not to make the autoencoder too powerful (in this case it will map each input to a unique coding and decoder reconstruct the traning data perfectly, but it won't learn any useful data representation in the process and is unlikely to generalize well to new instances).</p>
+<p>The architecture of a stacked autoencoder is typically symmetrical w.r.t. the <strong>central hidden layer</strong> (<strong>the coding layer</strong>).</p>
+<table class="docutils citation" frame="void" id="cod12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id31">[cod12]</a></td><td><strong>Coding of the data</strong>: An efficient representation of the input data. Typically have a much lower dimensionality than the input data itself.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="cs73" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id32">[CS73]</a></td><td>&quot;Perception in chess&quot;, W. Chase and H. Simon (1973)...</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
@@ -1655,7 +2064,9 @@ b_i = a_i \left( k+ \alpha \sum_{\mathrm{max}(0, i - \frac{r}{2})}^{\mathrm{min}
 <div class="article-tag-list">
 <span class="label label-default">Tags</span>
 	<a href="/tag/machine-learning.html"><i class="fa fa-tag"></i>Machine Learning</a>&nbsp;
-	<a href="/tag/reading-notes.html"><i class="fa fa-tag"></i>Reading Notes</a>&nbsp;
+	<a href="/tag/deep-learning.html"><i class="fa fa-tag"></i>Deep Learning</a>&nbsp;
+	<a href="/tag/tensorflow.html"><i class="fa fa-tag"></i>TensorFlow</a>&nbsp;
+	<a href="/tag/scikit-learn.html"><i class="fa fa-tag"></i>Scikit-Learn</a>&nbsp;
 </div>  <hr />
   <div class="well well-sm">  <!-- Social media sharing buttons -->
 
@@ -1697,8 +2108,10 @@ b_i = a_i \left( k+ \alpha \sum_{\mathrm{max}(0, i - \frac{r}{2})}^{\mathrm{min}
 <div class="col-xs-6 col-md-12">
 <h4><i class="fa fa-folder fa-fw fa-lg"></i> Categories</h4>
 <ul class="list-unstyled category-links">
-  <li><a href="/category/machine-learning.html" >
-    <i class="fa fa-folder-open fa-fw fa-lg"></i> Machine Learning</a></li>
+  <li><a href="/category/reading-notes.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Reading Notes</a></li>
+  <li><a href="/category/vorlesung.html" >
+    <i class="fa fa-folder-open fa-fw fa-lg"></i> Vorlesung</a></li>
 </ul>
 </div>
 
@@ -1712,15 +2125,45 @@ b_i = a_i \left( k+ \alpha \sum_{\mathrm{max}(0, i - \frac{r}{2})}^{\mathrm{min}
 <h4><i class="fa fa-tags fa-fw fa-lg"></i> Tags</h4>
 <p class="tag-cloud">
     <span class="tag-4">
-      <a href="/tag/reading-notes.html">
+      <a href="/tag/keras.html">
           <i class="fa fa-tag"></i>
-        Reading Notes
+        Keras
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/deep-learning.html">
+          <i class="fa fa-tag"></i>
+        Deep Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/scikit-learn.html">
+          <i class="fa fa-tag"></i>
+        Scikit-Learn
       </a>
     </span>
     <span class="tag-4">
       <a href="/tag/machine-learning.html">
           <i class="fa fa-tag"></i>
         Machine Learning
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/tensorflow.html">
+          <i class="fa fa-tag"></i>
+        TensorFlow
+      </a>
+    </span>
+    <span class="tag-1">
+      <a href="/tag/shell-script.html">
+          <i class="fa fa-tag"></i>
+        Shell Script
+      </a>
+    </span>
+    <span class="tag-4">
+      <a href="/tag/mikroprozessor.html">
+          <i class="fa fa-tag"></i>
+        Mikroprozessor
       </a>
     </span>
 </p>
